@@ -16,9 +16,9 @@ public class FieldShape {
 	
 	public static final double PIXELS_PER_MAP_INCH = 1;
 	
-	public final static double FIELD_OFFSET_X =  1.5 * 12.0;
+	public static final double FIELD_OFFSET_X =  1.5 * 12.0;
 	
-	public final static double FIELD_OFFSET_Y = 10.0 * 12.0;
+	public static final double FIELD_OFFSET_Y = 10.0 * 12.0;
 		
 	public static final Image fieldMap = new Image(new File("fieldMap.jpg").toURI().toString());
 	
