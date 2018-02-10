@@ -3,8 +3,6 @@
  */
 package org.usfirst.frc.team467.robot.simulator.draw;
 
-import java.io.File;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -19,10 +17,8 @@ public class FieldShape {
 	public final static double FIELD_OFFSET_X =  1.5 * 12.0;
 	
 	public final static double FIELD_OFFSET_Y = 10.0 * 12.0;
-	
-	public final static File imageFile = new File("fieldMap.jpg");
-	
-	public static final Image fieldMap = new Image(imageFile.toURI().toString());
+		
+	public static final Image fieldMap = new Image("fieldMap.jpg");
 	
 	GraphicsContext context;
 	
