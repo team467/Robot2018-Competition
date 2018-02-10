@@ -3,8 +3,6 @@
  */
 package org.usfirst.frc.team467.robot.simulator.draw;
 
-import java.io.File;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
