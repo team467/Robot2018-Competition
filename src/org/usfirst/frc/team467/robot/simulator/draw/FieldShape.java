@@ -56,7 +56,9 @@ public class FieldShape {
 	 *  Power cube is 1' 1" x 1' 1" x 11"
 	 */
 	public void draw() {
-		context.drawImage(fieldMap, 0, 0, 1000, 500);
+		context.drawImage(fieldMap, 0, 0, 888, 359);
+		
+		context.setGlobalAlpha(0.5);
 				
 		context.setStroke(Color.YELLOW);
 		context.setLineWidth(2.0 * PIXELS_PER_MAP_INCH);
