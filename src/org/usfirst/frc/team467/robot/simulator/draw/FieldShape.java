@@ -20,7 +20,7 @@ public class FieldShape {
 	
 	public static final double FIELD_OFFSET_Y = 10.0 * 12.0;
 		
-	public static final Image fieldMap = new Image(new File("fieldMap.jpg").toURI().toString());
+	public static final Image fieldMap = new Image("org/usfirst/frc/team467/robot/simulator/draw/fieldMap.jpg", true);
 	
 	GraphicsContext context;
 	
@@ -58,27 +58,28 @@ public class FieldShape {
 	 *  Power cube is 1' 1" x 1' 1" x 11"
 	 */
 	public void draw() {
+		context.drawImage(fieldMap, 0, 0, 1000, 500);
 				
-			context.setStroke(Color.YELLOW);
-			context.setLineWidth(2.0 * PIXELS_PER_MAP_INCH);
-			
-			// Field
-			context.setFill(Color.DARKGREY);	
-			context.fillRect(
-					 0.0, 
-					 0.0, 
-					74.0 * 12.0 * PIXELS_PER_MAP_INCH, 
-					30.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			// Red Alliance 
-			context.setFill(Color.RED);
-			
-			// Red Alliance Station
-			context.fillRect(
-					 0.0,
-					 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
-					10.0 * 12.0 * PIXELS_PER_MAP_INCH, 
-					22.0 * 12.0 * PIXELS_PER_MAP_INCH);
+		context.setStroke(Color.YELLOW);
+		context.setLineWidth(2.0 * PIXELS_PER_MAP_INCH);
+		
+		// Field
+		context.setFill(Color.DARKGREY);	
+		context.fillRect(
+			 0.0, 
+			 0.0, 
+			74.0 * 12.0 * PIXELS_PER_MAP_INCH, 
+			30.0 * 12.0 * PIXELS_PER_MAP_INCH);
+		
+		// Red Alliance 
+		context.setFill(Color.RED);
+		
+		// Red Alliance Station
+		context.fillRect(
+			 0.0,
+			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
+			10.0 * 12.0 * PIXELS_PER_MAP_INCH, 
+			22.0 * 12.0 * PIXELS_PER_MAP_INCH);
 
 //			// Red Exchange Zone
 //			context.fillRect(
@@ -86,188 +87,186 @@ public class FieldShape {
 //					 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 //					10.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 //					22.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			// Red Switch
-			context.setFill(Color.LIGHTGRAY);
-			context.fillRect(
+		
+		// Red Switch
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(
 			21.7 * 12.0 * PIXELS_PER_MAP_INCH,
 			 9.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.7 * 12.0 * PIXELS_PER_MAP_INCH, 
 			12.0 * 12.0 * PIXELS_PER_MAP_INCH);
 			
-			context.setFill(Color.DIMGRAY);
-			context.fillRect(
+		context.setFill(Color.DIMGRAY);
+		context.fillRect(
 			22.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			 9.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 3.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.fillRect(
+		
+		context.fillRect(
 			22.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			18.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 3.0 * 12.0 * PIXELS_PER_MAP_INCH);
 			
-			// Blue Alliance
-			context.setFill(Color.BLUE);
+		// Blue Alliance
+		context.setFill(Color.BLUE);
 
-			// Blue Alliance Station
-			context.fillRect(
-					64.0 * 12.0 * PIXELS_PER_MAP_INCH,
-					 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
-					10.0 * 12.0 * PIXELS_PER_MAP_INCH, 
-					22.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			// Blue Switch
-			context.setFill(Color.LIGHTGRAY);
-			context.fillRect(
+		// Blue Alliance Station
+		context.fillRect(
+			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
+			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
+			10.0 * 12.0 * PIXELS_PER_MAP_INCH, 
+			22.0 * 12.0 * PIXELS_PER_MAP_INCH);
+		
+		// Blue Switch
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(
 			48.3 * 12.0 * PIXELS_PER_MAP_INCH,
 			 9.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.7 * 12.0 * PIXELS_PER_MAP_INCH, 
 			12.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.setFill(Color.DIMGRAY);
-			context.fillRect(
+		
+		context.setFill(Color.DIMGRAY);
+		context.fillRect(
 			48.7 * 12.0 * PIXELS_PER_MAP_INCH,
 			 9.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 3.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.fillRect(
+		
+		context.fillRect(
 			48.7 * 12.0 * PIXELS_PER_MAP_INCH,
 			18.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 4.0 * 12.0 * PIXELS_PER_MAP_INCH, 
 			 3.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			//Platform Zone
-			context.setFill(Color.LIGHTGRAY);
-			context.fillRect(
+		
+		//Platform Zone
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(
 			31.79 * 12.0 * PIXELS_PER_MAP_INCH,
 			9.46 * 12.0 * PIXELS_PER_MAP_INCH,
 			10.42 * 12.0 * PIXELS_PER_MAP_INCH,
 			11.08 * 12.0 * PIXELS_PER_MAP_INCH);
 			
-			//Top Scale Plate
-			context.setFill(Color.DIMGRAY);
-			context.fillRect(
+		//Top Scale Plate
+		context.setFill(Color.DIMGRAY);
+		context.fillRect(
 			35.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			7.5 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			3.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			//Bottom Scale Plate
-			context.fillRect(
+		
+		//Bottom Scale Plate
+		context.fillRect(
 			35.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			19.5 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			3.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			//Red Alliance Starting Position
-			context.setFill(Color.DIMGRAY);
-			context.fillRect(
+		
+		//Red Alliance Starting Position
+		context.setFill(Color.DIMGRAY);
+		context.fillRect(
 			9.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.fillRect(
+		
+		context.fillRect(
 			9.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			20.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.setFill(Color.LIGHTGRAY);
-			context.fillRect(
+		
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(
 			9.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			14.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			//Blue Alliance Starting Position
-			context.setFill(Color.DIMGRAY);
-			context.fillRect(
+		
+		//Blue Alliance Starting Position
+		context.setFill(Color.DIMGRAY);
+		context.fillRect(
 			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.fillRect(
+		
+		context.fillRect(
 			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			20.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.setFill(Color.LIGHTGRAY);
-			context.fillRect(
+		
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(
 			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			10.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			6.0 * 12.0 * PIXELS_PER_MAP_INCH);
 
-			//Red Alliance Exchange Zone
-			context.setFill(Color.CRIMSON);
-			context.fillRect(
+		//Red Alliance Exchange Zone
+		context.setFill(Color.CRIMSON);
+		context.fillRect(
 			10.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			10.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			3.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			//Blue Alliance Exchange Zone
-			context.setFill(Color.CORNFLOWERBLUE);
-			context.fillRect(
+		
+		//Blue Alliance Exchange Zone
+		context.setFill(Color.CORNFLOWERBLUE);
+		context.fillRect(
 			61.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			16.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			3.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-					
-			// Center Line
-			context.setFill(Color.DIMGREY);
-			context.fillRect(
-					(37.0 * 12.0 - 1.0) * PIXELS_PER_MAP_INCH,
-					  1.5 * 12.0		* PIXELS_PER_MAP_INCH, 
-					  2.0 				* PIXELS_PER_MAP_INCH, 
-					 27.0 * 12.0        * PIXELS_PER_MAP_INCH);
-			
-			// Wall Line
-			context.setFill(Color.LIGHTGREY);
-			context.fillRect(
-					(12.0 * 12.0 + 11) 							* PIXELS_PER_MAP_INCH,
-					( 1.5 * 12.0 - 2.0)							* PIXELS_PER_MAP_INCH, 
-					((74.0 * 12.0) - (12.0 * 12.0 + 11) * 2) 	* PIXELS_PER_MAP_INCH, 
-					 2.0 			   							* PIXELS_PER_MAP_INCH);
-			
-			context.fillRect(
-					(12.0 * 12.0 + 11) 							* PIXELS_PER_MAP_INCH,
-					 28.5 * 12.0								* PIXELS_PER_MAP_INCH, 
-					((74.0 * 12.0) - (12.0 * 12.0 + 11) * 2) 	* PIXELS_PER_MAP_INCH, 
-					 2.0 			   							* PIXELS_PER_MAP_INCH);
-			
-			//Corner Lines
-			context.strokeLine(
+		
+				
+		// Center Line
+		context.setFill(Color.DIMGREY);
+		context.fillRect(
+			(37.0 * 12.0 - 1.0) * PIXELS_PER_MAP_INCH,
+			  1.5 * 12.0		* PIXELS_PER_MAP_INCH, 
+			  2.0 				* PIXELS_PER_MAP_INCH, 
+			 27.0 * 12.0        * PIXELS_PER_MAP_INCH);
+		
+		// Wall Line
+		context.setFill(Color.LIGHTGREY);
+		context.fillRect(
+			(12.0 * 12.0 + 11) 							* PIXELS_PER_MAP_INCH,
+			( 1.5 * 12.0 - 2.0)							* PIXELS_PER_MAP_INCH, 
+			((74.0 * 12.0) - (12.0 * 12.0 + 11) * 2) 	* PIXELS_PER_MAP_INCH, 
+			 2.0 			   							* PIXELS_PER_MAP_INCH);
+		
+		context.fillRect(
+			(12.0 * 12.0 + 11) 							* PIXELS_PER_MAP_INCH,
+			 28.5 * 12.0								* PIXELS_PER_MAP_INCH, 
+			((74.0 * 12.0) - (12.0 * 12.0 + 11) * 2) 	* PIXELS_PER_MAP_INCH, 
+			 2.0 			   							* PIXELS_PER_MAP_INCH);
+		
+		//Corner Lines
+		context.strokeLine(
 			10.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			12.92 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.5 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.strokeLine(
+		
+		context.strokeLine(
 			10.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			26.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			12.92 * 12.0 * PIXELS_PER_MAP_INCH,
 			28.5 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.strokeLine(
+		
+		context.strokeLine(
 			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			4.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			61.08 * 12.0 * PIXELS_PER_MAP_INCH,
 			1.5 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.strokeLine(
+		
+		context.strokeLine(
 			64.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			26.0 * 12.0 * PIXELS_PER_MAP_INCH,
 			61.08 * 12.0 * PIXELS_PER_MAP_INCH,
 			28.5 * 12.0 * PIXELS_PER_MAP_INCH);
-			
-			context.drawImage(fieldMap, FIELD_OFFSET_X, FIELD_OFFSET_Y, 100, 100);
-		}
+	}
 }
