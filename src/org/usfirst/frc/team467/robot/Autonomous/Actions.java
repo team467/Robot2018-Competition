@@ -205,6 +205,10 @@ public class Actions {
 	 * 
 	 * 
 	 */
+	
+	//NOTE:
+	// Because of tuning, turning 90 deg is actually turning 95 deg, and turning
+	// -90 deg is actually turning -92.5 deg
 
 	public static ActionGroup leftBasicSwitchLeft() {
 		String actionGroupText = "Start on left side, put cube on switch.";
@@ -212,7 +216,7 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(12.33)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.479));
 		mode.addAction(zeroDistance());
@@ -225,11 +229,11 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.0)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.27)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.34)); 
 		return mode;
@@ -241,11 +245,11 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.27)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.34));
 		return mode;
@@ -258,7 +262,7 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(12.33)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(elevatorToSwitch());
 		mode.addAction(moveDistanceForward(1.479)); // 1' 5.75"
@@ -279,7 +283,7 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(25.33));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -291,15 +295,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(18.14));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(19.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -311,15 +315,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(10.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(21.33));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -331,15 +335,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(9.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(21.33));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -351,15 +355,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(18.14));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(19.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -371,7 +375,7 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(25.33));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		return mode;
@@ -395,15 +399,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-2.0)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90)); 
+		mode.addAction(moveturn(-92.5)); 
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.81)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90)); 
+		mode.addAction(moveturn(95)); 
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.08)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.3)); 
@@ -412,15 +416,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.3)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-4.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90)); 
+		mode.addAction(moveturn(-92.5)); 
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19)); 
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375 + 0.521));
 		// lift elevator to place cube into scale
@@ -441,15 +445,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-2.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.08 + 1.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.4));
 		// pick up cube
@@ -458,15 +462,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.4));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-5.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.81));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(3.1));
 		mode.addAction(zeroDistance());
@@ -487,15 +491,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-2.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.81));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(2.0 + 11.7083 + 1.083 + 1.083));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.3));
 		// pick up cube
@@ -504,15 +508,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.3));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.2057));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375 + 1.0 + 0.45));
 		// lift elevator to place cube into scale
@@ -528,15 +532,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(18.14));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(19.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.19 + 0.6));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.475));
 		// lift elevator to place cube into switch
@@ -546,15 +550,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-2.0));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.79));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(4.2));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.3));
 		// pick up cube
@@ -562,14 +566,14 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.3));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(moveDistanceForward(-6.5));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375 + 0.521));
 		mode.addAction(zeroDistance());
@@ -586,15 +590,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(18.14));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(19.08));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.19 + 0.6));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.475));
 		// lift elevator to place cube into switch
@@ -604,15 +608,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.475));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(5.19 + 0.6));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(19.08- 3.75));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(-90));
+		mode.addAction(moveturn(-92.5));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(1.3));
 		// pick up cube
@@ -621,15 +625,15 @@ public class Actions {
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(-1.3));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(3.75));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(7.19));
 		mode.addAction(zeroDistance());
-		mode.addAction(moveturn(90));
+		mode.addAction(moveturn(95));
 		mode.addAction(zeroDistance());
 		mode.addAction(moveDistanceForward(0.375));
 		mode.addAction(zeroDistance());
