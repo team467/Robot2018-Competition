@@ -7,6 +7,8 @@ import org.usfirst.frc.team467.robot.OpticalSensor;
 import org.usfirst.frc.team467.robot.Robot;
 import org.usfirst.frc.team467.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class VisionIntegration {
@@ -25,20 +27,25 @@ public class VisionIntegration {
 	}
 	
 	public void periodic() {
-//		driverstation.
+		target();
+		vision.avgAngle();
 
 	}
 
 	public void target() {
 		double turnAngle;
 		if (!grabber.hasCube()) {
+			
 			if (vision.canSeeCube()) {
+			//	 LOGGER.debug("Vision Sees Cube");
 				if (vision.onTarget()) {
+					//LOGGER.debug("ON target: " + vision.avgAngle() + "CameraAngleToCube: " + vision.cameraAngle());
 					// Start Grabber & drive forward
 					return;
 				} else {
+					//LOGGER.debug("Vision wants to turn: "+ vision.avgAngle() + "CameraAngleToCube: " + vision.cameraAngle());
 					turnAngle = vision.avgAngle();
-//					drive.turn(turnAngle);
+					drive.moveFeet(0, turnAngle, ControlMode.MotionMagic);
 				}
 			}
 		} else {

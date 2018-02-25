@@ -1,14 +1,18 @@
 package org.usfirst.frc.team467.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.apache.log4j.Logger;
+import org.opencv.core.Mat;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 import org.usfirst.frc.team467.robot.Autonomous.Actions;
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
+import org.usfirst.frc.team467.robot.vision.VisionIntegration;
 import org.usfirst.frc.team467.robot.vision.VisionProcessing;
 import org.usfirst.frc.team467.robot.RobotMap.RobotID;
 
@@ -63,15 +67,23 @@ public class Robot extends TimedRobot {
 		gyro.calibrate();
 		gyro.reset();
 
-		if (RobotMap.HAS_CAMERA) {
-			vision = VisionProcessing.getInstance();
-			vision.startVision();
-			//made usb camera and captures video
-			UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
-			//set resolution and frames per second to match driverstation
-			cam.setResolution(320, 240);
-			cam.setFPS(15);
-		}
+		new Thread (() -> {
+			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+			VisionProcessing vision = VisionProcessing.getInstance();
+			camera.setResolution(160, 120);
+			camera.setFPS(30);
+			camera.setExposureManual(40);
+			
+			CvSink cvSink = CameraServer.getInstance().getVideo();
+			CvSource outputStream = CameraServer.getInstance().putVideo("CubeCam", 160, 120);
+			
+			Mat source = new Mat();
+			while(!Thread.interrupted()) {
+				cvSink.grabFrame(source);
+				vision.findCube(source);
+				outputStream.putFrame(source);
+			}
+		}).start();
 		
 
 	}
@@ -104,18 +116,22 @@ public class Robot extends TimedRobot {
 
 	public void autonomousInit() {
 		drive.setPIDs();
-		driverstation.readInputs();
-		matchConfig.load();
+		//driverstation.readInputs();
+		//matchConfig.load();
 //		autonomous = matchConfig.autonomousDecisionTree();
 		autonomous = Actions.rightBasicSwitchRight();
-		LOGGER.info("Init Autonomous:" + autonomous.getName());
+		LOGGER.debug("Init Autonomous:" + autonomous.getName());
+
 		autonomous.enable();
 		}
 
 	public void autonomousPeriodic() {
 		grabber.periodic();
 		elevator.move(0); // Will move to height if set.
-		autonomous.run();
+		//autonomous.run();
+		LOGGER.debug("Vision Lines");
+		VisionIntegration visionI = VisionIntegration.getInstance();
+		visionI.periodic();
 	}
 
 	public void teleopInit() {

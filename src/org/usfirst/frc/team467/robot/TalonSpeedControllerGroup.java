@@ -81,10 +81,10 @@ public class TalonSpeedControllerGroup implements SpeedController {
 			LOGGER.debug("No CLosed Loop errors");
 			return;
 		}
-		LOGGER.debug(
-				side + ": Vel = " + leader.getSelectedSensorVelocity(0) +
-				" Pos = " + leader.getSelectedSensorPosition(0) +
-				" Err = " + leader.getClosedLoopError(0));
+//		LOGGER.debug(
+//				side + ": Vel = " + leader.getSelectedSensorVelocity(0) +
+//				" Pos = " + leader.getSelectedSensorPositiosn(0) +
+//				" Err = " + leader.getClosedLoopError(0));
 	}
 
 	public void setPIDF(double p, double i, double d, double f){

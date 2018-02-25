@@ -53,24 +53,24 @@ public class VisionProcessing {
 		return instance;
 	}
 	
-	public void startVision() {
-		new Thread (() -> {
-			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-			camera.setResolution(160, 120);
-			camera.setFPS(30);
-			camera.setExposureManual(40);
-			
-			CvSink cvSink = CameraServer.getInstance().getVideo();
-			CvSource outputStream = CameraServer.getInstance().putVideo("CubeCam", 160, 120);
-			
-			Mat source = new Mat();
-			while(!Thread.interrupted()) {
-				cvSink.grabFrame(source);
-				this.findCube(source);
-				outputStream.putFrame(source);
-			}
-		}).start();
-	}
+//	public void startVision() {
+//		new Thread (() -> {
+//			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+//			camera.setResolution(160, 120);
+//			camera.setFPS(30);
+//			camera.setExposureManual(40);
+//			
+//			CvSink cvSink = CameraServer.getInstance().getVideo();
+//			CvSource outputStream = CameraServer.getInstance().putVideo("CubeCam", 160, 120);
+//			
+//			Mat source = new Mat();
+//			while(!Thread.interrupted()) {
+//				cvSink.grabFrame(source);
+//				this.findCube(source);
+//				outputStream.putFrame(source);
+//			}
+//		}).start();
+//	}
 	
 	/**
 	 * process and places a bounding box around the cube to find the cube.
@@ -91,8 +91,8 @@ public class VisionProcessing {
 			for (MatOfPoint points : pipeline.convexHullsOutput()) {
 				Rect box = Imgproc.boundingRect(points);
 				boundingBoxes.add(box);
-				// LOGGER.info("ADDED Bounding BOX X:" + box.x + " Y: " + box.y + " H: " +
-				// box.height + " W: " + box.width);
+				 LOGGER.debug("ADDED Bounding BOX X:" + box.x + " Y: " + box.y + " H: " +
+				 box.height + " W: " + box.width);
 				cubeCenterPointY = (box.height / 2) + box.y;
 				cubeCenterPointX = (box.width / 2) + box.x;
 				Imgproc.rectangle(source, new Point(box.x, box.y), new Point(box.x + box.width, box.y + box.height),
@@ -100,6 +100,7 @@ public class VisionProcessing {
 
 				cameraDistanceX = cubeCenterPointX - (windowWidth / 2);
 				cameraAngleToCube = 0.00294524375 * cameraDistanceX;
+				
 
 				if (!Double.isNaN(cameraAngleToCube)) {
 					average = averageAngle.average(cameraAngleToCube);

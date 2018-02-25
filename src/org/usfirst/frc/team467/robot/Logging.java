@@ -9,6 +9,7 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 import org.usfirst.frc.team467.robot.vision.VisionIntegration;
+import org.usfirst.frc.team467.robot.vision.VisionProcessing;
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
 import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
@@ -27,13 +28,14 @@ public class Logging {
 		Logger.getLogger(OpticalSensor.class).setLevel(Level.WARN);
 		Logger.getLogger(Ramp.class).setLevel(Level.INFO);
 		Logger.getLogger(Ramps.class).setLevel(Level.INFO);
-		Logger.getLogger(Robot.class).setLevel(Level.INFO);
+		Logger.getLogger(Robot.class).setLevel(Level.DEBUG);
 		Logger.getLogger(RobotShape.class).setLevel(Level.WARN);
 		Logger.getLogger(Rumbler.class).setLevel(Level.WARN);
 		Logger.getLogger(TalonSpeedControllerGroup.class).setLevel(Level.TRACE);
-		Logger.getLogger(VisionIntegration.class).setLevel(Level.WARN);
+		Logger.getLogger(VisionIntegration.class).setLevel(Level.DEBUG);
 		Logger.getLogger(XBoxJoystick467.class).setLevel(Level.WARN);
 		Logger.getLogger(TiltMonitor.class).setLevel(Level.DEBUG);
+		Logger.getLogger(VisionProcessing.class).setLevel(Level.DEBUG);
 	}
 
 	private static void setupDefaultLogging() {
