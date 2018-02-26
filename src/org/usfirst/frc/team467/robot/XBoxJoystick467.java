@@ -10,8 +10,6 @@ import java.util.EnumMap;
 
 import org.apache.log4j.Logger;
 
-import org.apache.log4j.Logger;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
@@ -24,6 +22,8 @@ public class XBoxJoystick467 {
 	private XboxController xbox;
 	private String name;
 	private int pov = 0;
+	private boolean wasPOVleft;
+	private boolean wasPOVright;
 
 	private static final double DEADZONE = 0.1;
 
@@ -60,8 +60,9 @@ public class XBoxJoystick467 {
 	 * @return
 	 */
 	public boolean down(Button b) {
-		// TODO: Return if the button is currently down
-		return buttonDown.get(b);
+		boolean result = buttonDown.get(b);
+		LOGGER.debug("Button " + b.name() + "=" + result);
+		return result;
 	}
 
 	/**
@@ -70,8 +71,9 @@ public class XBoxJoystick467 {
 	 * @return
 	 */
 	public boolean pressed(Button b) {
-		// TODO: return true if the button is pressed, but wasn't before
-		return buttonDown.get(b) && !prev_buttonDown.get(b);
+		boolean result = buttonDown.get(b) && !prev_buttonDown.get(b);
+		LOGGER.debug("Button " + b.name() + "=" + result);
+		return result;
 	}
 
 	/**
@@ -80,7 +82,6 @@ public class XBoxJoystick467 {
 	 * @return
 	 */
 	public boolean buttonReleased(Button b) {
-		// TODO: Reverse of above
 		return !buttonDown.get(b) && !prev_buttonDown.get(b);
 	}
 
@@ -167,30 +168,68 @@ public class XBoxJoystick467 {
 		LOGGER.debug(name + " Port: " + xbox.getPort());
 	}
 
-	public double turboSpeedAdjust() {
+	/**
+	 * Returns the drive speed, taking the turbo and slow triggers into account.
+	 */
+	public double getAdjustedSpeed() {
 		if (getLeftTrigger() > 0.0) {
-			return turboFastSpeed(); 
+			// For some reason, up stick is negative, so we flip it
+			return turboFastSpeed(-getLeftStickY()); 
 		} else {
-			return turboSlowSpeed(); 
-		}   
+			return turboSlowSpeed(-getLeftStickY()); 
+		}
 	}
 
-	public double turboFastSpeed() {
-		return (getLeftStickY()*(RobotMap.NORMAL_MAX_SPEED 
-				+ (RobotMap.FAST_MAX_SPEED-RobotMap.NORMAL_MAX_SPEED)
-				* getLeftTrigger()))
-				* -1; // For some reason, up stick is negative, so we flip it;
+	public double turboFastSpeed(double speed) {
+		return speed * weightedAverage(RobotMap.NORMAL_MAX_SPEED, RobotMap.FAST_MAX_SPEED, getLeftTrigger());
 	}
 
-	public double turboSlowSpeed() {
-		return (getLeftStickY()*(RobotMap.NORMAL_MAX_SPEED 
-				+ (RobotMap.SLOW_MAX_SPEED-RobotMap.NORMAL_MAX_SPEED)
-				* getRightTrigger()))
-				* -1; // For some reason, up stick is negative, so we flip it;
+	public double turboSlowSpeed(double speed) {
+		return speed * weightedAverage(RobotMap.NORMAL_MAX_SPEED, RobotMap.SLOW_MAX_SPEED, getRightTrigger());
+	}
+
+	/**
+	 * Returns the turn speed, which is slower when the robot is driving fast.
+	 */
+	public double getAdjustedTurnSpeed() {
+		return getRightStickX() * weightedAverage(RobotMap.NORMAL_TURN_MAX_SPEED, RobotMap.SLOW_TURN_MAX_SPEED, getAdjustedSpeed());
+	}
+
+	/**
+	 * Returns the weighted average of a and b.
+	 * a when factor = 0;
+	 * b when factor = 1
+	 */
+	public static double weightedAverage(double a, double b, double weight) {
+		return a*(1 - weight) + b*weight;
 	}
 
 	public double getPOV() {
 		return pov;
+	}
+
+	public boolean getPOVleft() {
+		return pov > 180 && pov < 360;
+	}
+
+	public boolean getPOVleftPressed() {
+		boolean isLeft = getPOVleft();
+		boolean isPressed = isLeft && !wasPOVleft;
+		wasPOVleft = isLeft;
+
+		return isPressed;
+	}
+
+	public boolean getPOVright() {
+		return pov > 0 && pov < 180;
+	}
+
+	public boolean getPOVrightPressed() {
+		boolean isRight = getPOVright();
+		boolean isPressed = isRight && !wasPOVright;
+		wasPOVright = isRight;
+
+		return isPressed;
 	}
 
 	/**
@@ -266,10 +305,6 @@ public class XBoxJoystick467 {
 
 	public void rightRumble(double value) {
 		xbox.setRumble(RumbleType.kRightRumble, value);
-	}
-
-	public void setRumble(RumbleType type, double value) {
-		xbox.setRumble(type, value);
 	}
 
 	public void setRumble(double value) {

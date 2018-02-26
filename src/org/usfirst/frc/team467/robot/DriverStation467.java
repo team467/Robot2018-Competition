@@ -5,7 +5,7 @@ import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriverStation {
+public class DriverStation467 {
 
 	private XBoxJoystick467 driverJoy;
 	private XBoxJoystick467 navJoy;
@@ -13,7 +13,8 @@ public class DriverStation {
 	private Rumbler driverRumbler;
 	private Rumbler navRumbler;
 
-	private static DriverStation station;
+	private static DriverStation467 station;
+
 
 	// Mapping of functions to Controller Buttons for normal operation
 	// TODO: Create enum for buttons
@@ -22,9 +23,9 @@ public class DriverStation {
 	 *
 	 * @return
 	 */
-	public static DriverStation getInstance() {
+	public static DriverStation467 getInstance() {
 		if (station == null) {
-			station = new DriverStation();
+			station = new DriverStation467();
 		}
 		return station;
 	}
@@ -32,7 +33,7 @@ public class DriverStation {
 	/**
 	 * Private constructor
 	 */
-	private DriverStation() {
+	private DriverStation467() {
 		driverJoy = new XBoxJoystick467(0, "driver");
 		navJoy = new XBoxJoystick467(1, "nav");
 
@@ -50,6 +51,8 @@ public class DriverStation {
 		if (navJoy != null) {
 			navJoy.read();
 		}
+		driverRumbler.periodic();
+		navRumbler.periodic();
 	}
 
 	public void logJoystickIDs() {
@@ -86,11 +89,6 @@ public class DriverStation {
 		return 0.0;
 	}
 
-	public void periodic() {
-		driverRumbler.periodic();
-		navRumbler.periodic();
-	}
-
 	// All button mappings are accessed through the functions below
 
 	/**
@@ -100,17 +98,16 @@ public class DriverStation {
 	 * @return currently active drive mode.
 	 */
 	public DriveMode getDriveMode() {
-		// TODO: Set the drive mode based on the buttons pushed
-		return DriveMode.CurvatureDrive; // Update with the correct drive mode
+		return DriveMode.ArcadeDrive;
 	}
 
 	public boolean getTerminateAuto() {
-		// TODO Manually break out of autonoumous mode
+		// TODO: Manually break out of autonoumous mode
 		return true;
 	}
 
 	public ActionGroup getActionGroup() {
-		// TODO Get an action group if required
+		// TODO: Get an action group if required
 		return null; 
 	}
 
@@ -123,15 +120,27 @@ public class DriverStation {
 	}
 
 	public double getArcadeSpeed() {
-		return getDriveJoystick().turboSpeedAdjust();
+		return getDriveJoystick().getAdjustedSpeed();
 	}
 
 	public double getArcadeTurn() {
-		return getDriveJoystick().getRightStickX();
+		return getDriveJoystick().getAdjustedTurnSpeed();
 	}
 
 	public double getElevatorSpeed() {
 		return getNavJoystick().getRightStickY();
+	}
+
+	public boolean getDeployButtonsDown() {
+		return getNavJoystick().down(Button.BumperLeft) && getNavJoystick().down(Button.BumperRight);
+	}
+
+	public boolean getLeftRampButtonPressed() {
+		return getNavJoystick().getPOVleftPressed();
+	}
+
+	public boolean getRightRampButtonPressed() {
+		return getNavJoystick().getPOVrightPressed();
 	}
 
 	public boolean getFloorHeightButtonPressed() {
@@ -168,33 +177,6 @@ public class DriverStation {
 
 	public void driverSetRightRumble(double value) {
 		driverJoy.rightRumble(value);
-	}
-
-	public void setDriverRumble(double value) {
-		getDriveJoystick().setRumble(value);
-	}
-
-	/**
-	 * Set a value in 'Basic' tab of the driver station
-	 * 
-	 * @param slot position of the value to set (0-9)
-	 * @param value any string value
-	 */
-	public void set(int slot, String value) {
-		if (slot < 0 || slot > 9) {
-			return;
-		}
-		SmartDashboard.putString("DB/String " + slot, value);
-	}
-
-	/**
-	 * Set a value in 'Basic' tab of the driver station
-	 * 
-	 * @param slot position of the value to set (0-9)
-	 * @param value any integer value
-	 */
-	public void set(int slot, int value) {
-		set(slot, String.valueOf(value));
 	}
 
 }

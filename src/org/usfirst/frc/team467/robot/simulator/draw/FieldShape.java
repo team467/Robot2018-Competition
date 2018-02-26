@@ -10,21 +10,21 @@ import javafx.scene.image.Image;
  *
  */
 public class FieldShape {
-	
+
 	public static final double PIXELS_PER_MAP_INCH = 1;
-	
+
 	public static final double FIELD_OFFSET_X =  1.5 * 12.0;
-	
+
 	public static final double FIELD_OFFSET_Y = 10.0 * 12.0;
-		
+
 	public static final Image fieldMap = new Image("org/usfirst/frc/team467/robot/simulator/draw/fieldMap.jpg", true);
-	
+
 	GraphicsContext context;
-	
+
 	public void context(GraphicsContext context) {
 		this.context = context;
 	}
-	
+
 	/**
 	 * Draws the field 
 	 * Field sizes in width x height feet 
