@@ -1,6 +1,7 @@
 package org.usfirst.frc.team467.robot;
 
 import org.apache.log4j.Logger;
+import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -13,8 +14,8 @@ public class Grabber {
 		RELEASE
 	}
 
-	public static final int GRAB_TIME_MS = 1000;
-	public static final int RELEASE_TIME_MS = 1000;
+	public static final int GRAB_TIME_MS = 2000;
+	public static final int RELEASE_TIME_MS = 2000;
 
 	private int grabCount = 0;
 	private int releaseCount = 0;
@@ -29,7 +30,9 @@ public class Grabber {
 	private SpeedController right;
 	private boolean hadCube = false;
 	private boolean hasCube = false;
-	OpticalSensor os;
+	private OpticalSensor os;
+	private Drive drive;
+	private DriveSimulator drivesimulator;
 
 	private Grabber() {
 		if (RobotMap.HAS_GRABBER && !RobotMap.useSimulator) {
@@ -38,10 +41,13 @@ public class Grabber {
 			right = new Spark(RobotMap.GRABBER_R_CHANNEL);
 			right.setInverted(RobotMap.GRABBER_INVERT);
 			os = OpticalSensor.getInstance();
+			drive = drive.getInstance();
+			drivesimulator = drivesimulator.getInstance();
 		} else {
 			left = new NullSpeedController();
 			right = new NullSpeedController();
 			os = OpticalSensor.getInstance();
+			drivesimulator = drivesimulator.getInstance();
 		}
 
 		grabCount = GRAB_TIME_MS/20;
@@ -60,8 +66,10 @@ public class Grabber {
 		if (!RobotMap.HAS_GRABBER) {
 			return;
 		}
-		
+
 		double speed = 0.0;
+		double moveDist = 0.8;
+
 		switch (state) {
 
 		case GRAB:
@@ -69,11 +77,18 @@ public class Grabber {
 				state = GrabberState.NEUTRAL;
 			} else {
 				speed = RobotMap.MAX_GRAB_SPEED;
+
+				if(!RobotMap.useSimulator) {
+					drive.moveFeet(moveDist);
+				}
+				drivesimulator.moveFeet(moveDist); 	
 			}
+			
 			break;
 
 		case NEUTRAL:
 			speed = 0.0;
+			moveDist = 0;
 			break; 
 
 		case RELEASE:
@@ -81,6 +96,7 @@ public class Grabber {
 				state = GrabberState.NEUTRAL;
 			} else {
 				speed = -0.8 * RobotMap.MAX_GRAB_SPEED;
+				moveDist = 0;
 			}
 
 			break;
@@ -88,11 +104,12 @@ public class Grabber {
 		default:
 
 		}
-		
+
 		if (!RobotMap.useSimulator) {
 			left.set(speed);
 			right.set(-1 * speed);
 		}
+
 		count++;
 
 		// Save the previous state and check for current state.
@@ -122,7 +139,7 @@ public class Grabber {
 		if (Math.abs(throttle) < RobotMap.MIN_GRAB_SPEED) {
 			throttle = 0.0;
 		}
-		
+
 		if (DriverStation467.getInstance().getNavJoystick().getLeftStickY() > 0.5 
 				|| DriverStation467.getInstance().getNavJoystick().getLeftStickY() < -0.5) {
 			DriverStation467.getInstance().getNavRumbler().rumble(25, 0.1);
@@ -132,7 +149,7 @@ public class Grabber {
 				DriverStation467.getInstance().getDriverRumbler().rumble(50, 1.0);
 			}
 		}
-		
+
 		LOGGER.debug("Grabber Throttle=" + throttle);
 		left.set(throttle * RobotMap.MAX_GRAB_SPEED);
 		right.set(-throttle * RobotMap.MAX_GRAB_SPEED);
@@ -145,7 +162,7 @@ public class Grabber {
 	public boolean justGotCube() {
 		return (!hadCube && hasCube());
 	}
-	
+
 	public boolean hasCube() {
 		return (os.detectedTarget() && RobotMap.HAS_GRABBER);
 	}

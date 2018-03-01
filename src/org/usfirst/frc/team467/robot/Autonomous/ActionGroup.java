@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.usfirst.frc.team467.robot.Drive;
+import org.usfirst.frc.team467.robot.Grabber;
+import org.usfirst.frc.team467.robot.OpticalSensor;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 
