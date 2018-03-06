@@ -137,7 +137,7 @@ public class Drive extends DifferentialDrive {
 	}
 
 	public void sendData() {
-		RobotData.getInstance().updateDrivePosition(getRightDistance(), getLeftDistance());
+		RobotData.getInstance().updateDrivePosition(getRightPositionFeet(), getLeftPositionFeet());
 	}
 
 	/**
@@ -152,65 +152,77 @@ public class Drive extends DifferentialDrive {
 		return left.isStopped() && right.isStopped();
 	}
 
-	public void moveFeet(double distanceInFeet) {
-		moveFeet(distanceInFeet, 0, ControlMode.Position);
-	}
-
-	public void rotateByAngle(double angleInDegrees) {
-		moveFeet(0, angleInDegrees, ControlMode.Position);
-	}
-	
-	public static final double POSITION_GAIN_FEET = 3.0;
+	private static final double MAX_POSITION_CONTROL_DISTANCE = 3.0;
 
 	/**
+	 * Move the specified number of feet.
 	 * 
-	 * @param distanceInFeet
-	 * @param rotationInDegrees
-	 *            enter positive degrees for left turn and enter negative degrees
-	 *            for right turn
+	 * @param distanceInFeet number of feet to move
 	 */
-	public void moveFeet(double straightDistanceInFeet, double rotationInDegrees, ControlMode mode) {
+    public void moveFeet(double straightDistanceInFeet) {
+        LOGGER.trace("moveFeet dist=" + straightDistanceInFeet);
 
-		LOGGER.trace("Automated move of " + straightDistanceInFeet + " feet and " + rotationInDegrees + " degree turn.");
+        // Get the current position of each side.
+        double currentLeftPosition = getLeftPositionFeet();
+        double currentRightPosition = getRightPositionFeet();
+        
+        // Get the difference to correct for drift and move it back to straight
+        double averageTargetDistance = 0.5 * (currentLeftPosition + currentRightPosition);
+        
+        // Use the minimum to go either the max allowed distance or to the target
+        double sharedTargetDistance = Math.min(straightDistanceInFeet, averageTargetDistance + MAX_POSITION_CONTROL_DISTANCE);
+        
+        LOGGER.trace("moveFeet sharedTarget=" + df.format(sharedTargetDistance)
+                    + " currentPos(L,R)=(" + df.format(currentLeftPosition) + "," + df.format(currentRightPosition) + ")");
 
-		// Convert the turn to a distance based on the circumference of the robot wheel base.
-		double radius = RobotMap.WHEEL_BASE_WIDTH / 2;
-		double angleInRadians = Math.toRadians(rotationInDegrees);
-		double turnDistanceInFeet = radius * angleInRadians; // This is the distance we want to turn.
+        // Convert move distances from feet to ticks.
+        double sharedTargetTicks = feetToTicks(sharedTargetDistance);
 
-		// Get the current positions to determine if the request is above the max individual request
-		double currentRightPosition = getRightDistance();
-		double currentLeftPosition = getLeftDistance();
-		
-		// Get the difference to correct for drift and move it back to straight
-		double difference = (currentRightPosition - currentLeftPosition) / 2.0;
-		
-		double targetRightDistance = straightDistanceInFeet - turnDistanceInFeet;
-		double targetLeftDistance = straightDistanceInFeet + turnDistanceInFeet;
+        // Set the motors.
+        left.set(ControlMode.Position, sharedTargetTicks);
+        right.set(ControlMode.Position, sharedTargetTicks);
+    }
+    
+    /**
+     * Turn the specified number of degrees. 
+     * 
+     * @param rotationInDegrees number of degrees to turn, positive is CW, negative is CCW.
+     */
+    public void turnDegrees(double rotationInDegrees) {
+        LOGGER.trace("turnDegrees degrees=" + rotationInDegrees);
 
-		// Use the minimum to go either the max allowed distance or to the target
-		double moveRightDistance = Math.min(targetRightDistance, (currentRightPosition + POSITION_GAIN_FEET - difference));
-		double moveLeftDistance = Math.min(targetLeftDistance, (currentLeftPosition + POSITION_GAIN_FEET + difference));
-				
-		// Converts turn angle in ticks to degrees, then to radians.
-		double rightDistTicks = -feetToTicks(moveRightDistance);
-		double leftDistTicks = feetToTicks(moveLeftDistance);
+        // Convert the turn to a distance based on the circumference of the robot wheel base.
+        double radius = RobotMap.WHEEL_BASE_WIDTH / 2;
+        double angleInRadians = Math.toRadians(rotationInDegrees);
+        double turnDistanceInFeet = radius * angleInRadians;
 
-		LOGGER.trace("Distance in Feet - Right: " + df.format(ticksToFeet(rightDistTicks))
-									  + " Left: " + df.format(ticksToFeet(leftDistTicks)));
-		LOGGER.trace("Current Position - Right: " + df.format(getRightDistance())
-									  + " Left: " + df.format(getLeftDistance()));
+        // Get the current position of each side.
+        double currentLeftPosition = getLeftPositionFeet();
+        double currentRightPosition = getRightPositionFeet();
+        
+        // Get the difference to correct for drift and move it back to straight.
+        double averageTargetDistance = 0.5 * (currentLeftPosition - currentRightPosition);
+        
+        // Use the minimum to go either the max allowed distance or to the target
+        double sharedTargetDistance = Math.min(turnDistanceInFeet, averageTargetDistance + MAX_POSITION_CONTROL_DISTANCE);
+        
+        LOGGER.trace("turnDegrees sharedTarget=" + df.format(sharedTargetDistance)
+                + " currentPos(L,R)=(" + df.format(currentLeftPosition) + "," + df.format(currentRightPosition) + ")");
 
-		left.set(mode, leftDistTicks);
-		right.set(mode, rightDistTicks);
-	}
-	
-	public double getLeftDistance() {
+        // Convert move distances from feet to ticks.
+        double sharedTargetTicks = feetToTicks(sharedTargetDistance);
+
+        // Set the motors.
+        left.set(ControlMode.Position, sharedTargetTicks);
+        right.set(ControlMode.Position, -sharedTargetTicks);
+    }
+    
+	public double getLeftPositionFeet() {
 		double leftLeadSensorPos = ticksToFeet(left.sensorPosition());
 		return leftLeadSensorPos;
 	}
 
-	public double getRightDistance() {
+	public double getRightPositionFeet() {
 		double rightLeadSensorPos = -1 * ticksToFeet(right.sensorPosition());
 		return rightLeadSensorPos;
 	}
@@ -222,8 +234,8 @@ public class Drive extends DifferentialDrive {
 	 */
 	public double absoluteDistanceMoved() {
 		double lowestAbsDist;
-		double leftLeadSensorPos = Math.abs(getLeftDistance());
-		double rightLeadSensorPos = Math.abs(getRightDistance());
+		double leftLeadSensorPos = Math.abs(getLeftPositionFeet());
+		double rightLeadSensorPos = Math.abs(getRightPositionFeet());
 		if (leftLeadSensorPos >= rightLeadSensorPos) {
 			lowestAbsDist = rightLeadSensorPos;
 		} else {

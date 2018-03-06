@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
 		if (tuningValue <= 30.0 && tuningValue >= -30.0) {
 			drive.moveFeet(tuningValue);
 		} else {
-			drive.rotateByAngle(tuningValue);
+			drive.turnDegrees(tuningValue);
 		}
 		drive.logClosedLoopErrors();
 	}
