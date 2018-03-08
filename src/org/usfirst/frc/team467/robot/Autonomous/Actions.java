@@ -147,7 +147,7 @@ public class Actions {
 	    } else {
 			return new Action(actionText,
 					new ActionGroup.ReachDistance(rotation),
-					() -> Drive.getInstance().rotateByAngle(rotation));
+					() -> Drive.getInstance().turnDegrees(rotation));
 	    }
 	}
 
