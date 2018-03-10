@@ -73,7 +73,7 @@ public class TalonSpeedControllerGroup implements SpeedController {
 		talon.configPeakOutputReverse(-1.0, 0);
 
 		talon.configOpenloopRamp(0.2, RobotMap.TALON_TIMEOUT);
-		talon.configClosedloopRamp(0.2, RobotMap.TALON_TIMEOUT);		
+//		talon.configClosedloopRamp(1.0, RobotMap.TALON_TIMEOUT);		
 	}
 
 	public void logClosedLoopErrors(String side) {
@@ -87,25 +87,23 @@ public class TalonSpeedControllerGroup implements SpeedController {
 				" Err = " + leader.getClosedLoopError(0));
 	}
 
-	public void setPIDF(double p, double i, double d, double f){
+	public void setPIDF(int slotId, double p, double i, double d, double f){
 		if (!RobotMap.HAS_WHEELS) {
 			LOGGER.debug("No PIDF");
 			return;
 		}
-		leader.config_kP(0, p, RobotMap.TALON_TIMEOUT);
-		leader.config_kI(0, i, RobotMap.TALON_TIMEOUT);
-		leader.config_kD(0, d, RobotMap.TALON_TIMEOUT);
-		leader.config_kF(0, f, RobotMap.TALON_TIMEOUT);
-//		int motionAcceleration = Integer.parseInt(SmartDashboard.getString("DB/String 3", "20000")); 
-//		int motionCruiseVelocity = Integer.parseInt(SmartDashboard.getString("DB/String 8", "15000")); 
-		int motionAcceleration = 600;
-		int motionCruiseVelocity = 675;
+		leader.config_kP(slotId, p, RobotMap.TALON_TIMEOUT);
+		leader.config_kI(slotId, i, RobotMap.TALON_TIMEOUT);
+		leader.config_kD(slotId, d, RobotMap.TALON_TIMEOUT);
+		leader.config_kF(slotId, f, RobotMap.TALON_TIMEOUT);
 
-		leader.configMotionCruiseVelocity(motionCruiseVelocity, RobotMap.TALON_TIMEOUT); 
-		leader.configMotionAcceleration(motionAcceleration, RobotMap.TALON_TIMEOUT);
 		leader.configNeutralDeadband(0.04, RobotMap.TALON_TIMEOUT);
+	}
+	public void setPIDSlot(int slot){
+		leader.selectProfileSlot(slot, 0);
 
 	}
+	
 
 	public void zero() {
 		if (!RobotMap.HAS_WHEELS) {
@@ -158,6 +156,11 @@ public class TalonSpeedControllerGroup implements SpeedController {
 	@Override
 	public void set(double speed) {
 		set(controlMode, speed);
+	}
+	
+	public void configPeakOutput(double percentOut) {
+		leader.configPeakOutputForward(percentOut, RobotMap.TALON_TIMEOUT);
+		leader.configPeakOutputReverse(-percentOut, RobotMap.TALON_TIMEOUT);
 	}
 
 	public void set(ControlMode controlMode, double outputValue) {
@@ -243,5 +246,21 @@ public class TalonSpeedControllerGroup implements SpeedController {
 			return;
 		}
 		leader.configOpenloopRamp(ramp, RobotMap.TALON_TIMEOUT);
+	}
+	
+	public void movePosition(double targetDistance) {
+		if (leader == null) {
+			LOGGER.trace("No Drive System");
+			return;
+		}
+		double distanceMoved = leader.getSelectedSensorPosition(0);
+		double distanceToGo;
+		if (targetDistance > 0) {
+			distanceToGo = Math.min(targetDistance, distanceMoved + 1024);
+		} else {
+			distanceToGo = Math.max(targetDistance, distanceMoved - 1024);
+		}
+		LOGGER.info("target=" + targetDistance + " sensor=" + distanceMoved + " toGo=" + distanceToGo);
+		set(ControlMode.Position, distanceToGo);
 	}
 }

@@ -91,7 +91,7 @@ public class Grabber {
 		
 		if (!RobotMap.useSimulator) {
 			left.set(speed);
-			right.set(-1 * speed);
+			right.set(-speed);
 		}
 		count++;
 
@@ -123,13 +123,15 @@ public class Grabber {
 			throttle = 0.0;
 		}
 		
-		if (DriverStation467.getInstance().getNavJoystick().getLeftStickY() > 0.5 
-				|| DriverStation467.getInstance().getNavJoystick().getLeftStickY() < -0.5) {
-			DriverStation467.getInstance().getNavRumbler().rumble(25, 0.1);
-			DriverStation467.getInstance().getDriverRumbler().rumble(25, 0.1);
-			if (hasCube()) {
-				DriverStation467.getInstance().getNavRumbler().rumble(150, 1.0);
-				DriverStation467.getInstance().getDriverRumbler().rumble(50, 1.0);
+		if (!RobotMap.useSimulator) {
+			if (DriverStation467.getInstance().getNavJoystick().getLeftStickY() > 0.5 
+					|| DriverStation467.getInstance().getNavJoystick().getLeftStickY() < -0.5) {
+				DriverStation467.getInstance().getNavRumbler().rumble(25, 0.1);
+				DriverStation467.getInstance().getDriverRumbler().rumble(25, 0.1);
+				if (hasCube()) {
+					DriverStation467.getInstance().getNavRumbler().rumble(150, 1.0);
+					DriverStation467.getInstance().getDriverRumbler().rumble(50, 1.0);
+				}
 			}
 		}
 		

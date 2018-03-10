@@ -15,6 +15,7 @@ import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
  */
 public class ActionGroup {
 	private static final Logger LOGGER = Logger.getLogger(ActionGroup.class);
+	private static AutoDrive drive = (RobotMap.useSimulator) ? DriveSimulator.getInstance() : Drive.getInstance();
 	private String name;
 	private LinkedList<Action> agenda;
 	private final LinkedList<Action> master;
@@ -48,7 +49,7 @@ public class ActionGroup {
 			}
 		}
 
-		LOGGER.info("run " + action);
+        LOGGER.info("run " + action);
 		action.doIt();
 	}
 
@@ -60,7 +61,6 @@ public class ActionGroup {
 		LOGGER.debug("Terminating Process");
 		agenda.clear();
 		action = null;
-//		Drive.getInstance().aiming.reset();
 	}
 
 	public void addAction(Action action) {
@@ -118,6 +118,7 @@ public class ActionGroup {
 		 */
 		public Duration(double duration) {
 			durationMS = duration * 1000;
+			LOGGER.debug("durationMS=" + durationMS);
 		}
 
 		@Override
@@ -146,11 +147,7 @@ public class ActionGroup {
 		@Override
 		public boolean isDone() {
 			lastPosition = currentPosition;
-			if (RobotMap.useSimulator) {
-				currentPosition = DriveSimulator.getInstance().absoluteDistanceMoved();
-			} else {
-				currentPosition = Drive.getInstance().absoluteDistanceMoved();
-			}
+			currentPosition = drive.absoluteDistanceMoved();
 			LOGGER.debug("Distances - Target: " + Math.abs(distance) + " Moved: " + currentPosition);
 			if (currentPosition > 0.0 && lastPosition == currentPosition) {
 				increment++;
@@ -168,6 +165,12 @@ public class ActionGroup {
 				LOGGER.debug("Still moving");
 				return false;
 			}
+		}
+	}
+
+	static class ReachAngle extends ReachDistance {
+		public ReachAngle(double rotationInDegrees) {
+			super(Drive.degreesToFeet(rotationInDegrees));
 		}
 	}
 
