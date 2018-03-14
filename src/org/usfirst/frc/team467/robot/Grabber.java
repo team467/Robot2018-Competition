@@ -32,7 +32,6 @@ public class Grabber {
 	private boolean hadCube = false;
 	private boolean hasCube = false;
 	private OpticalSensor os;
-	private static AutoDrive drive;
 
 	private Grabber() {
 		if (RobotMap.HAS_GRABBER && !RobotMap.useSimulator) {
@@ -41,14 +40,10 @@ public class Grabber {
 			right = new Spark(RobotMap.GRABBER_R_CHANNEL);
 			right.setInverted(RobotMap.GRABBER_INVERT);
 			os = OpticalSensor.getInstance();
-			drive = Drive.getInstance();
-			//drivesimulator = null;
 		} else {
 			left = new NullSpeedController();
 			right = new NullSpeedController();
 			os = OpticalSensor.getInstance();
-			drive = DriveSimulator.getInstance();
-			//drive = null;
 		}
 
 		//grabCount = GRAB_TIME_MS/20;
@@ -86,7 +81,6 @@ public class Grabber {
 				//count = 0;
 			} else {
 				speed = RobotMap.MAX_GRAB_SPEED;
-				drive.moveLinearFeet(2.08);     // tester
 			}
 			break;
 

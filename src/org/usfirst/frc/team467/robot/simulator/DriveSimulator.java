@@ -8,10 +8,7 @@ import java.text.DecimalFormat;
 import org.apache.log4j.Logger;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
-import org.usfirst.frc.team467.robot.RobotMap.RobotID;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 /**
  * Simulates the motors driving. Will be replaced by a simulated motor eventually.
@@ -73,25 +70,41 @@ public class DriveSimulator implements AutoDrive {
 	}
 
 	@Override
+	public void arcTurn(double radius, double rotation) {
+		double turnDistance = degreesToFeet(rotation);
+		moveFeet((radius - turnDistance), (radius + turnDistance));
+	}
+
+	@Override
 	public void moveLinearFeet(double distance) {
 		moveFeet(distance, distance);
 	}
 
 	@Override
 	public void moveFeet(double leftDistance, double rightDistance) {
-
+		
 		if (leftPositionReading == leftDistance && rightPositionReading == rightDistance) {
 			isMoving = false;
 			return; // At destination
 		}
 
 		isMoving = true;
+		
+		double absLeftDistance = Math.abs(leftDistance);
+		double absRightDistance = Math.abs(rightDistance);
+		double rightRatio = 1.0;
+		double leftRatio = 1.0;
+		if (absLeftDistance > absRightDistance) {
+			rightRatio = absRightDistance / absLeftDistance;
+		} else {
+			leftRatio = absLeftDistance / absRightDistance;
+		}
 
 		if (Math.abs((leftDistance - leftPositionReading)) > maxFeetPerPeriod) {
 			if (leftDistance < 0) {
-				leftPositionReading -= maxFeetPerPeriod;
+				leftPositionReading -= maxFeetPerPeriod * leftRatio;
 			} else {
-				leftPositionReading += maxFeetPerPeriod;
+				leftPositionReading += maxFeetPerPeriod * leftRatio;
 			}
 		} else {
 			leftPositionReading = leftDistance;
@@ -99,14 +112,14 @@ public class DriveSimulator implements AutoDrive {
 
 		if (Math.abs((rightDistance - rightPositionReading)) > maxFeetPerPeriod) {
 			if (rightDistance < 0) {
-				rightPositionReading -= maxFeetPerPeriod;
+				rightPositionReading -= maxFeetPerPeriod * rightRatio;
 			} else {
-				rightPositionReading += maxFeetPerPeriod;
+				rightPositionReading += maxFeetPerPeriod * rightRatio;
 			}
 		} else {
 			rightPositionReading = rightDistance;
 		}
-
+		
 		LOGGER.debug("Left Target: " + df.format(leftDistance) + " Right Target: " + df.format(rightDistance));
 		LOGGER.debug("Left Move: " + df.format(leftPositionReading) 
 				 + " Right Move: " + df.format(rightPositionReading));

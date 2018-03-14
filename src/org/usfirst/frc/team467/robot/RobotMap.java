@@ -157,7 +157,7 @@ public class RobotMap {
 			RAMP_RELEASE_FORWARD_CHANNEL = 0;
 			RAMP_RELEASE_REVERSE_CHANNEL = 3;
 
-			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
+			AUTONOMOUS_DRIVE_TIMEOUT_MS = 250;
 			break;
 		case Competition_2:
 			HAS_WHEELS = true;
@@ -233,7 +233,7 @@ public class RobotMap {
 			RAMP_RELEASE_FORWARD_CHANNEL = 0;
 			RAMP_RELEASE_REVERSE_CHANNEL = 3;
 
-			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
+			AUTONOMOUS_DRIVE_TIMEOUT_MS = 250;
 			break;
 		}
 		//These calculations can be made after the robot-specific constants are set. 

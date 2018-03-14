@@ -199,6 +199,12 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		// The right motor is reversed
 		right.set(ControlMode.Position, -feetToTicks(rightDistance));
 	}
+	
+	@Override
+	public void arcTurn(double radius, double rotation) { 
+		double turnDistance = degreesToFeet(rotation);
+		moveFeet((radius - turnDistance), (radius + turnDistance));		
+	}
 
 	@Override
 	public void moveLinearFeet(double distanceInFeet) {
@@ -250,6 +256,17 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double leftSign = Math.signum(targetLeftDistance);
 		double rightSign = Math.signum(targetRightDistance);
 
+		// Get the ratios of left to right for implementing arc turns
+		double absLeftDistance = Math.abs(targetLeftDistance);
+		double absRightDistance = Math.abs(targetRightDistance);
+		double rightRatio = 1.0;
+		double leftRatio = 1.0;
+		if (absLeftDistance > absRightDistance) {
+			rightRatio = absRightDistance / absLeftDistance;
+		} else {
+			leftRatio = absLeftDistance / absRightDistance;
+		}
+
 		// Get the current positions to determine if the request is above the max individual request
 		double currentLeftPosition = getLeftDistance();
 		double currentRightPosition = getRightDistance();
@@ -258,11 +275,13 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 
 		// Get the average to correct for drift and move it back to straight
 		// Use absolute values so that direction is ignored.
-		double average = 0.5 * (Math.abs(currentRightPosition) + Math.abs(currentLeftPosition));
+		// Switch the ratios when looking for drift
+		double average = 0.5 * (Math.abs(currentRightPosition * leftRatio) + Math.abs(currentLeftPosition * rightRatio));
 
 		// Use the minimum to go either the max allowed distance or to the target
-		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (POSITION_GAIN_FEET + average));
-		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (POSITION_GAIN_FEET + average));
+		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (POSITION_GAIN_FEET * leftRatio + average));
+		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (POSITION_GAIN_FEET * rightRatio + average));
+
 		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
 				+ df.format(moveLeftDistance));
 

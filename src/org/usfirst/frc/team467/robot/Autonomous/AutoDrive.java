@@ -7,6 +7,8 @@ public interface AutoDrive {
 
 	void moveLinearFeet(double distance);
 	void rotateByAngle(double rotationInDegrees);
+	
+	void arcTurn(double distance, double rotation);
 
 	/**
 	 * Move each side independently. Distances must be equal or opposite.
