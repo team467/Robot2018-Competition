@@ -244,25 +244,27 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 
 		LOGGER.trace("Automated move of right: "+ targetRightDistance +" left: "+ targetLeftDistance + " feet ");
 
-		// Convert the turn to a distance based on the circumference of the robot wheel base.
 		// Store the sign so that all math works the same forward and backward using absolute values,
 		// with direction corrected at the end.
 		double leftSign = Math.signum(targetLeftDistance);
 		double rightSign = Math.signum(targetRightDistance);
 
-		// Get the current positions to determine if the request is above the max individual request
-		double currentLeftPosition = getLeftDistance();
-		double currentRightPosition = getRightDistance();
-		LOGGER.trace("Current Position - Right: " + df.format(currentRightPosition) + " Left: "
-				+ df.format(currentLeftPosition));
+		double absoluteLeftDistance = Math.abs(targetLeftDistance);
+		double absoluteRightDistance = Math.abs(targetRightDistance);
 
-		// Get the average to correct for drift and move it back to straight
-		// Use absolute values so that direction is ignored.
-		double average = 0.5 * (Math.abs(currentRightPosition) + Math.abs(currentLeftPosition));
+		// Fraction of the target distance reached
+		double leftProportion = getLeftDistance()/targetLeftDistance;
+		double rightProportion = getRightDistance()/targetRightDistance;
+
+		LOGGER.trace("Current Position - Left: " + df.format(leftProportion)
+									+ " Right: " + df.format(rightProportion));
+
+		// Get the average proportion to correct for drift
+		double averageProportion = 0.5 * (leftProportion + rightProportion);
 
 		// Use the minimum to go either the max allowed distance or to the target
-		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (POSITION_GAIN_FEET + average));
-		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (POSITION_GAIN_FEET + average));
+		double moveLeftDistance = leftSign * Math.min(absoluteLeftDistance, averageProportion*absoluteLeftDistance + POSITION_GAIN_FEET);
+		double moveRightDistance = rightSign * Math.min(absoluteRightDistance, averageProportion*absoluteRightDistance + POSITION_GAIN_FEET);
 		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
 				+ df.format(moveLeftDistance));
 
