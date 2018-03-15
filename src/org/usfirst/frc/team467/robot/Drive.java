@@ -263,8 +263,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double averageProportion = 0.5 * (leftProportion + rightProportion);
 
 		// Use the minimum to go either the max allowed distance or to the target
-		double moveLeftDistance = leftSign * Math.min(absoluteLeftDistance, averageProportion*absoluteLeftDistance + POSITION_GAIN_FEET);
-		double moveRightDistance = rightSign * Math.min(absoluteRightDistance, averageProportion*absoluteRightDistance + POSITION_GAIN_FEET);
+		double moveLeftDistance = leftSign * Math.min(absoluteLeftDistance, averageProportion * absoluteLeftDistance + POSITION_GAIN_FEET);
+		double moveRightDistance = rightSign * Math.min(absoluteRightDistance, averageProportion * absoluteRightDistance + POSITION_GAIN_FEET);
 		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
 				+ df.format(moveLeftDistance));
 
