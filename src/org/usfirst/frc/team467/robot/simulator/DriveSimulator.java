@@ -139,7 +139,8 @@ public class DriveSimulator implements AutoDrive {
 
 	@Override
 	public void arcDrive(double arcLength, double signedRadius) {
-		// Turn angle times adjusted radius
+
+		// Turn angle times radius adjustment
 		double lengthAdjustment = (arcLength/signedRadius) * (RobotMap.WHEEL_BASE_WIDTH/2);
 
 		// Left drives more when turning right
