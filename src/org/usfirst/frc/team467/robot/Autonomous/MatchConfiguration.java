@@ -44,8 +44,10 @@ public class MatchConfiguration {
 
 	private ActionGroup autonomous;
 
-	private String[] autoList = {"None", "Just_Go_Forward", "Left_Test", "Left_Switch_Only", "Left_Basic", "Left_Advanced", "Left_Our_Side_Only",
-			"Center", "Right_Test", "Right_Switch_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
+	private String[] autoList = {"None", "Just_Go_Forward", 
+			"Left_Switch_Only", "Left_Basic", "Left_Advanced", "Left_Our_Side_Only",
+			"Center_Basic", "Center_Advanced",
+			"Right_Switch_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
 
 	private MatchConfiguration() {
 		teamColor = TeamColor.UNKNOWN;
@@ -178,8 +180,8 @@ public class MatchConfiguration {
 		LOGGER.debug("Entering decision tree");
 		autonomous = Actions.doNothing();
 		
-		if (autoMode.startsWith("Left")) {
-			Actions.startOnLeft();
+		if (autoMode.startsWith("Right")) {
+			Actions.startOnRight();
 		}
 
 		switch(autoMode) {
@@ -189,7 +191,7 @@ public class MatchConfiguration {
 			autonomous = Actions.crossAutoLine();
 			break;
 
-		case "Center": 
+		case "Center_Basic": 
 			LOGGER.info("Entering Center");
 			if(isMySwitchToTheRight()) {
 				LOGGER.debug("The switch is to the right | CENTER");
@@ -197,6 +199,17 @@ public class MatchConfiguration {
 			} else {
 				LOGGER.debug("The Switch is to the left | CENTER");
 				autonomous = Actions.centerBasicSwitchLeft();
+			}
+			break;
+
+		case "Center_Advanced": 
+			LOGGER.info("Entering Center");
+			if(isMySwitchToTheRight()) {
+				LOGGER.debug("The switch is to the right | CENTER");
+				autonomous = Actions.centerAdvancedSwitchRight();
+			} else {
+				LOGGER.debug("The Switch is to the left | CENTER");
+				autonomous = Actions.centerAdvancedSwitchLeft();
 			}
 			break;
 
@@ -259,11 +272,6 @@ public class MatchConfiguration {
 			}
 			break;
 
-		case "Left_Test":
-			LOGGER.debug("Testing actions.");
-			autonomous = Actions.test();
-			break;
-			
 		case "None":
 		default:
 			autonomous = Actions.doNothing();
