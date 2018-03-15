@@ -107,6 +107,17 @@ public class MapController {
 		for (int i = 0; i < 6; i++) {
 			cubes.add(new PowerCubeShape(redSwitchCubeOffsetX + i * 2.34 * 12.0, redSwitchCubeOffsetY)); // 1.25' in between each cube ; y-coordinate is same for 6 cubes
 		}
+		
+		cubes.add(new PowerCubeShape(135, 127));
+		cubes.add(new PowerCubeShape(149, 127));
+		cubes.add(new PowerCubeShape(163, 127));
+		cubes.add(new PowerCubeShape(142, 114));
+		cubes.add(new PowerCubeShape(156, 114));
+		cubes.add(new PowerCubeShape(149, 101));
+		cubes.add(new PowerCubeShape(142, 127));
+		cubes.add(new PowerCubeShape(156, 127));
+		cubes.add(new PowerCubeShape(149, 114));
+		cubes.add(new PowerCubeShape(149, 127));
 
 		double blueSwitchCubeOffsetX = 85.25; //next to blue alliance station
 		double blueSwitchCubeOffsetY = 439.2;
@@ -115,13 +126,22 @@ public class MapController {
 			cubes.add(new PowerCubeShape(blueSwitchCubeOffsetX + i * 2.34 * 12.0, blueSwitchCubeOffsetY)); // 1.25' in between each cube ; y-coordinate is same for 6 cubes
 		}
 
+		cubes.add(new PowerCubeShape(135, 509));
+		cubes.add(new PowerCubeShape(149, 509));
+		cubes.add(new PowerCubeShape(163, 509));
+		cubes.add(new PowerCubeShape(142, 522));
+		cubes.add(new PowerCubeShape(156, 522));
+		cubes.add(new PowerCubeShape(149, 535));
+		cubes.add(new PowerCubeShape(142, 509));
+		cubes.add(new PowerCubeShape(156, 509));
+		cubes.add(new PowerCubeShape(149, 522));
+		cubes.add(new PowerCubeShape(149, 509));
+
 		for (PowerCubeShape cube : cubes) {
 			robotArea.getChildren().add(cube.createPowerCube());
 		}
 
 	}
-
-
 
 	/**
 	 * The action triggered by pushing the button on the GUI. It creates a thread that monitors

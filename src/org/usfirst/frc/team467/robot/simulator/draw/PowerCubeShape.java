@@ -28,6 +28,7 @@ public class PowerCubeShape {
 
 	public Group createPowerCube() {
 		powerCubeShape = new Rectangle(CUBE_BASE_LENGTH_INCHES, CUBE_BASE_LENGTH_INCHES, Color.YELLOW);
+		powerCubeShape.setStroke(Color.GOLDENROD);
 		powerCubeShape.relocate(FieldShape.FIELD_OFFSET_Y, FieldShape.FIELD_OFFSET_X);
 
 		cubeShape.getChildren().add(powerCubeShape);
