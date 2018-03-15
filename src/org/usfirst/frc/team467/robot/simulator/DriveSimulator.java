@@ -137,6 +137,16 @@ public class DriveSimulator implements AutoDrive {
 		moveFeet(turnDistanceInFeet, -turnDistanceInFeet);
 	}
 
+	@Override
+	public void arcDrive(double arcLength, double signedRadius) {
+		// TODO PIDs?
+
+		double turnAngle = arcLength/signedRadius;
+
+		// Left drives more when turning right
+		moveFeet(turnAngle*(signedRadius + RobotMap.WHEEL_BASE_WIDTH/2), turnAngle*(signedRadius - RobotMap.WHEEL_BASE_WIDTH/2));
+	}
+
 	/**
 	 * Convert angle in degrees to wheel distance in feet (arc length).
 	 */

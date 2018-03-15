@@ -207,14 +207,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		moveFeet(distanceInFeet, distanceInFeet);
 	}
 
-	public static final double POSITION_GAIN_FEET = 2.5;
-
-	/**
-	 * 
-	 * @param rotationInDegrees
-	 *            enter positive degrees for left turn and enter negative degrees
-	 *            for right turn
-	 */
+	@Override
 	public void rotateByAngle(double rotationInDegrees) {
 		left.setPIDSlot(RobotMap.PID_SLOT_TURN);
 		right.setPIDSlot(RobotMap.PID_SLOT_TURN);
@@ -223,6 +216,16 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		
 		double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
 		moveFeet(turnDistanceInFeet, - turnDistanceInFeet);
+	}
+
+	@Override
+	public void arcDrive(double arcLength, double signedRadius) {
+		// TODO PIDs?
+
+		double turnAngle = arcLength/signedRadius;
+
+		// Left drives more when turning right
+		moveFeet(turnAngle*(signedRadius + RobotMap.WHEEL_BASE_WIDTH/2), turnAngle*(signedRadius - RobotMap.WHEEL_BASE_WIDTH/2));
 	}
 
 	/**
@@ -239,6 +242,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		
 		return distanceInFeet;
 	}
+
+	public static final double POSITION_GAIN_FEET = 2.5;
 
 	public void moveFeet(double targetLeftDistance , double targetRightDistance) {
 

@@ -6,7 +6,17 @@ package org.usfirst.frc.team467.robot.Autonomous;
 public interface AutoDrive {
 
 	void moveLinearFeet(double distance);
+
+	/**
+	 * Positive is left, negative is right
+	 */
 	void rotateByAngle(double rotationInDegrees);
+	
+	/**
+	 * Both inputs in feet.
+	 * Positive signedRadius is to the right, negative is to the left.
+	 */
+	void arcDrive(double arcLength, double radius);
 
 	/**
 	 * Move each side independently. Distances must be equal or opposite.
