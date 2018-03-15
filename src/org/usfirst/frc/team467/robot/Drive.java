@@ -223,9 +223,10 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		// TODO PIDs?
 
 		double turnAngle = arcLength/signedRadius;
+		double lengthAdjustment = turnAngle * RobotMap.WHEEL_BASE_WIDTH/2;
 
 		// Left drives more when turning right
-		moveFeet(turnAngle*(signedRadius + RobotMap.WHEEL_BASE_WIDTH/2), turnAngle*(signedRadius - RobotMap.WHEEL_BASE_WIDTH/2));
+		moveFeet(arcLength + lengthAdjustment, arcLength - lengthAdjustment);
 	}
 
 	/**
