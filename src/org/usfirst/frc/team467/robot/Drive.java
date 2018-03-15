@@ -3,6 +3,7 @@ package org.usfirst.frc.team467.robot;
 import java.text.DecimalFormat;
 
 import org.apache.log4j.Logger;
+import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
 
@@ -23,6 +24,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 
 	private final TalonSpeedControllerGroup left;
 	private final TalonSpeedControllerGroup right;
+	
+	private double carrotLength = 4.5;
 
 	// Private constructor
 
@@ -76,6 +79,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		super(left, right);
 		this.left = left;
 		this.right = right;
+		this.carrotLength = POSITION_GAIN_FEET;
 
 		setPIDSFromRobotMap();
 	}
@@ -137,6 +141,16 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public void configPeakOutput(double percentOut) {
 		left.configPeakOutput(percentOut);
 		right.configPeakOutput(percentOut);
+	}
+	
+	public void setCarrotLength() {
+		carrotLength = POSITION_GAIN_FEET;
+		int elevatorHeight = Elevator.getInstance().getHeight();
+		if (elevatorHeight > Stops.highScale.height) {
+			carrotLength -= 2.0;
+		} else if (elevatorHeight > Stops.lowScale.height) {
+			carrotLength -= 1.0;
+		}
 	}
 
 	public void logClosedLoopErrors() {
@@ -213,7 +227,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		moveFeet(distanceInFeet, distanceInFeet);
 	}
 	
-	public static final double POSITION_GAIN_FEET = 2.5;
+	public static final double POSITION_GAIN_FEET = 4.5;
 
 	/**
 	 * 
@@ -250,6 +264,9 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 
 		LOGGER.trace("Automated move of right: "+ targetRightDistance +" left: "+ targetLeftDistance + " feet ");
 
+		// Adjust the carrot length based on the elevator height.
+		setCarrotLength();
+		
 		// Convert the turn to a distance based on the circumference of the robot wheel base.
 		// Store the sign so that all math works the same forward and backward using absolute values,
 		// with direction corrected at the end.
@@ -279,8 +296,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double average = 0.5 * (Math.abs(currentRightPosition * leftRatio) + Math.abs(currentLeftPosition * rightRatio));
 
 		// Use the minimum to go either the max allowed distance or to the target
-		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (POSITION_GAIN_FEET * leftRatio + average));
-		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (POSITION_GAIN_FEET * rightRatio + average));
+		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (carrotLength * leftRatio + average));
+		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (carrotLength * rightRatio + average));
 
 		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
 				+ df.format(moveLeftDistance));
