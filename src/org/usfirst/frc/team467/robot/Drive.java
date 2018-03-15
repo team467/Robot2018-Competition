@@ -222,7 +222,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public void arcDrive(double arcLength, double signedRadius) {
 		// TODO PIDs?
 
-		double lengthAdjustment = arcLength * RobotMap.WHEEL_BASE_WIDTH/(2 * signedRadius);
+		// Turn angle times adjusted radius
+		double lengthAdjustment = (arcLength/signedRadius) * (RobotMap.WHEEL_BASE_WIDTH/2);
 
 		// Left drives more when turning right
 		moveFeet(arcLength + lengthAdjustment, arcLength - lengthAdjustment);
