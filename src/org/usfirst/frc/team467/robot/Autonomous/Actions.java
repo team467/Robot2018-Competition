@@ -142,6 +142,13 @@ public class Actions {
 				new ActionGroup.ReachDistance(rotationInDegrees),
 				() -> drive.rotateByAngle(rotationInDegrees));
 	}
+	
+	public static Action moveArc(double arcLength, double radius) {
+		String actionText = "Arc " + arcLength + " feet; ";
+		return new Action(actionText,
+				new ActionGroup.ReachDistance(arcLength),
+				() -> drive.arcDrive(arcLength, radius));
+	}
 
 	public static boolean moveDistanceComplete(double distance) {
 		double distanceMoved = drive.absoluteDistanceMoved();
@@ -169,6 +176,14 @@ public class Actions {
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(zeroDistance());
 		mode.addAction(moveturn(degrees));
+		return mode;
+	}
+
+	public static ActionGroup arc(double arcLength, double radius) {
+		String actionGroupText = "Arc " + arcLength + " feet; ";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addAction(zeroDistance());
+		mode.addAction(moveArc(arcLength, radius));
 		return mode;
 	}
 
@@ -200,6 +215,7 @@ public class Actions {
 		mode.addActions(turn(90));
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
+		mode.addActions(arc(Math.PI, 1));
 		//        mode.addActions(moveDistance(2.0));
 		//        mode.addAction(releaseCube());
 		return mode;
