@@ -85,13 +85,33 @@ public class DriveSimulator implements AutoDrive {
 			return; // At destination
 		}
 
+		double maxLeftSpeed = maxFeetPerPeriod;
+		double maxRightSpeed = maxFeetPerPeriod;
+		
+		try {
+			double leftRightRatio = Math.abs(leftDistance/rightDistance);
+	
+			if (leftRightRatio < 1) {
+				maxLeftSpeed = maxFeetPerPeriod * leftRightRatio;
+			} else if (leftRightRatio > 1) {
+				maxRightSpeed = maxFeetPerPeriod / leftRightRatio;
+			}
+		} catch (ArithmeticException e) { // One of the distances was zero
+			if (leftDistance == 0) {
+				maxLeftSpeed = 0;
+			}
+			if (rightDistance == 0) {
+				maxRightSpeed = 0;
+			}
+		}
+
 		isMoving = true;
 
 		if (Math.abs((leftDistance - leftPositionReading)) > maxFeetPerPeriod) {
 			if (leftDistance < 0) {
-				leftPositionReading -= maxFeetPerPeriod;
+				leftPositionReading -= maxLeftSpeed;
 			} else {
-				leftPositionReading += maxFeetPerPeriod;
+				leftPositionReading += maxLeftSpeed;
 			}
 		} else {
 			leftPositionReading = leftDistance;
@@ -99,9 +119,9 @@ public class DriveSimulator implements AutoDrive {
 
 		if (Math.abs((rightDistance - rightPositionReading)) > maxFeetPerPeriod) {
 			if (rightDistance < 0) {
-				rightPositionReading -= maxFeetPerPeriod;
+				rightPositionReading -= maxRightSpeed;
 			} else {
-				rightPositionReading += maxFeetPerPeriod;
+				rightPositionReading += maxRightSpeed;
 			}
 		} else {
 			rightPositionReading = rightDistance;
