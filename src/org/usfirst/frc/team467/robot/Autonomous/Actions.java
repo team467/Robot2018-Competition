@@ -216,7 +216,7 @@ public class Actions {
 		mode.addActions(turn(90));
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
-		mode.addActions(arc(Math.PI/2, 1));
+		mode.addActions(arc(10*Math.PI, 5));
 		//        mode.addActions(moveDistance(2.0));
 		//        mode.addAction(releaseCube());
 		return mode;
