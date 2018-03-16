@@ -143,12 +143,12 @@ public class Actions {
 				() -> drive.rotateByAngle(rotationInDegrees));
 	}
 	
-	public static Action moveArc(double arcLength, double radius) {
+	public static Action moveArc(double arcLength, double signedRadius) {
 		String actionText = "Arc " + arcLength + " feet; ";
-		double lengthAdjustment = Math.abs(arcLength/radius) * (RobotMap.WHEEL_BASE_WIDTH/2);
+		double lengthAdjustment = Math.abs(arcLength/signedRadius) * (RobotMap.WHEEL_BASE_WIDTH/2);
 		return new Action(actionText,
 				new ActionGroup.ReachDistance(arcLength + lengthAdjustment),
-				() -> drive.arcDrive(arcLength, radius));
+				() -> drive.arcDrive(arcLength, signedRadius));
 	}
 
 	public static boolean moveDistanceComplete(double distance) {
@@ -180,11 +180,11 @@ public class Actions {
 		return mode;
 	}
 
-	public static ActionGroup arc(double arcLength, double radius) {
+	public static ActionGroup arc(double arcLength, double signedRadius) {
 		String actionGroupText = "Arc " + arcLength + " feet; ";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(zeroDistance());
-		mode.addAction(moveArc(arcLength, radius));
+		mode.addAction(moveArc(arcLength, signedRadius));
 		return mode;
 	}
 
