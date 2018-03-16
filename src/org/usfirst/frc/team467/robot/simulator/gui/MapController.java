@@ -152,16 +152,8 @@ public class MapController {
 			update();
 
 			// The robot runs it's cycle every 20 ms
-			Runnable simulatedPeriodic = new Runnable() {
-
-				@Override
-				public void run() {					
-					update();
-				}
-			};
-
 			this.timer = Executors.newSingleThreadScheduledExecutor();
-			this.timer.scheduleAtFixedRate(simulatedPeriodic, 0, 1, TimeUnit.MILLISECONDS);
+			this.timer.scheduleAtFixedRate(() -> update(), 0, 1, TimeUnit.MILLISECONDS);
 
 			// update the button content
 			this.startButton.setText("Stop");
