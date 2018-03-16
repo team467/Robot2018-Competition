@@ -87,14 +87,14 @@ public class DriveSimulator implements AutoDrive {
 
 		double maxLeftSpeed = maxFeetPerPeriod;
 		double maxRightSpeed = maxFeetPerPeriod;
-		
+
 		if (leftDistance == 0) {
 			maxLeftSpeed = 0;
 		} else if (rightDistance == 0) {
 			maxRightSpeed = 0;
 		} else {
 			double leftRightRatio = Math.abs(leftDistance/rightDistance);
-	
+
 			if (leftRightRatio < 1) {
 				maxLeftSpeed = maxFeetPerPeriod * leftRightRatio;
 			} else if (leftRightRatio > 1) {
