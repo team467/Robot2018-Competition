@@ -179,6 +179,10 @@ public class MatchConfiguration {
 		autonomous = Actions.doNothing();
 
 		switch(autoMode) {
+		
+		case "Simple_Test":
+			autonomous = Actions.simpleTest();
+			break;
 
 		case "Left_Basic":
 			if(isSwitchOnSameSide() && !isScaleOnSameSide()) {

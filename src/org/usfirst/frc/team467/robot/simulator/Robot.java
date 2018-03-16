@@ -68,9 +68,11 @@ public class Robot {
 			data.startingLocation(2.5+offset, 0);
 		} else if (SimulatedData.autoMode.startsWith("Center")) {
 			data.startingLocation(12.5+offset, 0);
-		} else { // Right
+		} else if (SimulatedData.autoMode.startsWith("Right")) {
 			data.startingLocation(21.58+offset, 0);
-		}		
+		} else { // Test mode, start in center
+			data.startingLocation(12.5+offset, 0);
+		}
 		data.send();
 
 		autonomous = matchConfig.autonomousDecisionTree();
