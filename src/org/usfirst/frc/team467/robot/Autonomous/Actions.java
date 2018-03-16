@@ -145,8 +145,9 @@ public class Actions {
 	
 	public static Action moveArc(double arcLength, double radius) {
 		String actionText = "Arc " + arcLength + " feet; ";
+		double lengthAdjustment = Math.abs(arcLength/radius) * (RobotMap.WHEEL_BASE_WIDTH/2);
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(arcLength),
+				new ActionGroup.ReachDistance(arcLength + lengthAdjustment),
 				() -> drive.arcDrive(arcLength, radius));
 	}
 
@@ -215,7 +216,7 @@ public class Actions {
 		mode.addActions(turn(90));
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
-		mode.addActions(arc(Math.PI, 1));
+		mode.addActions(arc(Math.PI/2, 1));
 		//        mode.addActions(moveDistance(2.0));
 		//        mode.addAction(releaseCube());
 		return mode;
