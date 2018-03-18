@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc.team467.robot.simulator.draw.FieldShape;
 import org.usfirst.frc.team467.robot.simulator.draw.PowerCubeShape;
+import org.usfirst.frc.team467.robot.simulator.draw.RobotPathDot;
 import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -92,6 +93,8 @@ public class MapController {
 	private Group robotGroup = null; // for adding and remove robot on map
 	private FieldShape fieldShape = new FieldShape();
 	private ArrayList<PowerCubeShape> cubes = new ArrayList<PowerCubeShape>();
+	private ArrayList<RobotPathDot> path = new ArrayList<RobotPathDot>();
+	private int index = 0;
 
 	/**
 	 * Initialize method, automatically called by @{link FXMLLoader}
@@ -119,6 +122,10 @@ public class MapController {
 			robotArea.getChildren().add(cube.createPowerCube());
 		}
 
+		path.add(new RobotPathDot(robotShape.leftX(), robotShape.leftY()));
+		for (RobotPathDot dot : path) {
+			robotArea.getChildren().add(dot.createPathElement());
+		}
 	}
 
 
@@ -197,7 +204,18 @@ public class MapController {
 				cube.draw();
 			}
 
+			if (index % 300 == 0) {
+				RobotPathDot newDot = new RobotPathDot(robotShape.getX(), robotShape.getY());
+				path.add(newDot);
+				robotArea.getChildren().add(newDot.createPathElement());
+			}
+
+			for (RobotPathDot dot : path) {
+				dot.draw();
+			}
+
 			robotShape.draw();
+			index++;
 		});
 
 	}

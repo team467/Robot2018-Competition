@@ -167,6 +167,18 @@ public class RobotShape {
 		return startingLocation.y + left.y;
 	}
 
+	public double getX() {
+		double radius = RobotMap.WHEEL_BASE_WIDTH/2;
+		double x = radius * Math.cos(mapHeadingAngle);
+		return (leftX() + x) * 12;
+	}
+
+	public double getY() {
+		double radius = RobotMap.WHEEL_BASE_WIDTH/2;
+		double y = -radius * Math.sin(mapHeadingAngle);
+		return (leftY() + y) * 12;
+	}
+
 	private void colorElevator() {
 		switch (elevatorStop) {
 
@@ -216,15 +228,10 @@ public class RobotShape {
 
 	public void draw() {
 		loadData();	
-		colorElevator();		
-
-		double radius = RobotMap.WHEEL_BASE_WIDTH/2;
-		double x = radius * Math.cos(mapHeadingAngle);
-		double y = -radius * Math.sin(mapHeadingAngle);
+		colorElevator();
 
 		robotShape.setRotate(Math.toDegrees(mapHeadingAngle));
-		robotShape.relocate((FieldShape.FIELD_OFFSET_Y + (leftY() + y) * 12),
-				(FieldShape.FIELD_OFFSET_X + (leftX() + x) * 12));
+		robotShape.relocate(FieldShape.FIELD_OFFSET_Y + getY(), FieldShape.FIELD_OFFSET_X + getX());
 	}
 
 }
