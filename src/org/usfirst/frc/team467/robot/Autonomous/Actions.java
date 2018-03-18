@@ -282,11 +282,18 @@ public class Actions {
 		String actionGroupText = "Start in center, put cube on left switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(arcTurn(4.0, 90)); 
-		mode.addActions(arcTurn(5.00, -95)); 
-		mode.addActions(move(2.5));
+		mode.addActions(move(4.0));
+		mode.addActions(turn(35));
+		mode.addActions(move(4.9));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
+		
+//		mode.addActions(start());
+//		mode.addActions(arcTurn(4.0, 90)); 
+//		mode.addActions(arcTurn(5.00, -95)); 
+//		mode.addActions(move(2.5));
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
 		return mode;
 	}
 
@@ -294,11 +301,20 @@ public class Actions {
 		String actionGroupText = "Start in center, put cube on right switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(arcTurn(4.0, -90)); 
-		mode.addActions(arcTurn(4.9, 95)); 
-		mode.addActions(move(2.5));
+		mode.addActions(move(3.0));
+		mode.addActions(turn(-42));
+		mode.addActions(move(6.7));
+		mode.addActions(turn(25));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
+		//mode.addActions(arcTurn(9.0, 90));
+		
+//		mode.addActions(start());
+//		mode.addActions(arcTurn(4.0, -90)); 
+//		mode.addActions(arcTurn(4.9, 95)); 
+//		mode.addActions(move(2.5));
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
 		return mode;
 	}
 
