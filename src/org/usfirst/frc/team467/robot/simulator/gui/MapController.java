@@ -206,7 +206,7 @@ public class MapController {
 			}
 
 			if (index % 100 == 0) {
-				RobotPathDot newDot = new RobotPathDot(robotShape.getX(), robotShape.getY());
+				RobotPathDot newDot = new RobotPathDot(robotShape.getX() + RobotMap.WHEEL_BASE_WIDTH*12/2, robotShape.getY() + RobotMap.WHEEL_BASE_LENGTH*12/2);
 				path.add(newDot);
 				robotArea.getChildren().add(newDot.createPathElement());
 			}
