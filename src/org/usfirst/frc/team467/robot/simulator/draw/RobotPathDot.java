@@ -15,8 +15,7 @@ public class RobotPathDot {
 	}
 
 	public Group createPathElement() {
-		dot = new Circle(x_pos, y_pos, 3);
-		dot.relocate(FieldShape.FIELD_OFFSET_Y, FieldShape.FIELD_OFFSET_X);
+		dot = new Circle(x_pos, y_pos, 1);
 
 		robotPath.getChildren().add(dot);
 		robotPath.setVisible(false);
