@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.simulator.draw.FieldShape;
 import org.usfirst.frc.team467.robot.simulator.draw.PowerCubeShape;
 import org.usfirst.frc.team467.robot.simulator.draw.RobotPathDot;
@@ -204,7 +205,7 @@ public class MapController {
 				cube.draw();
 			}
 
-			if (index % 300 == 0) {
+			if (index % 100 == 0) {
 				RobotPathDot newDot = new RobotPathDot(robotShape.getX(), robotShape.getY());
 				path.add(newDot);
 				robotArea.getChildren().add(newDot.createPathElement());
