@@ -207,7 +207,7 @@ public class Actions {
 	public static ActionGroup simpleTest() {
 		String actionGroupText = "Simplified version of leftbasicswitchleft.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-		//		mode.addActions(start());
+//		mode.addActions(start());
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
 		mode.addActions(move(4.0));
@@ -217,8 +217,8 @@ public class Actions {
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
 		mode.addActions(arc(4*Math.PI, 1));
-		//        mode.addActions(moveDistance(2.0));
-		//        mode.addAction(releaseCube());
+//      mode.addActions(moveDistance(2.0));
+//      mode.addAction(releaseCube());
 		return mode;
 	}
 
