@@ -142,6 +142,8 @@ public class MapController {
 		}
 
 		if (!this.robotActive) {
+			robotArea.getChildren().clear();
+			path.clear();
 
 			if (robotGroup != null) {
 				robotArea.getChildren().remove(robotGroup);
