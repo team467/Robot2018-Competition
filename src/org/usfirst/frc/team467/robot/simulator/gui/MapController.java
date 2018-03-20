@@ -122,11 +122,6 @@ public class MapController {
 		for (PowerCubeShape cube : cubes) {
 			robotArea.getChildren().add(cube.createPowerCube());
 		}
-
-		path.add(new RobotPathDot(robotShape.leftX(), robotShape.leftY()));
-		for (RobotPathDot dot : path) {
-			robotArea.getChildren().add(dot.createPathElement());
-		}
 	}
 
 
@@ -157,6 +152,7 @@ public class MapController {
 
 			robotActive = true;
 			robotShape.init();
+
 			update();
 
 			// The robot runs it's cycle every 20 ms
