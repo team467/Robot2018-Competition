@@ -143,6 +143,7 @@ public class MapController {
 
 		if (!this.robotActive) {
 			robotArea.getChildren().clear();
+			cubes.clear();
 			path.clear();
 
 			if (robotGroup != null) {
