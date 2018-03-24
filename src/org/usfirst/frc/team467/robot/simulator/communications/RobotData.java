@@ -3,10 +3,13 @@
  */
 package org.usfirst.frc.team467.robot.simulator.communications;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Elevator;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.simulator.gui.Coordinate;
@@ -28,12 +31,14 @@ public class RobotData {
 	private NetworkTableInstance tableInstance;
 	private NetworkTable table;
 	
-	private static final Logger LOGGER = Logger.getLogger(RobotData.class); 
+	private FileWriter fw;
+
+	private static final Logger LOGGER = LogManager.getLogger(RobotData.class); 
 	
 	private static RobotData instance = null;
 	
 	private RobotData() {
-		LOGGER.setLevel(Level.DEBUG);
+		//LOGGER.setLevel(Level.DEBUG);
 		
 		tableInstance = NetworkTableInstance.getDefault();
 		table = tableInstance.getTable("datatable").getSubTable("/robotmapdata");
@@ -51,10 +56,35 @@ public class RobotData {
 		return instance;
 	}
 	
-	private void addToHistory() {
+	public void addToHistory() {
 		data.add(dataRow.clone());
 	}
-
+	
+	public void persistHistory() {
+		try {
+			String serializedData = "\n";
+			for (RobotMapData row : data) {
+				serializedData += row.startingLocation + ",";
+				serializedData += row.rightPosition + ",";
+				serializedData += row.leftPosition + ",";
+				serializedData += row.isZeroed + ",";
+				serializedData += row.elevatorHeight + ",";
+				serializedData += row.grabberHasCube + ",";
+				serializedData += row.visionSeesCube + ",";
+				serializedData += row.cubeMinDistance + ",";
+				serializedData += row.cubeMaxDistance + ",";
+				serializedData += row.angleToCube + ",";
+				serializedData += "\n";
+			}
+			fw = new FileWriter("RobotData.csv");
+			System.out.println(serializedData);
+			fw.write(serializedData);
+			fw.close();
+		} catch (IOException ex) {
+			LOGGER.error(ex);
+		}
+	}
+	
 	public void startingLocation(double x, double y) {
 		dataRow.startingLocation.x = x;
 		dataRow.startingLocation.y = y;

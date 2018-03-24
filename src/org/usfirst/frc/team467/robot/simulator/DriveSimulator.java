@@ -5,7 +5,8 @@ package org.usfirst.frc.team467.robot.simulator;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
@@ -23,7 +24,7 @@ public class DriveSimulator implements AutoDrive {
 
 	RobotData data = RobotData.getInstance();
 
-	Logger LOGGER = Logger.getLogger(DriveSimulator.class);
+	Logger LOGGER = LogManager.getLogger(DriveSimulator.class);
 
 	private DecimalFormat df = new DecimalFormat("####0.00");
 

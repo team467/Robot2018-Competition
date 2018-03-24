@@ -1,6 +1,9 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * and then sets the appropriate state when it finishes.
  */
 public class Ramp {
-	private static final Logger LOGGER = Logger.getLogger(Ramp.class);
+	private static final Logger LOGGER = LogManager.getLogger(Ramp.class);
 
 	// Compressor automatically set to closedLoopControl when Solenoid is declared
 	private DoubleSolenoid solenoid;

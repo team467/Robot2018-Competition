@@ -1,6 +1,8 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 
@@ -24,7 +26,7 @@ public class Grabber {
 	
 	private GrabberState state = GrabberState.NEUTRAL;
 
-	private static final Logger LOGGER = Logger.getLogger(Grabber.class);
+	private static final Logger LOGGER = LogManager.getLogger(Grabber.class);
 
 	private static Grabber instance;
 	private SpeedController left;

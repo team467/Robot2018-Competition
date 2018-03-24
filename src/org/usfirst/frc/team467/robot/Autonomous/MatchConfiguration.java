@@ -1,6 +1,8 @@
 package org.usfirst.frc.team467.robot.Autonomous;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.simulator.gui.SimulatedData;
 
@@ -18,7 +20,7 @@ public class MatchConfiguration {
 
 	private static MatchConfiguration instance;
 
-	private static final Logger LOGGER = Logger.getLogger(MatchConfiguration.class);
+	private static final Logger LOGGER = LogManager.getLogger(MatchConfiguration.class);
 
 	public enum TeamColor {
 		UNKNOWN,

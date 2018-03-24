@@ -5,11 +5,13 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.apache.log4j.Logger;
+
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 import org.usfirst.frc.team467.robot.Autonomous.Actions;
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
 import org.usfirst.frc.team467.robot.vision.VisionProcessing;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.RobotMap.RobotID;
 
 /**
@@ -19,7 +21,7 @@ import org.usfirst.frc.team467.robot.RobotMap.RobotID;
  */
 
 public class Robot extends TimedRobot {
-	private static final Logger LOGGER = Logger.getLogger(Robot.class);
+	private static final Logger LOGGER = LogManager.getLogger(Robot.class);
 
 	// Robot objects
 	private DriverStation467 driverstation;

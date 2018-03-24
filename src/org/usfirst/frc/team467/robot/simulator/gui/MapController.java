@@ -192,6 +192,8 @@ public class MapController {
 
 			// update the button content
 			this.startButton.setText("Start");
+			
+			robotShape.persistHistory();
 
 			// stop the timer
 			stopAcquisition();

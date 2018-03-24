@@ -3,12 +3,25 @@
  */
 package org.usfirst.frc.team467.robot.simulator;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.ConfigurationFactory;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.usfirst.frc.team467.robot.Logging;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.RobotMap.RobotID;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
+import org.usfirst.frc.team467.robot.logging.CustomConfigurationFactory;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
 import org.usfirst.frc.team467.robot.simulator.gui.MapController;
 import org.usfirst.frc.team467.robot.simulator.gui.SimulatedData;
@@ -18,7 +31,7 @@ import org.usfirst.frc.team467.robot.simulator.gui.SimulatedData;
  */
 public class Robot {
 
-	private static final Logger LOGGER = Logger.getLogger(Robot.class);
+	private static final Logger LOGGER = LogManager.getLogger(Robot.class);
 
 	DriveSimulator drive;
 
@@ -31,7 +44,7 @@ public class Robot {
 	private MatchConfiguration matchConfig;
 
 	public void robotInit() {
-
+		
 		Logging.init();
 
 		RobotMap.init(RobotID.Competition_1);
@@ -42,7 +55,7 @@ public class Robot {
 		matchConfig = MatchConfiguration.getInstance();
 
 		data = RobotData.getInstance();
-//		data.startServer();
+		data.startServer();
 
 		LOGGER.info("Started the robot simulator");
 
@@ -76,5 +89,9 @@ public class Robot {
 
 	public void autonomousPeriodic() {
 		autonomous.run();
+	}
+	
+	public static void main(String args[]) {
+		RobotData.getInstance().startServer();
 	}
 }

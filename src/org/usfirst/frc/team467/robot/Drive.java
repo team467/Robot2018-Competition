@@ -2,7 +2,8 @@ package org.usfirst.frc.team467.robot;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
@@ -16,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends DifferentialDrive implements AutoDrive {
 	private ControlMode controlMode;
 
-	private static final Logger LOGGER = Logger.getLogger(Drive.class);
+	private static final Logger LOGGER = LogManager.getLogger(Drive.class);
 	private DecimalFormat df = new DecimalFormat("####0.00");
 
 	// Single instance of this class
@@ -39,7 +40,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			TalonSpeedControllerGroup left;
 			TalonSpeedControllerGroup right;
 
-			LOGGER.info("Number of Motors:" + RobotMap.DRIVEMOTOR_NUM);
+			LOGGER.info("Number of Motors: {}", RobotMap.DRIVEMOTOR_NUM);
 			if (RobotMap.HAS_WHEELS && RobotMap.DRIVEMOTOR_NUM > 0) {
 				LOGGER.info("Creating  Lead Motors");
 				WPI_TalonSRX leftLead = new WPI_TalonSRX(RobotMap.LEFT_LEAD_CHANNEL);
@@ -207,8 +208,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public void tuneMove(double leftDistance, double rightDistance, int pidSlot) {
 		left.setPIDSlot(pidSlot);
 		right.setPIDSlot(pidSlot);
-		LOGGER.info("Target: L: " + leftDistance + " R: " + rightDistance 
-				+ " Current L: " + getLeftDistance()  + " R: " + getRightDistance());
+		LOGGER.info("Target: L: {}  R: {} Current L: {} R: {}", leftDistance, rightDistance, getLeftDistance(), getRightDistance());
 		left.set(ControlMode.Position, feetToTicks(leftDistance));
 		// The right motor is reversed
 		right.set(ControlMode.Position, -feetToTicks(rightDistance));
@@ -238,8 +238,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public void rotateByAngle(double rotationInDegrees) {
 		left.setPIDSlot(RobotMap.PID_SLOT_TURN);
 		right.setPIDSlot(RobotMap.PID_SLOT_TURN);
-
-		LOGGER.trace("Automated move of " + rotationInDegrees + " degree turn.");
+		
+		LOGGER.trace("Automated move of {} degree turn.", rotationInDegrees);
 		
 		double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
 		moveFeet(turnDistanceInFeet, - turnDistanceInFeet);

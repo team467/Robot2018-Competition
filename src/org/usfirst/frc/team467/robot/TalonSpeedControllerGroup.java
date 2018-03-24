@@ -1,6 +1,9 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -10,7 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 //TalonSpeedControllerGroup
 public class TalonSpeedControllerGroup implements SpeedController {
-	private static final Logger LOGGER = Logger.getLogger(TalonSpeedControllerGroup.class);
+	private static final Logger LOGGER = LogManager.getLogger(TalonSpeedControllerGroup.class);
 	private WPI_TalonSRX leader;
 	private WPI_TalonSRX follower1;
 	private WPI_TalonSRX follower2;

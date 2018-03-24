@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Drive;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.Action.Activity;
@@ -16,7 +17,7 @@ import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
  * Can be used in Autonomous and also Teleop routines.
  */
 public class ActionGroup {
-	private static final Logger LOGGER = Logger.getLogger(ActionGroup.class);
+	private static final Logger LOGGER = LogManager.getLogger(ActionGroup.class);
 	private static AutoDrive drive = (RobotMap.useSimulator) ? DriveSimulator.getInstance() : Drive.getInstance();
 	private String name;
 	private LinkedList<Action> agenda;

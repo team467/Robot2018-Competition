@@ -1,10 +1,13 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+
 
 import edu.wpi.first.wpilibj.MotorSafetyHelper;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,7 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Elevator {
 	private static Elevator instance;
-	private static final Logger LOGGER = Logger.getLogger(Elevator.class);
+	private static final Logger LOGGER = LogManager.getLogger(Elevator.class);
 
 	private WPI_TalonSRX heightController;
 	private MotorSafetyHelper m_safetyHelper;

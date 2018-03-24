@@ -2,7 +2,8 @@ package org.usfirst.frc.team467.robot.vision;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -27,7 +28,7 @@ public class VisionProcessing {
 	public double cubeWidth;
 
 	private DetectPowerCubePipeline pipeline;
-	private static final Logger LOGGER = Logger.getLogger(VisionProcessing.class);
+	private static final Logger LOGGER = LogManager.getLogger(VisionProcessing.class);
 	private static VisionProcessing instance;
 
 	private double windowWidth;

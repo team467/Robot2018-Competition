@@ -1,6 +1,8 @@
 package org.usfirst.frc.team467.robot.Autonomous;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Drive;
 import org.usfirst.frc.team467.robot.Elevator;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
@@ -12,7 +14,7 @@ import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 
 public class Actions {
 
-	private static final Logger LOGGER = Logger.getLogger(Actions.class);
+	private static final Logger LOGGER = LogManager.getLogger(Actions.class);
 
 	private static AutoDrive drive = (RobotMap.useSimulator) ? DriveSimulator.getInstance() : Drive.getInstance();
 	

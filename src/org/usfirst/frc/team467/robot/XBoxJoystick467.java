@@ -8,7 +8,8 @@ package org.usfirst.frc.team467.robot;
 import java.lang.Math;
 import java.util.EnumMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
  */
 public class XBoxJoystick467 {
 
-	private static final Logger LOGGER = Logger.getLogger(XBoxJoystick467.class);
+	private static final Logger LOGGER = LogManager.getLogger(XBoxJoystick467.class);
 	private XboxController xbox;
 	private String name;
 	private int pov = 0;

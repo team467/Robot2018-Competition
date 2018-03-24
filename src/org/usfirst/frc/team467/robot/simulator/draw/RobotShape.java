@@ -5,7 +5,8 @@ package org.usfirst.frc.team467.robot.simulator.draw;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.simulator.Robot;
@@ -25,7 +26,7 @@ public class RobotShape {
 	public static final boolean RUN_LOCAL = true;
 	private Robot robot; // For local processing
 		
-	private static final Logger LOGGER = Logger.getLogger(RobotShape.class);
+	private static final Logger LOGGER = LogManager.getLogger(RobotShape.class);
 	private DecimalFormat df = new DecimalFormat("####0.00");
 	
 	// Robot Shapes
@@ -60,19 +61,24 @@ public class RobotShape {
 	private Coordinate right = new Coordinate((RobotMap.WHEEL_BASE_WIDTH/2), 0);
 	private double mapHeadingAngle = 0.0;
 
-	public RobotShape() {
-		
+	public RobotShape() {	
 		if (RUN_LOCAL) {
 			robot = new Robot();
 			robot.robotInit();
-		}		
+		} else {
+			data.startClient();
+		}	
 	}
 	
 	public void init() {
 		if (RUN_LOCAL) {
 			robot.autonomousInit();
-		} else {
-			data.startClient();
+		} 
+	}
+	
+	public void persistHistory() {
+		if (RUN_LOCAL) {
+			data.persistHistory();
 		}
 	}
 
@@ -198,7 +204,8 @@ public class RobotShape {
 		} else {
 			data.receive();			
 		}
-		
+		data.addToHistory();
+
 		if (data.isZeroed()) {
 			zero();
 		}
