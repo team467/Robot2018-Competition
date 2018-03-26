@@ -145,6 +145,7 @@ public class Actions {
 	
 	public static Action moveArc(double arcLength, double signedRadius) {
 		String actionText = "Arc " + arcLength + " feet; ";
+		//double arcLengthRad = Math.toRadians(arcLengthDeg);
 		double lengthAdjustment = Math.abs(arcLength/signedRadius) * (RobotMap.WHEEL_BASE_WIDTH/2);
 		return new Action(actionText,
 				new ActionGroup.ReachDistance(arcLength + lengthAdjustment),
@@ -187,6 +188,14 @@ public class Actions {
 		mode.addAction(moveArc(arcLength, signedRadius));
 		return mode;
 	}
+	public static ActionGroup arcDeg(double arcLengthDeg, double signedRadius) {
+		String actionGroupText = "Arc " + arcLengthDeg + " feet; ";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		double arcLength = Math.toRadians(arcLengthDeg) * signedRadius;
+		mode.addAction(zeroDistance());
+		mode.addAction(moveArc(arcLength, signedRadius));
+		return mode;
+	}
 
 	public static ActionGroup start() {
 		String actionGroupText = "Lower grabber down and move elevator to safe height";
@@ -214,9 +223,9 @@ public class Actions {
 		mode.addActions(turn(90));
 		mode.addActions(move(4.0));
 		mode.addActions(turn(90));
-		mode.addActions(move(4.0));
-		mode.addActions(turn(90));
-		mode.addActions(arc(4*Math.PI, 1));
+		//mode.addActions(move(4.0));
+		//mode.addActions(turn(90));
+		mode.addActions(arcDeg(90, 4));
 //      mode.addActions(moveDistance(2.0));
 //      mode.addAction(releaseCube());
 		return mode;
@@ -252,6 +261,7 @@ public class Actions {
 		mode.addActions(move(5.27)); 
 		mode.addActions(turn(90));
 		mode.addActions(move(4.34)); 
+		//mode.addActions(arcDeg(90,4.34)); 5.16
 		mode.addAction(releaseCube());
 		return mode;
 	}
