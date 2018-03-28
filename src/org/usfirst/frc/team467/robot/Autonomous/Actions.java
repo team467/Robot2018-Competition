@@ -188,13 +188,9 @@ public class Actions {
 		mode.addAction(moveArc(arcLength, signedRadius));
 		return mode;
 	}
-	public static ActionGroup arcDeg(double arcLengthDeg, double signedRadius) {
-		String actionGroupText = "Arc " + arcLengthDeg + " feet; ";
-		ActionGroup mode = new ActionGroup(actionGroupText);
-		double arcLength = Math.toRadians(arcLengthDeg) * signedRadius;
-		mode.addAction(zeroDistance());
-		mode.addAction(moveArc(arcLength, signedRadius));
-		return mode;
+
+	public static ActionGroup arcAngle(double angleDeg, double signedRadius) {
+		return arc(Math.toRadians(angleDeg) * signedRadius, signedRadius);
 	}
 
 	public static ActionGroup start() {
@@ -225,7 +221,7 @@ public class Actions {
 		mode.addActions(turn(90));
 		//mode.addActions(move(4.0));
 		//mode.addActions(turn(90));
-		mode.addActions(arcDeg(90, 4));
+		mode.addActions(arcAngle(90, 4));
 //      mode.addActions(moveDistance(2.0));
 //      mode.addAction(releaseCube());
 		return mode;
