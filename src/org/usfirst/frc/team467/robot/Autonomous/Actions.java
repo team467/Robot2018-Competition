@@ -143,6 +143,9 @@ public class Actions {
 				() -> drive.rotateByAngle(rotationInDegrees));
 	}
 	
+	/**
+	 * Arc length is in feet and signed radius is in feet to the right (negative for the left)
+	 */
 	public static Action moveArc(double arcLength, double signedRadius) {
 		String actionText = "Arc " + arcLength + " feet; ";
 		//double arcLengthRad = Math.toRadians(arcLengthDeg);
@@ -181,6 +184,9 @@ public class Actions {
 		return mode;
 	}
 
+	/**
+	 * Arc length is in feet and signed radius is in feet to the right (negative for the left)
+	 */
 	public static ActionGroup arc(double arcLength, double signedRadius) {
 		String actionGroupText = "Arc " + arcLength + " feet; ";
 		ActionGroup mode = new ActionGroup(actionGroupText);
@@ -189,6 +195,9 @@ public class Actions {
 		return mode;
 	}
 
+	/**
+	 * Angle is in degrees and the signed radius is in feet to the right (negative for the left)
+	 */
 	public static ActionGroup arcAngle(double angleDeg, double signedRadius) {
 		return arc(Math.toRadians(angleDeg) * signedRadius, signedRadius);
 	}
