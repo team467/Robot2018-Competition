@@ -215,9 +215,9 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	}
 	
 	@Override
-	public void arcTurn(double radius, double rotation) { 
+	public void arcTurn(double averageArcLength, double rotation) { 
 		double turnDistance = degreesToFeet(rotation);
-		moveFeet((radius - turnDistance), (radius + turnDistance));		
+		moveFeet((averageArcLength - turnDistance), (averageArcLength + turnDistance));		
 	}
 
 	@Override
