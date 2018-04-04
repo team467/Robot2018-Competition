@@ -94,7 +94,8 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		drive.setPIDSFromRobotMap();
 		driverstation.readInputs();
-		tuningValue = Double.parseDouble(SmartDashboard.getString("DB/String 0", "0.0"));
+		//tuningValue = Double.parseDouble(SmartDashboard.getString("DB/String 0", "0.0"));
+		tuningValue = 20.0;
 		drive.zero();
 	}
 
@@ -190,7 +191,7 @@ public class Robot extends TimedRobot {
 		switch (driverstation.getDriveMode()) {
 		case ArcadeDrive:
 			drive.arcadeDrive(speed, turn, true);
-//	        drive.logTelemetry(speed, turn);
+	        drive.logTelemetry(speed, turn);
 			break;
 		case CurvatureDrive:
 			drive.curvatureDrive(speed, turn, true);
