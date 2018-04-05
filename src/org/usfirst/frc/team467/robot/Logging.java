@@ -10,6 +10,9 @@ import org.apache.log4j.RollingFileAppender;
 import org.usfirst.frc.team467.robot.Autonomous.Action;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 import org.usfirst.frc.team467.robot.vision.VisionIntegration;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
 import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
@@ -56,8 +59,13 @@ public class Logging {
 			System.out.println("Failed to create log file appender: " + e.getMessage());
 		}
 
+		DriverStation station = DriverStation.getInstance();
+		String event = station.getEventName();
+		String type = station.getMatchType().name();
+		String match = Integer.toString(station.getMatchNumber());
+		Logger.getRootLogger().info(String.join(" ", event, type, match));
 
-		// Set the default log level to INFO.
+		// Set the default log level to ERROR.
 		Logger.getRootLogger().setLevel(Level.ERROR); // changing log level
 	}
 }
