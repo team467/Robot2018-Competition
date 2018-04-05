@@ -267,25 +267,27 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		
 		LOGGER.trace("Automated move of right: "+ targetRightDistance +" left: "+ targetLeftDistance + " feet ");
 
-		// Convert the turn to a distance based on the circumference of the robot wheel base.
-		// Store the sign so that all math works the same forward and backward using absolute values,
-		// with direction corrected at the end.
+		// Desmos graph depicting the math: https://www.desmos.com/calculator/lqsrwzhlev
+		// Store the sign so it works for both directions using absolute values
 		double leftSign = Math.signum(targetLeftDistance);
 		double rightSign = Math.signum(targetRightDistance);
 
 		// Get the current positions to determine if the request is above the max individual request
-		double currentLeftPosition = getLeftDistance();
-		double currentRightPosition = getRightDistance();
+		double currentLeftPosition = Math.abs(getLeftDistance());
+		double currentRightPosition = Math.abs(getRightDistance());
+		double positionDiff = Math.abs(currentLeftPosition) - Math.abs(currentRightPosition);
 		LOGGER.trace("Current Position - Right: " + df.format(currentRightPosition) + " Left: "
 				+ df.format(currentLeftPosition));
 
-		// Get the average to correct for drift and move it back to straight
-		// Use absolute values so that direction is ignored.
-		double average = 0.5 * (Math.abs(currentRightPosition) + Math.abs(currentLeftPosition));
+		targetLeftDistance = Math.abs(targetLeftDistance);
+		targetRightDistance = Math.abs(targetRightDistance);
+		double leftEnd = Math.max(targetLeftDistance, targetLeftDistance + positionDiff);
+		double rightEnd = Math.max(targetRightDistance, targetRightDistance - positionDiff);
 
 		// Use the minimum to go either the max allowed distance or to the target
-		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (carrotLength + average));
-		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (carrotLength + average));
+		double moveLeftDistance = leftSign * Math.min(leftEnd, (currentRightPosition + carrotLength));
+		double moveRightDistance = rightSign * Math.min(rightEnd, (currentLeftPosition + carrotLength));
+
 		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
 				+ df.format(moveLeftDistance));
 
