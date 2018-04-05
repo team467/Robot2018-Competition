@@ -59,11 +59,15 @@ public class Logging {
 			System.out.println("Failed to create log file appender: " + e.getMessage());
 		}
 
-		DriverStation station = DriverStation.getInstance();
-		String event = station.getEventName();
-		String type = station.getMatchType().name();
-		String match = Integer.toString(station.getMatchNumber());
-		Logger.getRootLogger().info(String.join(" ", event, type, match));
+		try {
+			DriverStation station = DriverStation.getInstance();
+			String event = station.getEventName();
+			String type = station.getMatchType().name();
+			String match = Integer.toString(station.getMatchNumber());
+			Logger.getRootLogger().info(String.join(" ", event, type, match));
+		} catch (NullPointerException e) {
+			Logger.getRootLogger().info("No match data");
+		}
 
 		// Set the default log level to ERROR.
 		Logger.getRootLogger().setLevel(Level.ERROR); // changing log level
