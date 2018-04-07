@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
 
 	public void testPeriodic() {
 		if (tuningValue <= 30.0 && tuningValue >= -30.0) {
-			drive.moveLinearFeet(tuningValue);
+			drive.tuneForward(tuningValue, RobotMap.PID_SLOT_DRIVE);
 		} else {
 			drive.rotateByAngle(tuningValue);
 		}
