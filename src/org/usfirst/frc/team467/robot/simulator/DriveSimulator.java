@@ -178,7 +178,7 @@ public class DriveSimulator implements AutoDrive {
 //		double a1 = (180-rotate) - isosceles;
 //		double a2 = 90 - a1;
 		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
-		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotation);
+		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotate);
 		//double circumference = (2 * radius) * Math.PI;
 		//double travelDistance = (rotate * circumference) / 360;
 		double innerCirc = (radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;

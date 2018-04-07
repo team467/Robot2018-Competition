@@ -286,7 +286,7 @@ public class Actions {
 //		mode.addAction(releaseCube());
 //		mode.addAction(pauseGrabber());
 		
-		mode.addActions(arc(90, 10));
+		mode.addActions(arc(-90, 10));
 		return mode;
 	}
 
