@@ -111,6 +111,20 @@ public class Actions {
 				"Elevator going to lowest level", 
 				new ActionGroup.RunOnce(() -> elevator.moveToHeight(Stops.basement)));
 	}
+	
+	public static Action arcTurn(double rotation, double distance) {
+		String actionText = "Move" + distance + " feet and turn ";
+		return new Action(actionText,
+				new ActionGroup.ReachDistance(distance), () -> drive.calculateArc(rotation, distance));
+	}
+	
+	public static ActionGroup arc(double rotation, double distance) {
+		String actionGroupText = "Move" + distance + " feet and turn ";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addAction(zeroDistance());
+		mode.addAction(arcTurn(rotation, distance));
+		return mode;
+	}
 
 	public static Action elevatorToSwitch() {
 		Elevator elevator = Elevator.getInstance();
@@ -265,12 +279,14 @@ public class Actions {
 	public static ActionGroup basicSwitchOurSide() {
 		String actionGroupText = "Put cube on our side switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-		mode.addActions(start());
-		mode.addActions(move(12.33)); 
-		mode.addActions(turn(-90));
-		mode.addActions(move(1.479)); 
-		mode.addAction(releaseCube());
-		mode.addAction(pauseGrabber());
+//		mode.addActions(start());
+//		mode.addActions(move(12.33)); 
+//		mode.addActions(turn(-90));
+//		mode.addActions(move(1.479)); 
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
+		
+		mode.addActions(arc(45, 27));
 		return mode;
 	}
 

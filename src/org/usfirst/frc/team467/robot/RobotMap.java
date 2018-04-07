@@ -58,6 +58,9 @@ public class RobotMap {
 	public static double LEFT_DRIVE_PID_I;
 	public static double LEFT_DRIVE_PID_D;
 	public static double LEFT_DRIVE_PID_F;
+	
+	public static double ROBOT_WIDTH;
+	//public static double arcSpeed;
 
 	// Initialize robot map. 
 	public static void init(RobotID id) {
@@ -81,6 +84,8 @@ public class RobotMap {
 			HAS_CAMERA = true;
 			HAS_LEFT_RAMP = false;
 			HAS_RIGHT_RAMP = false;
+			
+			ROBOT_WIDTH = 28.0;
 
 			isDriveMotorInverted = new boolean[] { false, true, false, true };
 			break;
@@ -158,6 +163,8 @@ public class RobotMap {
 			RAMP_RELEASE_REVERSE_CHANNEL = 3;
 
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
+			
+			ROBOT_WIDTH = 28.0;
 			break;
 		case Competition_2:
 			HAS_WHEELS = true;
@@ -234,6 +241,7 @@ public class RobotMap {
 			RAMP_RELEASE_REVERSE_CHANNEL = 3;
 
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
+			ROBOT_WIDTH = 28.0;
 			break;
 		}
 		//These calculations can be made after the robot-specific constants are set. 

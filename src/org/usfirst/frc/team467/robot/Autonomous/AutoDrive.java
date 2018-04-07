@@ -7,6 +7,8 @@ public interface AutoDrive {
 
 	void moveLinearFeet(double distance);
 	void rotateByAngle(double rotationInDegrees);
+	void arcTurn(double rotation, double distance);
+	void calculateArc(double rotation, double distance);
 
 	/**
 	 * Move each side independently. Distances must be equal or opposite.
@@ -26,4 +28,5 @@ public interface AutoDrive {
 	 * Resets the current sensor position to zero.
 	 */
 	void zero();
+	 
 }

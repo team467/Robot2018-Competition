@@ -79,19 +79,29 @@ public class DriveSimulator implements AutoDrive {
 
 	@Override
 	public void moveFeet(double leftDistance, double rightDistance) {
-
+		
 		if (leftPositionReading == leftDistance && rightPositionReading == rightDistance) {
 			isMoving = false;
 			return; // At destination
 		}
 
 		isMoving = true;
+		
+		double absLeftDistance = Math.abs(leftDistance);
+		double absRightDistance = Math.abs(rightDistance);
+		double rightRatio = 1.0;
+		double leftRatio = 1.0;
+		if (absLeftDistance > absRightDistance) {
+			rightRatio = absRightDistance/ absLeftDistance;
+		} else {
+			leftRatio = absLeftDistance/ absRightDistance;
+		}
 
-		if (Math.abs((leftDistance - leftPositionReading)) > maxFeetPerPeriod) {
+		if (Math.abs((leftDistance - leftPositionReading)) >  maxFeetPerPeriod) {
 			if (leftDistance < 0) {
-				leftPositionReading -= maxFeetPerPeriod;
+				leftPositionReading -= maxFeetPerPeriod * leftRatio;
 			} else {
-				leftPositionReading += maxFeetPerPeriod;
+				leftPositionReading += maxFeetPerPeriod * leftRatio;
 			}
 		} else {
 			leftPositionReading = leftDistance;
@@ -99,9 +109,9 @@ public class DriveSimulator implements AutoDrive {
 
 		if (Math.abs((rightDistance - rightPositionReading)) > maxFeetPerPeriod) {
 			if (rightDistance < 0) {
-				rightPositionReading -= maxFeetPerPeriod;
+				rightPositionReading -= maxFeetPerPeriod * rightRatio;
 			} else {
-				rightPositionReading += maxFeetPerPeriod;
+				rightPositionReading += maxFeetPerPeriod * rightRatio;
 			}
 		} else {
 			rightPositionReading = rightDistance;
@@ -149,4 +159,67 @@ public class DriveSimulator implements AutoDrive {
 		
 		return distanceInFeet;
 	}
+	double reachArc = 0;
+	
+	public double getArc() {
+		return reachArc;
+	}
+	
+	public void calculateArc(double rotation, double distance) {
+		double rotate = Math.abs(rotation);
+		double isosceles = (360 - rotate) / 2;
+//		double a1 = (180-rotate) - isosceles;
+//		double a2 = 90 - a1;
+		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
+		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotation);
+		//double circumference = (2 * radius) * Math.PI;
+		//double travelDistance = (rotate * circumference) / 360;
+		double innerCirc = (radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+		double outerCirc = (radius + RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+		double inner = (rotate * innerCirc) / 360;
+		double outer = (rotate * outerCirc) / 360;
+		reachArc = inner;
+		if (rotation > 0) {
+			arcTurn(outer, inner);
+		}
+		
+		else if(rotation < 0) {
+			arcTurn(inner, outer);
+		}
+		
+		//arcTurn(inner, outer);
+	}
+	
+
+	@Override
+	public void arcTurn(double leftArc, double rightArc) {
+		moveFeet(leftArc, rightArc);
+	}
+//	public void arcTurn(double rotation, double distance) {
+//		double rotate = Math.abs(rotation);
+//		double isosceles = (360 - rotate) / 2;
+////		double a1 = (180-rotate) - isosceles;
+////		double a2 = 90 - a1;
+//		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
+//		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotation);
+//		//double circumference = (2 * radius) * Math.PI;
+//		//double travelDistance = (rotate * circumference) / 360;
+//		double innerCirc = (radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+//		double outerCirc = (radius + RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+//		double inner = (rotate * innerCirc) / 360;
+//		double outer = (rotate * outerCirc) / 360;
+//		reachArc = inner;
+//		
+//		if (rotation > 0) {
+//				moveFeet(outer, inner); //moveDistance
+////				leftPositionReading +=  
+////				right.set(inner);
+//			}
+//			
+//			else if (rotation < 0) {
+//				moveFeet(inner, outer); //moveDistance
+////				left.set(inner);
+////				right.set(outer);
+//			}
+//	}
 }
