@@ -1,5 +1,6 @@
 package org.usfirst.frc.team467.robot;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.log4j.ConsoleAppender;
@@ -46,8 +47,23 @@ public class Logging {
 		String pattern = "%rms %p %c - %m%n";
 		PatternLayout layout = new PatternLayout(pattern);
 		Logger.getRootLogger().addAppender(new ConsoleAppender(layout));
+		String logDirectory = "/home/admin/log/";
+		String logFileName = "Robot467.log";
+		// Set default string for layout location
+		// Try to open and read a file on the USB.
+		// IF no file/USB, then log in catch
+		// if File exists, change layout location to USB
+		
+		String usbDirectory = "/media/sda1/";
+		File file = new File(usbDirectory +"RobotDummyFile.txt");
+		if (file.exists()) {
+			logDirectory = usbDirectory;
+		}
+
+		
 		try {
-			RollingFileAppender rollingFileAppender = new RollingFileAppender(layout, "/home/admin/log/Robot467.log");
+			System.out.println("printing file at: " + logDirectory + logFileName); 
+			RollingFileAppender rollingFileAppender = new RollingFileAppender(layout, logDirectory + logFileName);
 			rollingFileAppender.setMaxBackupIndex(20);
 			rollingFileAppender.setMaximumFileSize(1_000_000);
 			rollingFileAppender.rollOver();
