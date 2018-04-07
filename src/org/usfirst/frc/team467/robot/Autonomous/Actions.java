@@ -90,7 +90,7 @@ public class Actions {
 				);
 		
 		ConcurrentActions concurrentaction = new ConcurrentActions(
-				() -> grabber.grab(RobotMap.MAX_GRAB_SPEED),
+				() -> grabber.grab(),
 				() -> drive.moveLinearFeet(distance));
 
 		group.addAction(new Action(
@@ -186,6 +186,21 @@ public class Actions {
 			return false;
 		}
 	}
+	
+    public static Action arcTurn(double rotation, double distance) {
+		String actionText = "Arc-turn " + rotation + "°" + " distance";
+		return new Action(actionText, new ActionGroup.RunOnce(() -> drive.arc(rotation, distance)));
+				
+	}
+    
+    public static ActionGroup arc(double rotation, double distance) {
+    	String actionGroupText = "Arc-turn " + rotation + "°" + " distance";
+    	ActionGroup mode = new ActionGroup(actionGroupText);
+    	mode.addAction(zeroDistance());
+    	mode.addAction(arcTurn(rotation, distance));
+    	return mode;
+    	
+    }
 
 	public static ActionGroup move(double distance) {
 		String actionGroupText = "Move forward " + distance + " feet";
@@ -276,11 +291,12 @@ public class Actions {
 		String actionGroupText = "Put cube on our side switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(move(12.33));
-		mode.addActions(turn(-95));
+		//mode.addActions(move(12.33));
+		mode.addActions(arc(90, 7));
+		/*mode.addActions(turn(-95));
 		mode.addActions(move(2.0)); 
 		mode.addAction(releaseCube());
-		mode.addAction(pauseGrabber());
+		mode.addAction(pauseGrabber());*/
 		return mode;
 	}
 
@@ -364,5 +380,6 @@ public class Actions {
 		
 		return mode;
 	}
+
 
 }

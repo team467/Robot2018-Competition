@@ -344,4 +344,29 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		right.setOpenLoopRamp(ramp);
 		LOGGER.trace("Ramp time: "+ ramp);
 	}
+
+	public void arc(double rotation, double distance) {
+		  double rotate = Math.abs(rotation);
+		  double isosceles = (360 - rotate) / 2;
+		  //double a1;
+		  //double a2 = 90 - a1;
+		  double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
+		  double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotation);
+		  //double circumference = (2 * radius) * Math.PI;
+		  //double travelDistance = (rotate * circumference) / 360;
+		  double innerCirc = (radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+		  double outerCirc = (radius + RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+		  double inner =  (rotate * innerCirc) / 360;
+		  double outer =  (rotate * outerCirc) / 360;
+		  left.setPIDSlot(RobotMap.PID_SLOT_DRIVE);
+		  right.setPIDSlot(RobotMap.PID_SLOT_DRIVE);
+		  if (rotation > 0) {
+		     moveFeet(outer, inner);
+		  }
+
+		  else if (rotation <= 0) {
+		     moveFeet(inner, outer);
+		  }
+
+		} 
 }

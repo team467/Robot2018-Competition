@@ -15,6 +15,7 @@ public interface AutoDrive {
 
 	boolean isStopped();
 
+	void arc(double rotation, double distance);
 	/**
 	 * Gets the distance moved for checking drive modes.
 	 *
