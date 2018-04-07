@@ -361,7 +361,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	}
 
 	@Override
-	public void calculateArc(double rotation, double distance) {
+	public double calculateArc(double rotation, double distance) {
+		return 0.00;
 		// TODO Auto-generated method stub
 		
 	}

@@ -115,7 +115,7 @@ public class Actions {
 	public static Action arcTurn(double rotation, double distance) {
 		String actionText = "Move" + distance + " feet and turn ";
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(distance), () -> drive.calculateArc(rotation, distance));
+				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(rotation, distance));
 	}
 	
 	public static ActionGroup arc(double rotation, double distance) {
@@ -286,7 +286,7 @@ public class Actions {
 //		mode.addAction(releaseCube());
 //		mode.addAction(pauseGrabber());
 		
-		mode.addActions(arc(45, 27));
+		mode.addActions(arc(90, 10));
 		return mode;
 	}
 
