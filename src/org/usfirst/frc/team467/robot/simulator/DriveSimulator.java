@@ -174,7 +174,7 @@ public class DriveSimulator implements AutoDrive {
 	
 	public double calculateArc(double rotation, double distance) {
 		double rotate = Math.abs(rotation);
-		double isosceles = (360 - rotate) / 2;
+		double isosceles = (180 - rotate) / 2;
 //		double a1 = (180-rotate) - isosceles;
 //		double a2 = 90 - a1;
 		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
