@@ -181,8 +181,8 @@ public class DriveSimulator implements AutoDrive {
 		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotate);
 		//double circumference = (2 * radius) * Math.PI;
 		//double travelDistance = (rotate * circumference) / 360;
-		double innerCirc = (radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
-		double outerCirc = (radius + RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
+		double innerCirc = (radius - (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
+		double outerCirc = (radius + (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
 		double inner = (rotate * innerCirc) / 360;
 		double outer = (rotate * outerCirc) / 360;
 		innerArc = inner;
@@ -198,10 +198,10 @@ public class DriveSimulator implements AutoDrive {
 	@Override
 	public void arcTurn(double rotation, double distance) {
 		if(rotation > 0) {
-			moveFeet(outerArc, innerArc);
+			moveFeet(innerArc, outerArc);
 		}
 		else if(rotation < 0) {
-			moveFeet(innerArc, outerArc);
+			moveFeet(outerArc, innerArc);
 		}
 	}
 //	public void arcTurn(double rotation, double distance) {

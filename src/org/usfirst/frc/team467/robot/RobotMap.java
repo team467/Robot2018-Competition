@@ -165,6 +165,7 @@ public class RobotMap {
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
 			
 			ROBOT_WIDTH = 28.0;
+			//ROBOT_F_WIDTH = 24.5
 			break;
 		case Competition_2:
 			HAS_WHEELS = true;
@@ -242,6 +243,7 @@ public class RobotMap {
 
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 500;
 			ROBOT_WIDTH = 28.0;
+			
 			break;
 		}
 		//These calculations can be made after the robot-specific constants are set. 
