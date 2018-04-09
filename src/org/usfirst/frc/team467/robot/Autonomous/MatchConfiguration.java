@@ -100,16 +100,17 @@ public class MatchConfiguration {
 	public void setSides() {
 		String gameData;
 
-		if (RobotMap.useSimulator) {
-			gameData = SimulatedData.gameSpecificMessage.toUpperCase();
-		} else {
-			try {
-				gameData = DriverStation.getInstance().getGameSpecificMessage();
-			} catch (Exception e) {
+		try {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		} catch (Exception e) {
+			if (RobotMap.useSimulator) {
+				gameData = SimulatedData.gameSpecificMessage.toUpperCase();
+			} else {
 				LOGGER.info("Invalid game data from FMS, using fake data");
 				gameData = SmartDashboard.getString("DB/String 5", "LLL");
 			}
 		}
+
 
 		LOGGER.debug("gameData: " + gameData);
 
