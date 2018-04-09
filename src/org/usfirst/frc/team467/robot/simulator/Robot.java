@@ -36,7 +36,6 @@ public class Robot {
 
 		RobotMap.init(RobotID.Competition_1);
 		RobotMap.useSimulator = true;
-		RobotMap.USE_FAKE_GAME_DATA = true;
 
 		drive = DriveSimulator.getInstance();
 		matchConfig = MatchConfiguration.getInstance();

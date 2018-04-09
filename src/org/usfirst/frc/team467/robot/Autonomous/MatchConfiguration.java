@@ -100,14 +100,15 @@ public class MatchConfiguration {
 	public void setSides() {
 		String gameData;
 
-		if (RobotMap.USE_FAKE_GAME_DATA) {
-			if (RobotMap.useSimulator) {
-				gameData = SimulatedData.gameSpecificMessage.toUpperCase();
-			} else {
+		if (RobotMap.useSimulator) {
+			gameData = SimulatedData.gameSpecificMessage.toUpperCase();
+		} else {
+			try {
+				gameData = DriverStation.getInstance().getGameSpecificMessage();
+			} catch (Exception e) {
+				LOGGER.info("Invalid game data from FMS, using fake data");
 				gameData = SmartDashboard.getString("DB/String 5", "LLL");
 			}
-		} else {
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
 		}
 
 		LOGGER.debug("gameData: " + gameData);
@@ -177,7 +178,7 @@ public class MatchConfiguration {
 
 		LOGGER.debug("Entering decision tree");
 		autonomous = Actions.doNothing();
-		
+
 		if (autoMode.startsWith("Left")) {
 			Actions.startOnLeft();
 		} else if (autoMode.startsWith("Right")) {

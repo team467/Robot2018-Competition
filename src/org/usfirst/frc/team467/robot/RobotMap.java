@@ -128,7 +128,6 @@ public class RobotMap {
 			RIGHT_TURN_PID_F = 0.0;
 
 			useSimulator = false;
-			USE_FAKE_GAME_DATA = true;
 			
 			HAS_GRABBER = false;
 			GRABBER_INVERT = false;
@@ -222,7 +221,6 @@ public class RobotMap {
 			HAS_CAMERA = false;
 			
 			useSimulator = false;
-			USE_FAKE_GAME_DATA = false;
 
 			HAS_LEFT_RAMP = true;
 			RAMP_LEFT_FORWARD_CHANNEL = 1;
@@ -269,7 +267,6 @@ public class RobotMap {
 	public static final double MAX_CARROT_LENGTH = 6.0;
 
 	public static boolean useSimulator = false;
-	public static boolean USE_FAKE_GAME_DATA = false;
 
 	public static final double MIN_DRIVE_SPEED = 0.1;
 
