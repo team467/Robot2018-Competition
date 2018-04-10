@@ -1,8 +1,7 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
-import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
-import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -18,13 +17,9 @@ public class Grabber {
 
 	public static final int GRAB_TIME_MS = 1000;
 	public static final int RELEASE_TIME_MS = 1000;
-
-	/* private int grabCount = 0;
-	private int releaseCount = 0; */
-	
 	private GrabberState state = GrabberState.NEUTRAL;
 
-	private static final Logger LOGGER = Logger.getLogger(Grabber.class);
+	private static final Logger LOGGER = LogManager.getLogger(Grabber.class);
 
 	private static Grabber instance;
 	private SpeedController left;
@@ -46,8 +41,6 @@ public class Grabber {
 			os = OpticalSensor.getInstance();
 		}
 
-		//grabCount = GRAB_TIME_MS/20;
-		//releaseCount = RELEASE_TIME_MS/20;
 	}
 
 	public static Grabber getInstance() {
@@ -78,7 +71,6 @@ public class Grabber {
 		case GRAB:
 			if(hasCube()) { 
 				state = GrabberState.NEUTRAL;
-				//count = 0;
 			} else {
 				speed = RobotMap.MAX_GRAB_SPEED;
 			}
@@ -100,8 +92,7 @@ public class Grabber {
 			left.set(speed);
 			right.set(-speed);
 		}
-		//count++;
-
+		
 		// Save the previous state and check for current state.
 		hadCube = hasCube;
 		hasCube = hasCube();
@@ -144,7 +135,7 @@ public class Grabber {
 			}
 		}
 
-		LOGGER.debug("Grabber Throttle=" + throttle);
+		LOGGER.debug("Grabber Throttle= {}", throttle);
 		left.set(throttle * RobotMap.MAX_GRAB_SPEED);
 		right.set(-throttle * RobotMap.MAX_GRAB_SPEED);
 

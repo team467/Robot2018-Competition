@@ -1,16 +1,18 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 
 //TalonSpeedControllerGroup
 public class TalonSpeedControllerGroup implements SpeedController {
-	private static final Logger LOGGER = Logger.getLogger(TalonSpeedControllerGroup.class);
+	private static final Logger LOGGER = LogManager.getLogger(TalonSpeedControllerGroup.class);
 	private WPI_TalonSRX leader;
 	private WPI_TalonSRX follower1;
 	private WPI_TalonSRX follower2;
@@ -72,7 +74,11 @@ public class TalonSpeedControllerGroup implements SpeedController {
 		talon.configPeakOutputReverse(-1.0, 0);
 
 		talon.configOpenloopRamp(0.2, RobotMap.TALON_TIMEOUT);
-//		talon.configClosedloopRamp(1.0, RobotMap.TALON_TIMEOUT);		
+//		talon.configClosedloopRamp(1.0, RobotMap.TALON_TIMEOUT);
+		
+		talon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, 0);
+		talon.configVelocityMeasurementWindow(2, 0);
+		
 	}
 
 	public void logClosedLoopErrors(String side) {
@@ -80,11 +86,17 @@ public class TalonSpeedControllerGroup implements SpeedController {
 			LOGGER.debug("No CLosed Loop errors");
 			return;
 		}
-		LOGGER.debug(
-				side + ": Vel = " + leader.getSelectedSensorVelocity(0) +
-				" Pos = " + leader.getSelectedSensorPosition(0) +
-				" Err = " + leader.getClosedLoopError(0));
+		LOGGER.debug("side: {} Vel = {} Pos = {} Err = {}", side, leader.getSelectedSensorVelocity(0),
+		leader.getSelectedSensorPosition(0), leader.getClosedLoopError(0));
 	}
+
+    public double getSensorVelocity() {
+        return leader.getSelectedSensorVelocity(0);
+    }
+
+    public double getSensorPosition() {
+        return leader.getSelectedSensorPosition(0);
+    }
 
 	public void setPIDF(int slotId, double p, double i, double d, double f){
 		if (!RobotMap.HAS_WHEELS) {

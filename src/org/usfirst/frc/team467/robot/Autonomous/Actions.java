@@ -1,6 +1,7 @@
 package org.usfirst.frc.team467.robot.Autonomous;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.Drive;
 import org.usfirst.frc.team467.robot.Elevator;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
@@ -12,14 +13,22 @@ import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 
 public class Actions {
 
-	private static final Logger LOGGER = Logger.getLogger(Actions.class);
+	private static final Logger LOGGER = LogManager.getLogger(Actions.class);
 
 	private static AutoDrive drive = (RobotMap.useSimulator) ? DriveSimulator.getInstance() : Drive.getInstance();
 	
 	private static double mirrorTurns = 1.0;
 	
-	public static void startOnRight() {
+	public static void startOnLeft() {
 		mirrorTurns = -1.0;
+	}
+	
+	public static void startOnRight() {
+		mirrorTurns = 1.0;
+	}
+	
+	public static void startInCenter() {
+		mirrorTurns = 1.0;
 	}
 	
 	public static final Action nothing(){
@@ -72,22 +81,24 @@ public class Actions {
 				() -> grabber.startGrab());
 	}
 
-	public static Action grabCubeWhileDriving(double distance) {
+	public static ActionGroup grabAndMoveLinear(double distance) {
 		Grabber grabber = Grabber.getInstance();
-		Drive drive = Drive.getInstance();
-		drive.zero();
+		ActionGroup group = new ActionGroup("grab and move Linear");
+		group.addAction(zeroDistance());
 		MultiCondition multicondition = new MultiCondition(
-				new ActionGroup.ReachDistance(distance), 
-				() -> grabber.hasCube());
+				new ActionGroup.ReachDistance(distance)//, 
+			//	() -> grabber.hasCube()
+				);
 		
 		ConcurrentActions concurrentaction = new ConcurrentActions(
 				() -> grabber.grab(RobotMap.MAX_GRAB_SPEED),
 				() -> drive.moveLinearFeet(distance));
 
-		return new Action(
+		group.addAction(new Action(
 				"Grabbing cube and driving forward",
 				multicondition,
-				concurrentaction);
+				concurrentaction));
+		return group;
 	}
 
 	public static Action releaseCube() {
@@ -160,7 +171,7 @@ public class Actions {
 	public static Action moveturn(double rotationInDegrees) {
 		String actionText = "Rotate " + rotationInDegrees + " degrees.";
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(rotationInDegrees),
+				new ActionGroup.ReachAngle(rotationInDegrees), // reach distance was here instead of reachAngle
 				() -> drive.rotateByAngle(rotationInDegrees));
 	}
 
@@ -180,12 +191,12 @@ public class Actions {
 	public static boolean moveDistanceComplete(double distance) {
 		double distanceMoved = drive.absoluteDistanceMoved();
 
-		LOGGER.debug("Distances - Target: " + Math.abs(distance) + " Moved: " + distanceMoved);
+		LOGGER.debug("Distances - Target: {} Moved: {}", Math.abs(distance), distanceMoved);
 		if (distanceMoved >= (Math.abs(distance) - RobotMap.POSITION_ALLOWED_ERROR)) {
-			LOGGER.info("Finished moving " + distanceMoved + " feet");
+			LOGGER.info("Finished moving {} feet", distanceMoved);
 			return true;
 		} else {
-			LOGGER.info("Still moving " + distanceMoved + " feet");
+			LOGGER.info("Still moving {} feet", distanceMoved);
 			return false;
 		}
 	}
@@ -251,7 +262,7 @@ public class Actions {
 		String actionGroupText = "Testing grab with a 2 foot move.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(elevatorToFloor());
-		mode.addAction(grabCubeWhileDriving(2));
+		mode.addActions(grabAndMoveLinear(2));
 		return mode;
 	}
 
@@ -287,13 +298,6 @@ public class Actions {
 		mode.addActions(move(4.9));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
-		
-//		mode.addActions(start());
-//		mode.addActions(arcTurn(4.0, 90)); 
-//		mode.addActions(arcTurn(5.00, -95)); 
-//		mode.addActions(move(2.5));
-//		mode.addAction(releaseCube());
-//		mode.addAction(pauseGrabber());
 		return mode;
 	}
 

@@ -8,7 +8,8 @@ package org.usfirst.frc.team467.robot;
 import java.lang.Math;
 import java.util.EnumMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
  */
 public class XBoxJoystick467 {
 
-	private static final Logger LOGGER = Logger.getLogger(XBoxJoystick467.class);
+	private static final Logger LOGGER = LogManager.getLogger(XBoxJoystick467.class);
 	private XboxController xbox;
 	private String name;
 	private int pov = 0;
@@ -61,7 +62,7 @@ public class XBoxJoystick467 {
 	 */
 	public boolean down(Button b) {
 		boolean result = buttonDown.get(b);
-		LOGGER.debug("Button " + b.name() + "=" + result);
+		LOGGER.debug("Button: {} = {}", b.name(), result);
 		return result;
 	}
 
@@ -72,7 +73,7 @@ public class XBoxJoystick467 {
 	 */
 	public boolean pressed(Button b) {
 		boolean result = buttonDown.get(b) && !prev_buttonDown.get(b);
-		LOGGER.debug("Button " + b.name() + "=" + result);
+		LOGGER.debug("Button: {} = {} ", b.name(), result);
 		return result;
 	}
 
@@ -165,7 +166,7 @@ public class XBoxJoystick467 {
 	}
 
 	public void logIdentity() {
-		LOGGER.debug(name + " Port: " + xbox.getPort());
+		LOGGER.debug("{} Port: {}", name, xbox.getPort());
 	}
 
 	/**
@@ -181,10 +182,12 @@ public class XBoxJoystick467 {
 	}
 
 	public double turboFastSpeed(double speed) {
+		// Speed multiplied by acceleration determined by left trigger
 		return speed * MathUtils.weightedAverage(RobotMap.NORMAL_MAX_SPEED, RobotMap.FAST_MAX_SPEED, getLeftTrigger());
 	}
 
 	public double turboSlowSpeed(double speed) {
+		// Speed multiplied by deceleration determined by right trigger
 		return speed * MathUtils.weightedAverage(RobotMap.NORMAL_MAX_SPEED, RobotMap.SLOW_MAX_SPEED, getRightTrigger());
 	}
 
@@ -192,7 +195,8 @@ public class XBoxJoystick467 {
 	 * Returns the turn speed, which is slower when the robot is driving fast.
 	 */
 	public double getAdjustedTurnSpeed() {
-		return getAdjustedSpeed(getRightStickX()) * MathUtils.weightedAverage(RobotMap.NORMAL_TURN_MAX_SPEED, RobotMap.SLOW_TURN_MAX_SPEED, getAdjustedSpeed(-getLeftStickY()));
+		return getAdjustedSpeed(getRightStickX()) * MathUtils.weightedAverage(
+			RobotMap.NORMAL_TURN_MAX_SPEED, RobotMap.SLOW_TURN_MAX_SPEED, Math.abs(getAdjustedSpeed(-getLeftStickY())));
 	}
 
 	public double getPOV() {
@@ -239,7 +243,7 @@ public class XBoxJoystick467 {
 	private double calculateStickAngle(double stickX, double stickY) {
 		if (stickY == 0.0) {
 			// In Y deadzone avoid divide by zero error
-			return (stickX > 0.0) ? Math.PI / 2 : -Math.PI / 2;
+			return (stickX > 0.0) ? Math.PI / 2 : (-Math.PI) / 2;
 		}
 
 		// Return value in range -PI to PI

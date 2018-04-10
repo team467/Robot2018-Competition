@@ -2,8 +2,10 @@ package org.usfirst.frc.team467.robot;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
-import org.usfirst.frc.team467.robot.Elevator.Stops;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
 
@@ -16,7 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends DifferentialDrive implements AutoDrive {
 	private ControlMode controlMode;
 
-	private static final Logger LOGGER = Logger.getLogger(Drive.class);
+    private static final Logger LOGGER = LogManager.getLogger(Drive.class);
+    private static final Logger TELEMETRY = LogManager.getLogger("telemetry");
 	private DecimalFormat df = new DecimalFormat("####0.00");
 
 	// Single instance of this class
@@ -25,7 +28,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	private final TalonSpeedControllerGroup left;
 	private final TalonSpeedControllerGroup right;
 	
-	private double carrotLength = 4.5;
+	private double carrotLength = 4.0;
 
 	// Private constructor
 
@@ -39,7 +42,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			TalonSpeedControllerGroup left;
 			TalonSpeedControllerGroup right;
 
-			LOGGER.info("Number of Motors:" + RobotMap.DRIVEMOTOR_NUM);
+			LOGGER.info("Number of Motors: {}", RobotMap.DRIVEMOTOR_NUM);
 			if (RobotMap.HAS_WHEELS && RobotMap.DRIVEMOTOR_NUM > 0) {
 				LOGGER.info("Creating  Lead Motors");
 				WPI_TalonSRX leftLead = new WPI_TalonSRX(RobotMap.LEFT_LEAD_CHANNEL);
@@ -79,12 +82,11 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		super(left, right);
 		this.left = left;
 		this.right = right;
-		this.carrotLength = POSITION_GAIN_FEET;
-
+		carrotLength = RobotMap.MAX_CARROT_LENGTH;
 		setPIDSFromRobotMap();
 	}
 
-	public void readPIDSFromSmartDashboard() {
+	public void readPIDSFromSmartDashboard(int pidSlot) {
 		double kPLeft = Double.parseDouble(SmartDashboard.getString("DB/String 1", "1.6")); // 1.6
 		double kPRight = Double.parseDouble(SmartDashboard.getString("DB/String 6", "1.4")); // 1.4
 
@@ -97,11 +99,10 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double kFLeft = Double.parseDouble(SmartDashboard.getString("DB/String 4", "1.1168")); // 0.0
 		double kFRight = Double.parseDouble(SmartDashboard.getString("DB/String 9", "1.2208")); // 0.0
 
-		left.setPIDF(RobotMap.PID_SLOT_DRIVE, kPLeft, kILeft, kDLeft, kFLeft);
-		right.setPIDF(RobotMap.PID_SLOT_DRIVE, kPRight, kIRight, kDRight, kFRight);
+		carrotLength = Double.parseDouble(SmartDashboard.getString("DB/String 5", "2.5"));
 
-		left.setPIDF(RobotMap.PID_SLOT_TURN, kPLeft, kILeft, kDLeft, kFLeft);
-		right.setPIDF(RobotMap.PID_SLOT_TURN, kPRight, kIRight, kDRight, kFRight);
+		left.setPIDF(pidSlot, kPLeft, kILeft, kDLeft, kFLeft);
+		right.setPIDF(pidSlot, kPRight, kIRight, kDRight, kFRight);
 	}
 
 	public void setPIDSFromRobotMap() {
@@ -143,19 +144,19 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		right.configPeakOutput(percentOut);
 	}
 	
-	public void setCarrotLength() {
-		carrotLength = POSITION_GAIN_FEET;
-		int elevatorHeight = Elevator.getInstance().getHeight();
-		if (elevatorHeight > Stops.highScale.height) {
-			carrotLength -= 2.0;
-		} else if (elevatorHeight > Stops.lowScale.height) {
-			carrotLength -= 1.0;
-		}
-	}
-
 	public void logClosedLoopErrors() {
 		left.logClosedLoopErrors("Left");
 		right.logClosedLoopErrors("Right");
+	}
+
+	public void logTelemetry(double speed, double turn) {
+	    // Log the speed and turn inputs, as well as the speed and position of each side.
+	    // For the speed we need to convert from ticks to feet and from per 100ms to per seconds.
+	    // For position we need to convert from ticks to feet.
+	    TELEMETRY.info(String.format("%f,%f,%f,%f,%f,%f",
+	            speed, turn,
+	            ticksToFeet(10*left.getSensorVelocity()), ticksToFeet(left.getSensorPosition()),
+	            ticksToFeet(10*right.getSensorVelocity()), ticksToFeet(right.getSensorPosition())));
 	}
 
 	public ControlMode getControlMode() {
@@ -207,8 +208,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public void tuneMove(double leftDistance, double rightDistance, int pidSlot) {
 		left.setPIDSlot(pidSlot);
 		right.setPIDSlot(pidSlot);
-		LOGGER.info("Target: L: " + leftDistance + " R: " + rightDistance 
-				+ " Current L: " + getLeftDistance()  + " R: " + getRightDistance());
+		LOGGER.info("Target: L: {} R: {} Current L: {} R: {}", leftDistance, rightDistance, getLeftDistance(), getRightDistance());
 		left.set(ControlMode.Position, feetToTicks(leftDistance));
 		// The right motor is reversed
 		right.set(ControlMode.Position, -feetToTicks(rightDistance));
@@ -227,30 +227,37 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		moveFeet(distanceInFeet, distanceInFeet);
 	}
 	
-	public static final double POSITION_GAIN_FEET = 4.5;
-
 	/**
 	 * 
 	 * @param rotationInDegrees
 	 *            enter positive degrees for left turn and enter negative degrees
 	 *            for right turn
 	 */
+	
 	public void rotateByAngle(double rotationInDegrees) {
 		left.setPIDSlot(RobotMap.PID_SLOT_TURN);
 		right.setPIDSlot(RobotMap.PID_SLOT_TURN);
 
-		LOGGER.trace("Automated move of " + rotationInDegrees + " degree turn.");
+		LOGGER.trace("Automated move of {} degree turn.", rotationInDegrees);
 		
 		double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
 		moveFeet(turnDistanceInFeet, - turnDistanceInFeet);
+//		tuneMove(turnDistanceInFeet, - turnDistanceInFeet, RobotMap.PID_SLOT_TURN);
 	}
 
 	/**
 	 * Convert angle in degrees to wheel distance in feet (arc length).
 	 */
 	public static double degreesToFeet(double degrees) {
-		// Adjust requested degrees because the robot predictably undershoots. Value was found empirically.
-		degrees *= 1.06;
+		
+		double turnConstant = 15.8;
+		
+		// Add a constant
+		if (degrees < 0) {
+			degrees -= turnConstant;
+		} else if (degrees > 0) {
+			degrees += turnConstant;
+		}
 
 		// Convert the turn to a distance based on the circumference of the robot wheel base.
 		double radius = RobotMap.WHEEL_BASE_WIDTH / 2;
@@ -262,11 +269,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 
 	public void moveFeet(double targetLeftDistance , double targetRightDistance) {
 
-		LOGGER.trace("Automated move of right: "+ targetRightDistance +" left: "+ targetLeftDistance + " feet ");
+		LOGGER.trace("Automated move of right: {} left: {} feet ", targetRightDistance, targetLeftDistance);
 
-		// Adjust the carrot length based on the elevator height.
-		setCarrotLength();
-		
 		// Convert the turn to a distance based on the circumference of the robot wheel base.
 		// Store the sign so that all math works the same forward and backward using absolute values,
 		// with direction corrected at the end.
@@ -287,8 +291,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		// Get the current positions to determine if the request is above the max individual request
 		double currentLeftPosition = getLeftDistance();
 		double currentRightPosition = getRightDistance();
-		LOGGER.trace("Current Position - Right: " + df.format(currentRightPosition) + " Left: "
-				+ df.format(currentLeftPosition));
+		LOGGER.trace("Current Position - Right: {} Left: {}", df.format(currentRightPosition), df.format(currentLeftPosition));
 
 		// Get the average to correct for drift and move it back to straight
 		// Use absolute values so that direction is ignored.
@@ -299,8 +302,7 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (carrotLength * leftRatio + average));
 		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (carrotLength * rightRatio + average));
 
-		LOGGER.trace("Distance in Feet - Right: " + df.format(moveRightDistance) + " Left: "
-				+ df.format(moveLeftDistance));
+		LOGGER.trace("Distance in Feet - Right: {} Left: {}", df.format(moveRightDistance), df.format(moveLeftDistance));
 
 		// Converts turn angle in ticks to degrees, then to radians.
 		double leftDistTicks = feetToTicks(moveLeftDistance);
@@ -331,19 +333,20 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double leftLeadSensorPos = Math.abs(getLeftDistance());
 		double rightLeadSensorPos = Math.abs(getRightDistance());
 		double lowestAbsDist = Math.min(leftLeadSensorPos, rightLeadSensorPos);
-		LOGGER.debug("The absolute distance moved: " + lowestAbsDist);
+		LOGGER.debug("The absolute distance moved: {}", lowestAbsDist);
 		return lowestAbsDist;
 	}
 
 	private double feetToTicks(double feet) {
 		double ticks = (feet / (RobotMap.WHEEL_CIRCUMFERENCE / 12.0)) * RobotMap.WHEEL_ENCODER_CODES_PER_REVOLUTION;
-		LOGGER.trace(feet + " feet = " + ticks + " ticks.");
+		LOGGER.trace("Feet = {} ticks = {}", feet, ticks);
+		//what do i do here
 		return ticks;
 	}
 
 	private double ticksToFeet(double ticks) {
 		double feet = (ticks / RobotMap.WHEEL_ENCODER_CODES_PER_REVOLUTION) * (RobotMap.WHEEL_CIRCUMFERENCE / 12);
-		LOGGER.trace(ticks + " ticks = " + feet + " feet.");
+		LOGGER.trace("Ticks = {} feet = {}",ticks, feet);
 		return feet;
 	}
 
@@ -363,8 +366,10 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			ramp = RobotMap.ELEVATOR_LOW_DRIVE_RAMP_TIME;
 		}
 
+		// JHP HACK We can't accurately measure elevator height.
+		ramp = 0.0;
 		left.setOpenLoopRamp(ramp);
 		right.setOpenLoopRamp(ramp);
-		LOGGER.trace("Ramp time: "+ ramp);
+		LOGGER.trace("Ramp time: {}", ramp);
 	}
 }
