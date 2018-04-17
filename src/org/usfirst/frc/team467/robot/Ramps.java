@@ -1,6 +1,7 @@
 package org.usfirst.frc.team467.robot;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * and then sets the appropriate state when it finishes.
  */
 public class Ramps {
-	private static final Logger LOGGER = Logger.getLogger(Ramps.class);
+	private static final Logger LOGGER = LogManager.getLogger(Ramps.class);
 	private static Ramps instance;
 
 	private Ramp left;
@@ -54,7 +55,7 @@ public class Ramps {
 			return;
 		}
 
-		releaseSolenoid.set(DoubleSolenoid.Value.kForward);
+		releaseSolenoid.set(DoubleSolenoid.Value.kReverse);
 		state = State.DEPLOYED;
 		LOGGER.info("Deploying");
 	}
@@ -98,7 +99,7 @@ public class Ramps {
 		}
 
 		state = State.START;
-		releaseSolenoid.set(DoubleSolenoid.Value.kReverse);
+		releaseSolenoid.set(DoubleSolenoid.Value.kForward);
 		left.reset();
 		right.reset();
 	}

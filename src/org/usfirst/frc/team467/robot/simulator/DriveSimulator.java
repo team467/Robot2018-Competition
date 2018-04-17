@@ -5,7 +5,8 @@ package org.usfirst.frc.team467.robot.simulator;
 
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.RobotMap.RobotID;
@@ -26,7 +27,7 @@ public class DriveSimulator implements AutoDrive {
 
 	RobotData data = RobotData.getInstance();
 
-	Logger LOGGER = Logger.getLogger(DriveSimulator.class);
+	Logger LOGGER = LogManager.getLogger(DriveSimulator.class);
 
 	private DecimalFormat df = new DecimalFormat("####0.00");
 
@@ -117,9 +118,9 @@ public class DriveSimulator implements AutoDrive {
 			rightPositionReading = rightDistance;
 		}
 
-		LOGGER.debug("Left Target: " + df.format(leftDistance) + " Right Target: " + df.format(rightDistance));
-		LOGGER.debug("Left Move: " + df.format(leftPositionReading) 
-				 + " Right Move: " + df.format(rightPositionReading));
+		LOGGER.debug("Left Target: {} Right Target: {}", df.format(leftDistance), df.format(rightDistance));
+		LOGGER.debug("Left Move: {}", df.format(leftPositionReading) 
+				+ " Right Move: {}", df.format(rightPositionReading));
 
 		data.updateDrivePosition(rightPosition(), leftPosition());
 
@@ -156,7 +157,7 @@ public class DriveSimulator implements AutoDrive {
 		double radius = RobotMap.WHEEL_BASE_WIDTH / 2;
 		double angleInRadians = Math.toRadians(degrees);
 		double distanceInFeet = radius * angleInRadians; // This is the distance we want to turn.
-		
+
 		return distanceInFeet;
 	}
 	double reachArc = 0;
@@ -177,8 +178,8 @@ public class DriveSimulator implements AutoDrive {
 		double isosceles = (180 - rotate) / 2;
 //		double a1 = (180-rotate) - isosceles;
 //		double a2 = 90 - a1;
-		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
-		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotate);
+		double displacement = (distance * Math.sin(Math.toRadians(90))) / Math.sin(Math.toRadians(isosceles));
+		double radius = (displacement * Math.sin(Math.toRadians(isosceles))) / Math.sin(Math.toRadians(rotate));
 		//double circumference = (2 * radius) * Math.PI;
 		//double travelDistance = (rotate * circumference) / 360;
 		double innerCirc = (radius - (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
@@ -202,6 +203,9 @@ public class DriveSimulator implements AutoDrive {
 		}
 		else if(rotation < 0) {
 			moveFeet(outerArc, innerArc);
+		}
+		else {
+			rotateByAngle(rotation);
 		}
 	}
 //	public void arcTurn(double rotation, double distance) {
