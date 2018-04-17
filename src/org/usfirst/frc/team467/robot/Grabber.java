@@ -29,6 +29,8 @@ public class Grabber {
 	private static Grabber instance;
 	private SpeedController left;
 	private SpeedController right;
+	private Piston left_P;
+	private Piston right_P;
 	private boolean hadCube = false;
 	private boolean hasCube = false;
 	private OpticalSensor os;

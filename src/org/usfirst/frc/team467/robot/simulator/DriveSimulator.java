@@ -177,7 +177,7 @@ public class DriveSimulator implements AutoDrive {
 		double isosceles = (180 - rotate) / 2;
 //		double a1 = (180-rotate) - isosceles;
 //		double a2 = 90 - a1;
-		double displacement = (distance * Math.sin(Math.toRadians(90))) / (Math.sin(Math.toRadians(isosceles)));
+		double displacement = (distance * Math.sin(Math.toRadians(90)) / (Math.sin(Math.toRadians(isosceles))));
 		double radius = (displacement * Math.sin(Math.toRadians(isosceles))) / (Math.sin(Math.toRadians(rotate)));
 		//double circumference = (2 * radius) * Math.PI;
 		//double travelDistance = (rotate * circumference) / 360;
@@ -202,6 +202,41 @@ public class DriveSimulator implements AutoDrive {
 		}
 		else if(rotation < 0) {
 			moveFeet(outerArc, innerArc);
+		}
+		else {
+			rotateByAngle(rotation);
+		}
+	}
+	
+	double innerArch = 0;
+	double outerArch = 0;
+
+	public double calculateArch(double rotation, double displacement) {
+		double rotate = Math.abs(rotation);
+		double isosceles = (180 - rotate) / 2;
+		double radius = (displacement * Math.sin(Math.toRadians(isosceles))) /(Math.sin(Math.toRadians(rotate)));
+		double innerR = radius - ((RobotMap.WHEEL_BASE_WIDTH - 4) / 2);
+		double outerR = radius + ((RobotMap.WHEEL_BASE_WIDTH - 4) / 2);
+		double circumference = radius * 2 * Math.PI;
+		double innerCirc = innerR * 2 * Math.PI;
+		double outerCirc = outerR * 2 * Math.PI;
+		double archLength = (circumference * rotate) / 360;
+		double inner = (innerCirc * rotate) / 360;
+		double outer = (outerCirc * rotate) / 360;
+		innerArch = inner;
+		outerArch = outer;
+		return inner;
+	}
+
+	public void archTurn(double rotation, double displacement) {
+		if(rotation > 0) {
+			moveFeet(innerArch, outerArch);
+		}
+		else if(rotation < 0) {
+			moveFeet(outerArch, innerArch);
+		}
+		else {
+			rotateByAngle(rotation);
 		}
 	}
 //	public void arcTurn(double rotation, double distance) {

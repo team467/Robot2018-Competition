@@ -113,16 +113,32 @@ public class Actions {
 	}
 	
 	public static Action arcTurn(double rotation, double distance) {
-		String actionText = "Move" + distance + " feet and turn ";
+		String actionText = "Move " + distance + " feet and turn ";
 		return new Action(actionText,
 				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(rotation, distance));
 	}
 	
 	public static ActionGroup arc(double rotation, double distance) {
-		String actionGroupText = "Move" + distance + " feet and turn ";
+		String actionGroupText = "Move " + distance + " feet and turn ";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(zeroDistance());
 		mode.addAction(arcTurn(rotation, distance));
+		return mode;
+	}
+	
+	
+	
+	public static Action archTurn(double rotation, double distance) {
+		String actionText = "Move " + distance + " feet and turn ";
+		return new Action(actionText,
+				new ActionGroup.ReachDistance(drive.calculateArch(rotation, distance)), () -> drive.archTurn(rotation, distance));
+	}
+	
+	public static ActionGroup arch(double rotation, double distance) {
+		String actionGroupText = "Move " + distance + " feet and turn ";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addAction(zeroDistance());
+		mode.addAction(archTurn(rotation, distance));
 		return mode;
 	}
 
@@ -279,14 +295,25 @@ public class Actions {
 	public static ActionGroup basicSwitchOurSide() {
 		String actionGroupText = "Put cube on our side switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-//		mode.addActions(start());
-//		mode.addActions(move(12.33)); 
-//		mode.addActions(turn(-90));
-//		mode.addActions(move(1.479)); 
-//		mode.addAction(releaseCube());
-//		mode.addAction(pauseGrabber());
+		/*mode.addActions(start());
+		mode.addActions(move(12.33)); 
+		mode.addActions(turn(-90));
+		mode.addActions(move(1.479)); 
+		mode.addAction(releaseCube());
+		mode.addAction(pauseGrabber());*/
 		
-		mode.addActions(arc(-90, 2));
+		mode.addActions(arch(90, 8)); //direct displacement
+		mode.addActions(arc(-90, 12)); //vertical displacement
+		
+		//mode.addActions(arc(90, 20));
+		//mode.addActions(turn(0));
+		/*mode.addAction(zeroDistance());
+		mode.addActions(arc(-90, 8));
+		mode.addAction(zeroDistance());
+		mode.addActions(arc(90, 20));
+		mode.addAction(zeroDistance());
+		//mode.addActions(arc(-100, 2));*/
+		
 		return mode;
 	}
 
@@ -363,21 +390,24 @@ public class Actions {
 		mode.addActions(move(-2.0));
 		mode.addActions(turn(90));
 		mode.addActions(move(5.81));
-		mode.addActions(turn(-90));
-		mode.addActions(move(2.0 + 12.0));
-		mode.addActions(turn(-50));
-		mode.addActions(move(1.5));
-		mode.addAction(grabCube());
-		mode.addActions(move(-1.5));
+		mode.addActions(turn(-90 - 35));
+		mode.addActions(move(3.5));
+		mode.addActions(move(-3.5));
+		mode.addActions(turn(125-90));
+//		mode.addActions(move(2.0 + 12.0));
+//		mode.addActions(turn(-50));
+//		mode.addActions(move(1.5));
+//		mode.addAction(grabCube());
+//		mode.addActions(move(-1.5));
 		
 		// place cube in scale
-		mode.addActions(turn(50));
-		mode.addActions(move(4.0));
-		mode.addActions(turn(100));
-		mode.addAction(elevatorToHighScale());
-		mode.addActions(move(3.4));
-		mode.addAction(releaseCube());
-		mode.addAction(pauseGrabber());
+//		mode.addActions(turn(50));
+//		mode.addActions(move(4.0));
+//		mode.addActions(turn(100));
+//		mode.addAction(elevatorToHighScale());
+//		mode.addActions(move(3.4));
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
 		return mode;
 	}
 
@@ -387,13 +417,16 @@ public class Actions {
 		mode.addActions(basicScaleOurSide());
 
 		// pick up cube
-		mode.addActions(move(-2.0)); 
+		mode.addActions(move(-1.25)); 
 		mode.addAction(elevatorToFloor());
-		mode.addActions(turn(-90)); 
-		mode.addActions(move(5.81)); 
-		mode.addActions(turn(53)); 
-		mode.addActions(move(4.5)); 
-		mode.addAction(grabCube());
+		mode.addActions(turn(-68)); 
+		mode.addActions(move(9.8));
+		mode.addAction(elevatorToSwitch());
+		mode.addActions(move(-9.8));
+		mode.addActions(turn(68)); 
+		mode.addActions(move(1.0)); 
+//		mode.addActions(move(1.0)); 
+		//mode.addAction(grabCube());
 
 		return mode;
 	}

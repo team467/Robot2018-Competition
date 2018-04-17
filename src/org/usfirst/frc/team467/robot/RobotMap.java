@@ -92,7 +92,7 @@ public class RobotMap {
 		case Competition_1:
 			HAS_WHEELS = true;
 			DRIVEMOTOR_NUM = 4;
-			WHEEL_CIRCUMFERENCE = 18.50;
+			WHEEL_CIRCUMFERENCE = 19.02;
 			WHEEL_ENCODER_CODES_PER_REVOLUTION = 1024;
 			useSpeedControllers = true;
 

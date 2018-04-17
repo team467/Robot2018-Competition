@@ -239,34 +239,6 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		
 		return distanceInFeet;
 	}
-	
-	public void arcTurn(double rotation, double distance) {
-		double rotate = Math.abs(rotation);
-		double isosceles = (360 - rotate) / 2;
-//		double a1 = (180-rotate) - isosceles;
-//		double a2 = 90 - a1;
-		double displacement = (distance * Math.sin(90)) / Math.sin(isosceles);
-		double radius = (displacement * Math.sin(isosceles)) / Math.sin(rotation);
-		//double circumference = (2 * radius) * Math.PI;
-		//double travelDistance = (rotate * circumference) / 360;
-		double innerCirc = Math.abs(radius - RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
-		double outerCirc = Math.abs(radius + RobotMap.WHEEL_BASE_WIDTH/2) * 2 * Math.PI;
-		double inner = (rotate * innerCirc) / 360;
-		double outer = (rotate * outerCirc) / 360;
-		
-		if (rotation > 0) {
-		//	moveFeet(outer, inner); 
-			//moveDistance
-			left.set(outer);
-			right.set(inner);
-		}
-		
-		else if (rotation < 0) {
-			//moveFeet(inner, outer); //moveDistance
-			left.set(inner);
-			right.set(outer);
-		}
-	}
 
 	public void moveFeet(double targetLeftDistance , double targetRightDistance) {
 
@@ -359,11 +331,45 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		right.setOpenLoopRamp(ramp);
 		LOGGER.trace("Ramp time: "+ ramp);
 	}
+	
+	public double innerArc = 0;;
+	public double outerArc = 0;
 
 	@Override
 	public double calculateArc(double rotation, double distance) {
-		return 0.00;
+		double rotate = Math.abs(rotation);
+		double isosceles = (180 - rotate) / 2;
+//		double a1 = (180-rotate) - isosceles;
+//		double a2 = 90 - a1;
+		double displacement = (distance * Math.sin(Math.toRadians(90))) / (Math.sin(Math.toRadians(isosceles)));
+		double radius = (displacement * Math.sin(Math.toRadians(isosceles))) / (Math.sin(Math.toRadians(rotate)));
+		//double circumference = (2 * radius) * Math.PI;
+		//double travelDistance = (rotate * circumference) / 360;
+		double innerCirc = (radius - (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
+		double outerCirc = (radius + (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
+		double inner = (rotate * innerCirc) / 360;
+		double outer = (rotate * outerCirc) / 360;
+		innerArc = inner;
+		outerArc = outer;
+		//return innerArc 
+		return inner;
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void arcTurn(double rotation, double distance) {
+		if(rotation > 0) {
+			moveFeet(innerArc, outerArc);
+		}
+		else if(rotation < 0) {
+			moveFeet(outerArc, innerArc);
+		}
+	}
+	
+	public double calculateArch(double rotation, double distance) {
+		return 0;
+	}
+	public void archTurn(double rotation, double distance) {
 		
 	}
 }
