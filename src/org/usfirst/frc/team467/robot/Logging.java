@@ -35,8 +35,8 @@ public class Logging {
 //		config.addLogger(OpticalSensor.class.getName(), new LoggerConfig(OpticalSensor.class.getName(), Level.WARN, true));
 //		config.addLogger(Ramp.class.getName(), new LoggerConfig(Ramp.class.getName(), Level.INFO, true));
 //		config.addLogger(Ramps.class.getName(), new LoggerConfig(Ramps.class.getName(), Level.INFO, true));
-//		config.addLogger(org.usfirst.frc.team467.robot.simulator.Robot.class.getName(), 
-//				new LoggerConfig(org.usfirst.frc.team467.robot.simulator.Robot.class.getName(), Level.INFO, true));
+		config.addLogger(org.usfirst.frc.team467.robot.simulator.Robot.class.getName(), 
+				new LoggerConfig(org.usfirst.frc.team467.robot.simulator.Robot.class.getName(), Level.INFO, true));
 //		config.addLogger(RobotShape.class.getName(), new LoggerConfig(RobotShape.class.getName(), Level.WARN, true));
 //		config.addLogger(Rumbler.class.getName(), new LoggerConfig(Rumbler.class.getName(), Level.WARN, true));
 //		config.addLogger(TalonSpeedControllerGroup.class.getName(), new LoggerConfig(TalonSpeedControllerGroup.class.getName(), Level.INFO, true));

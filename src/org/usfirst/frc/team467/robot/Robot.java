@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
 	private Elevator elevator;
 	private Grabber grabber;
 	private Ramps ramps;
+	private TiltMonitor tilt;
 
 	private NetworkTableInstance table;
 	private NetworkTable dashboard;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
 		//table.deleteAllEntries();
 
 		// Initialize RobotMap
-		RobotMap.init(RobotID.Competition_2);
+		RobotMap.init(RobotID.Board);
 
 		// Make robot objects
 		driverstation = DriverStation467.getInstance();
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot {
 		drive.setPIDSFromRobotMap();
 		driverstation.readInputs();
 		tuningValue = Double.parseDouble(SmartDashboard.getString("DB/String 0", "0.0"));
-		LOGGER.info("Tuning Value: " + tuningValue);
+		LOGGER.info("Tuning Value: {} ",tuningValue);
 		if (tuningValue <= 30.0 && tuningValue >= -30.0) {
 			drive.readPIDSFromSmartDashboard(RobotMap.PID_SLOT_DRIVE);
 		} else {
@@ -121,6 +122,8 @@ public class Robot extends TimedRobot {
 			drive.tuneTurn(tuningValue, RobotMap.PID_SLOT_TURN);
 		}
 		//drive.logClosedLoopErrors();
+		//tilt.periodic();
+		LOGGER.info("gyro is reading: {}", gyro.getPitchDegrees());
 	}
 
 	public void autonomousInit() {
