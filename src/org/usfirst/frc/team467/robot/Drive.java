@@ -396,16 +396,6 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		//arcTurn(inner, outer);
 	}
 	
-
-	@Override
-	public void arcTurn(double rotation, double distance) {
-		if(rotation > 0) {
-			moveFeet(innerArc, outerArc);
-		}
-		else if(rotation < 0) {
-			moveFeet(outerArc, innerArc);
-		}
-	}
 	
 	public void arcTurn(double innerArc, double outerArc, double rotation) {
 		if(rotation > 0) {

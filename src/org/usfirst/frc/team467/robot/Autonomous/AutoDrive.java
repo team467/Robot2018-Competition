@@ -7,7 +7,7 @@ public interface AutoDrive {
 
 	void moveLinearFeet(double distance);
 	void rotateByAngle(double rotationInDegrees);
-	void arcTurn(double rotation, double distance);
+	void arcTurn(double innerArc, double outerArc, double rotation);
 	double calculateArc(double rotation, double distance);
 	void archTurn(double innerArch, double outerArch, double rotation);
 	double calculateArch(double rotation, double distance);
