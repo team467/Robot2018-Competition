@@ -43,6 +43,7 @@ public class Logging {
 //		config.addLogger(VisionIntegration.class.getName(), new LoggerConfig(VisionIntegration.class.getName(), Level.WARN, true));
 //		config.addLogger(XBoxJoystick467.class.getName(), new LoggerConfig(XBoxJoystick467.class.getName(), Level.WARN, true));
 //		config.addLogger(TiltMonitor.class.getName(), new LoggerConfig(TiltMonitor.class.getName(), Level.INFO, true));
+		config.addLogger(LEDs.class.getName(), new LoggerConfig(LEDs.class.getName(), Level.DEBUG, true));
 
 		ctx.updateLoggers();
 		

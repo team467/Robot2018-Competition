@@ -1,7 +1,13 @@
 package org.usfirst.frc.team467.robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
 
 public class LEDs {
+	private static final Logger LOGGER = LogManager.getLogger(LEDs.class);
+	
 	boolean hasCube;
 	double lightsOnTime = 75.0;
 	double lightsOutTime = 75.0; 
@@ -9,24 +15,27 @@ public class LEDs {
 	Relay leftRelay;
 	OpticalSensor os;
 	
-	public LEDs(int rChannel, int lChannel) {
+	public LEDs(int lChannel, int rChannel) {
 		os = OpticalSensor.getInstance();
-		rightRelay = new Relay(rChannel);
 		leftRelay = new Relay(lChannel);
+		rightRelay = new Relay(rChannel);
 		hasCube = os.detectedTarget();
 	}
 	
 	public void lightsUp() {
 		rightRelay.set(Relay.Value.kForward);
 		leftRelay.set(Relay.Value.kForward);
+		LOGGER.debug("LIGHTS UP");
 	}
 	
 	public void lightsOut() {
 		rightRelay.set(Relay.Value.kOff);
 		leftRelay.set(Relay.Value.kOff);
+		LOGGER.debug("LIGHTS OUT");
 	}
 	
 	public void blink() {
+		LOGGER.debug("BLINKING");
 		if(lightsOnTime == 0 && lightsOutTime == 0) {
 			lightsOnTime = 75.0;
 			lightsOutTime = 75.0;
