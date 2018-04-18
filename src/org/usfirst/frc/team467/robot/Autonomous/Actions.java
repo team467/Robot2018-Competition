@@ -270,11 +270,13 @@ public class Actions {
 		String actionGroupText = "Start in center, put cube on left switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(move(4.0)); 
+		mode.addActions(arch(-52, 7));
+		mode.addActions(arch(30, 2));
+	/*	mode.addActions(move(4.0)); 
 		mode.addActions(turn(-90));
 		mode.addActions(move(5.27)); 
 		mode.addActions(turn(90));
-		mode.addActions(move(4.34)); 
+		mode.addActions(move(4.34)); */
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -284,11 +286,13 @@ public class Actions {
 		String actionGroupText = "Start in center, put cube on right switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(move(4.0));
+		mode.addActions(arch(42, 5));
+		mode.addActions(arch(-30, 3.5));
+		/*mode.addActions(move(4.0));
 		mode.addActions(turn(90));
 		mode.addActions(move(4.27)); 
 		mode.addActions(turn(-90));
-		mode.addActions(move(4.34));
+		mode.addActions(move(4.34));*/
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
