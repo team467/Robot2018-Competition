@@ -115,7 +115,8 @@ public class Actions {
 	public static Action arcTurn(double rotation, double distance) {
 		String actionText = "Move " + distance + " feet and turn ";
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(rotation, distance));
+				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(
+						drive.calculateArc(rotation, distance), drive.calculateOuterArc(rotation, distance), rotation));
 	}
 	
 	public static ActionGroup arc(double rotation, double distance) {
@@ -131,7 +132,8 @@ public class Actions {
 	public static Action archTurn(double rotation, double displacement) {
 		String actionText = "Move " + displacement + " feet and turn ";
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(drive.calculateArch(rotation, displacement)), () -> drive.archTurn(rotation, displacement));
+				new ActionGroup.ReachDistance(drive.calculateArch(rotation, displacement)), () -> drive.archTurn(
+						drive.calculateArch(rotation, displacement), drive.calculateOuterArch(rotation, displacement), rotation));
 	}
 	
 	public static ActionGroup arch(double rotation, double displacement) {
@@ -295,25 +297,12 @@ public class Actions {
 	public static ActionGroup basicSwitchOurSide() {
 		String actionGroupText = "Put cube on our side switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-		/*mode.addActions(start());
+		mode.addActions(start());
 		mode.addActions(move(12.33)); 
 		mode.addActions(turn(-90));
 		mode.addActions(move(1.479)); 
 		mode.addAction(releaseCube());
-		mode.addAction(pauseGrabber());*/
-		
-		//mode.addActions(arch(90, 8)); //direct displacement
-		mode.addActions(arc(90, 8)); //vertical displacement
-		mode.addActions(move(9.8));
-		mode.addActions(arch(-179, 4));
-		//mode.addActions(arc(90, 20));
-		//mode.addActions(turn(0));
-		/*mode.addAction(zeroDistance());
-		mode.addActions(arc(-90, 8));
-		mode.addAction(zeroDistance());
-		mode.addActions(arc(90, 20));
-		mode.addAction(zeroDistance());
-		//mode.addActions(arc(-100, 2));*/
+		mode.addAction(pauseGrabber());
 		
 		return mode;
 	}

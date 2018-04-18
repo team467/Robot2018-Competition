@@ -332,8 +332,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		LOGGER.trace("Ramp time: "+ ramp);
 	}
 	
-	public double innerArc = 0;;
-	public double outerArc = 0;
+	//public double innerArc = 0;;
+	//public double outerArc = 0;
 
 	@Override
 	public double calculateArc(double rotation, double distance) {
@@ -349,15 +349,15 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double outerCirc = (radius + (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
 		double inner = (rotate * innerCirc) / 360;
 		double outer = (rotate * outerCirc) / 360;
-		innerArc = inner;
-		outerArc = outer;
+		//innerArc = inner;
+		//outerArc = outer;
 		//return innerArc 
 		return inner;
 		// TODO Auto-generated method stub
 		
 	}
 	
-	public void arcTurn(double rotation, double distance) {
+	public void arcTurn(double innerArc, double outerArc, double rotation) {
 		if(rotation > 0) {
 			moveFeet(innerArc, outerArc);
 		}
@@ -366,8 +366,16 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		}
 	}
 	
-	double innerArch = 0;
-	double outerArch = 0;
+	public double calculateOuterArch(double rotation, double displacement) {
+		return 0;
+	}
+	
+	public double calculateOuterArc(double rotation, double displacement) {
+		return 0;
+	}
+	
+	//double innerArch = 0;
+	//double outerArch = 0;
 	
 	public double calculateArch(double rotation, double displacement) {
 		double rotate = Math.abs(rotation);
@@ -381,11 +389,11 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double archLength = (circumference * rotate) / 360;
 		double inner = (innerCirc * rotate) / 360;
 		double outer = (outerCirc * rotate) / 360;
-		innerArch = inner;
-		outerArch = outer;
+		//innerArch = inner;
+		//outerArch = outer;
 		return inner;
 	}
-	public void archTurn(double rotation, double distance) {
+	public void archTurn(double innerArch, double outerArch, double rotation) {
 		if(rotation > 0) {
 			moveFeet(innerArch, outerArch);
 		}
