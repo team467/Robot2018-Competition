@@ -9,6 +9,10 @@ public interface AutoDrive {
 	void rotateByAngle(double rotationInDegrees);
 	void arcTurn(double rotation, double distance);
 	double calculateArc(double rotation, double distance);
+	void archTurn(double innerArch, double outerArch, double rotation);
+	double calculateArch(double rotation, double distance);
+	double calculateOuterArch(double rotation, double distance);
+	double calculateOuterArc(double rotation, double distance);
 
 	/**
 	 * Move each side independently. Distances must be equal or opposite.

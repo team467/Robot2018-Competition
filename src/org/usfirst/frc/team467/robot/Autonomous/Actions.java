@@ -129,16 +129,34 @@ public class Actions {
 	}
 	
 	public static Action arcTurn(double rotation, double distance) {
-		String actionText = "Move" + distance + " feet and turn ";
+		String actionText = "Move " + distance + " feet and turn ";
 		return new Action(actionText,
-				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(rotation, distance));
+				new ActionGroup.ReachDistance(drive.calculateArc(rotation, distance)), () -> drive.arcTurn(
+						drive.calculateArc(rotation, distance), drive.calculateOuterArc(rotation, distance), rotation));
 	}
 	
 	public static ActionGroup arc(double rotation, double distance) {
-		String actionGroupText = "Move" + distance + " feet and turn ";
+		String actionGroupText = "Move " + distance + " feet and turn ";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(zeroDistance());
 		mode.addAction(arcTurn(rotation, distance));
+		return mode;
+	}
+	
+	
+	
+	public static Action archTurn(double rotation, double displacement) {
+		String actionText = "Move " + displacement + " feet and turn ";
+		return new Action(actionText,
+				new ActionGroup.ReachDistance(drive.calculateArch(rotation, displacement)), () -> drive.archTurn(
+						drive.calculateArch(rotation, displacement), drive.calculateOuterArch(rotation, displacement), rotation));
+	}
+	
+	public static ActionGroup arch(double rotation, double displacement) {
+		String actionGroupText = "Move " + displacement + " feet and turn ";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addAction(zeroDistance());
+		mode.addAction(archTurn(rotation, displacement));
 		return mode;
 	}
 

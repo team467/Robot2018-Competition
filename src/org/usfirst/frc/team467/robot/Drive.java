@@ -370,6 +370,9 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	public double getOuter() {
 		return outerArc;
 	}
+	
+	//public double innerArc = 0;;
+	//public double outerArc = 0;
 
 	
 	public double calculateArc(double rotation, double distance) {
@@ -385,12 +388,11 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double outerCirc = (radius + (RobotMap.WHEEL_BASE_WIDTH - 4)/2) * 2 * Math.PI;
 		double inner = (rotate * innerCirc) / 360;
 		double outer = (rotate * outerCirc) / 360;
-		innerArc = inner;
-		outerArc = outer;
+		//innerArc = inner;
+		//outerArc = outer;
 		//return innerArc 
 		return inner;
-		//outerArc = outer;
-		
+		// TODO Auto-generated method stub
 		//arcTurn(inner, outer);
 	}
 	
@@ -404,5 +406,52 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			moveFeet(outerArc, innerArc);
 		}
 	}
-
+	
+	public void arcTurn(double innerArc, double outerArc, double rotation) {
+		if(rotation > 0) {
+			moveFeet(innerArc, outerArc);
+		}
+		else if(rotation < 0) {
+			moveFeet(outerArc, innerArc);
+		}
+	}
+	
+	public double calculateOuterArch(double rotation, double displacement) {
+		return 0;
+	}
+	
+	public double calculateOuterArc(double rotation, double displacement) {
+		return 0;
+	}
+	
+	//double innerArch = 0;
+	//double outerArch = 0;
+	
+	public double calculateArch(double rotation, double displacement) {
+		double rotate = Math.abs(rotation);
+		double isosceles = (180 - rotate) / 2;
+		double radius = (displacement * Math.sin(Math.toRadians(isosceles))) /(Math.sin(Math.toRadians(rotate)));
+		double innerR = radius - ((RobotMap.WHEEL_BASE_WIDTH - 4) / 2);
+		double outerR = radius + ((RobotMap.WHEEL_BASE_WIDTH - 4) / 2);
+		double circumference = radius * 2 * Math.PI;
+		double innerCirc = innerR * 2 * Math.PI;
+		double outerCirc = outerR * 2 * Math.PI;
+		double archLength = (circumference * rotate) / 360;
+		double inner = (innerCirc * rotate) / 360;
+		double outer = (outerCirc * rotate) / 360;
+		//innerArch = inner;
+		//outerArch = outer;
+		return inner;
+	}
+	public void archTurn(double innerArch, double outerArch, double rotation) {
+		if(rotation > 0) {
+			moveFeet(innerArch, outerArch);
+		}
+		else if(rotation < 0) {
+			moveFeet(outerArch, innerArch);
+		}
+		else {
+			rotateByAngle(rotation);
+		}
+	}
 }
