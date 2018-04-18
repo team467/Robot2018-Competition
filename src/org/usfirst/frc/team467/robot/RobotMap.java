@@ -355,5 +355,5 @@ public class RobotMap {
 	public static int RAMP_RELEASE_REVERSE_CHANNEL;
 	
 	public static int LEFT_RELAY_CHANNEL = 0;
-	public static int RIGHT_RELAY_CHANNEL;
+	public static int RIGHT_RELAY_CHANNEL = 1;
 }

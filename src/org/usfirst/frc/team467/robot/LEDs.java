@@ -11,15 +11,25 @@ public class LEDs {
 	boolean hasCube;
 	double lightsOnTime = 75.0;
 	double lightsOutTime = 75.0; 
-	Relay rightRelay;
-	Relay leftRelay;
+	private Relay rightRelay;
+	private Relay leftRelay;
 	OpticalSensor os;
+	
+	private static LEDs leds;
+	
+	public static LEDs getInstance() {
+		if (leds == null) {
+			leds = new LEDs(RobotMap.LEFT_RELAY_CHANNEL, RobotMap.RIGHT_RELAY_CHANNEL);
+		}
+		return leds;
+	}
 	
 	public LEDs(int lChannel, int rChannel) {
 		os = OpticalSensor.getInstance();
 		leftRelay = new Relay(lChannel);
 		rightRelay = new Relay(rChannel);
 		hasCube = os.detectedTarget();
+		LOGGER.debug("Initializing LEDs");
 	}
 	
 	public void lightsUp() {

@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
 	private Elevator elevator;
 	private Grabber grabber;
 	private Ramps ramps;
+	private LEDs leds;
 
 	private NetworkTableInstance table;
 	private NetworkTable dashboard;
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
 		drive = Drive.getInstance();
 		elevator = Elevator.getInstance();
 		grabber = Grabber.getInstance();
+		leds = LEDs.getInstance();
 		matchConfig = MatchConfiguration.getInstance();
 
 		ramps = Ramps.getInstance();
@@ -143,6 +145,7 @@ public class Robot extends TimedRobot {
 		autonomous = Actions.doNothing();
 		drive.configPeakOutput(1.0);
 		driverstation.readInputs();
+//		leds = new LEDs(RobotMap.LEFT_RELAY_CHANNEL, RobotMap.RIGHT_RELAY_CHANNEL);
 		ramps.reset();
 	}
 	/**
@@ -150,11 +153,12 @@ public class Robot extends TimedRobot {
 	 */
 	public void teleopPeriodic() {
 		driverstation.readInputs();
-
 		grabber.grab(driverstation.getGrabThrottle());
 		elevator.move(driverstation.getElevatorSpeed());
 		drive.setRamp(elevator.getHeight());
-
+		
+		leds.blink();
+		
 		if (driverstation.getFloorHeightButtonPressed()) {
 			LOGGER.info("Dropping to bottom height");
 			elevator.moveToHeight(Elevator.Stops.floor);
