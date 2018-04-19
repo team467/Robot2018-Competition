@@ -13,10 +13,11 @@ import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drive extends DifferentialDrive implements AutoDrive {
+public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 	private ControlMode controlMode;
 
     private static final Logger LOGGER = LogManager.getLogger(Drive.class);
@@ -332,7 +333,11 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		LOGGER.trace("Ticks = {} feet = {}",ticks, feet);
 		return feet;
 	}
-
+	public void gyroTurn(double power) {
+		right.pidWrite(power);
+		left.pidWrite(-power);		
+	}
+	
 	/**
 	 * Sets the ramp time based on the elevator height in sensor ticks if driving straight or about to drive straight,
 	 * or sets the ramp time to the minimum if turning in place or stopped.
@@ -349,10 +354,17 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			ramp = RobotMap.ELEVATOR_LOW_DRIVE_RAMP_TIME;
 		}
 
+
 		// JHP HACK We can't accurately measure elevator height.
 		ramp = 0.0;
 		left.setOpenLoopRamp(ramp);
 		right.setOpenLoopRamp(ramp);
 		LOGGER.trace("Ramp time: {}", ramp);
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		right.pidWrite(output);
+		left.pidWrite(-output);
 	}
 }

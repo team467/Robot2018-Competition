@@ -123,6 +123,11 @@ public class Gyrometer extends GyroBase implements Gyro {
 	}
 
 	@Override
+	public double pidGet() {
+		return getAngle();
+	}
+
+	@Override
 	public double getRate() {
 		// TODO Auto-generated method stub
 		return 0;

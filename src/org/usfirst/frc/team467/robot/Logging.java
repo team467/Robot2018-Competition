@@ -21,7 +21,6 @@ public class Logging {
 		
 		// Modify all the loggers
 		config.addLogger(Robot.class.getName(), new LoggerConfig(Robot.class.getName(), Level.INFO, true));
-// LOOGER.info("WRITE SOMETHING IN HERE WITH: {}" WriteVaribleHere(), andHereIfThereIsAnotherOne());		
 		
 		// Enable extra logging for classes you want to debug
 
