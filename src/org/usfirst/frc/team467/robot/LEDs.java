@@ -25,11 +25,15 @@ public class LEDs {
 	}
 	
 	public LEDs(int lChannel, int rChannel) {
+		if (!RobotMap.HAS_LEDS) {
+			return;
+		}
 		os = OpticalSensor.getInstance();
 		leftRelay = new Relay(lChannel);
 		rightRelay = new Relay(rChannel);
 		hasCube = os.detectedTarget();
 		LOGGER.debug("Initializing LEDs");
+
 	}
 	
 	public void lightsUp() {
@@ -68,6 +72,5 @@ public class LEDs {
 		else if(hasCube) {
 			blink();
 		}
-		
 	}
 }

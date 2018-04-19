@@ -145,7 +145,6 @@ public class Robot extends TimedRobot {
 		autonomous = Actions.doNothing();
 		drive.configPeakOutput(1.0);
 		driverstation.readInputs();
-//		leds = new LEDs(RobotMap.LEFT_RELAY_CHANNEL, RobotMap.RIGHT_RELAY_CHANNEL);
 		ramps.reset();
 	}
 	/**
