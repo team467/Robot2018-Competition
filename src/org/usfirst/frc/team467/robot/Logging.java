@@ -13,6 +13,7 @@ import org.usfirst.frc.team467.robot.vision.VisionIntegration;
 import org.usfirst.frc.team467.robot.Autonomous.MatchConfiguration;
 import org.usfirst.frc.team467.robot.simulator.DriveSimulator;
 import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
+import org.usfirst.frc.team467.robot.turnpid.GyroPIDController;
 
 public class Logging {
 	public static void init() {
@@ -42,7 +43,7 @@ public class Logging {
 //		config.addLogger(VisionIntegration.class.getName(), new LoggerConfig(VisionIntegration.class.getName(), Level.WARN, true));
 //		config.addLogger(XBoxJoystick467.class.getName(), new LoggerConfig(XBoxJoystick467.class.getName(), Level.WARN, true));
 //		config.addLogger(TiltMonitor.class.getName(), new LoggerConfig(TiltMonitor.class.getName(), Level.INFO, true));
-
+//		config.addLogger(GyroPIDController.class.getName(), new LoggerConfig(GyroPIDController.class.getName(), Level.INFO, true));
 		ctx.updateLoggers();
 		
 	}

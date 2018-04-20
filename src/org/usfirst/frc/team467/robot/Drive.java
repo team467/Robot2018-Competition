@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import org.usfirst.frc.team467.robot.Autonomous.AutoDrive;
 import org.usfirst.frc.team467.robot.simulator.communications.RobotData;
+import org.usfirst.frc.team467.robot.turnpid.GyroPIDController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -20,8 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 	private ControlMode controlMode;
 
-    private static final Logger LOGGER = LogManager.getLogger(Drive.class);
-    private static final Logger TELEMETRY = LogManager.getLogger("telemetry");
+	private static final Logger LOGGER = LogManager.getLogger(Drive.class);
+	private static final Logger TELEMETRY = LogManager.getLogger("telemetry");
 	private DecimalFormat df = new DecimalFormat("####0.00");
 
 	// Single instance of this class
@@ -29,7 +30,9 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 
 	private final TalonSpeedControllerGroup left;
 	private final TalonSpeedControllerGroup right;
-	
+
+	private GyroPIDController gyroPIDController = null;
+
 	double carrotLength;
 
 	// Private constructor
@@ -84,8 +87,10 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 		super(left, right);
 		this.left = left;
 		this.right = right;
-		
+
 		carrotLength = RobotMap.MAX_CARROT_LENGTH;
+		
+		gyroPIDController = GyroPIDController.getInstance();
 		
 		setPIDSFromRobotMap();
 	}
@@ -105,6 +110,11 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 
 		left.setPIDF(pidSlot, kPLeft, kILeft, kDLeft, kFLeft);
 		right.setPIDF(pidSlot, kPRight, kIRight, kDRight, kFRight);
+		
+		if (RobotMap.HAS_GYRO && pidSlot == RobotMap.PID_SLOT_TURN) {
+			gyroPIDController.setPID(kPLeft, kILeft, kDLeft, kFLeft);
+		}
+
 	}
 
 	public void setPIDSFromRobotMap() {
@@ -139,6 +149,11 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 
 		left.setPIDF(RobotMap.PID_SLOT_TURN, kPLeft, kILeft, kDLeft, kFLeft);
 		right.setPIDF(RobotMap.PID_SLOT_TURN, kPRight, kIRight, kDRight, kFRight);
+
+		if (RobotMap.HAS_GYRO) {
+			gyroPIDController.setPID(RobotMap.GYRO_TURN_PID_P, RobotMap.GYRO_TURN_PID_I, RobotMap.GYRO_TURN_PID_D, RobotMap.GYRO_TURN_PID_F);
+		}
+
 	}
 
 	public void configPeakOutput(double percentOut) {
@@ -152,13 +167,13 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 	}
 
 	public void logTelemetry(double speed, double turn) {
-	    // Log the speed and turn inputs, as well as the speed and position of each side.
-	    // For the speed we need to convert from ticks to feet and from per 100ms to per seconds.
-	    // For position we need to convert from ticks to feet.
-	    TELEMETRY.info(String.format("%f,%f,%f,%f,%f,%f",
-	            speed, turn,
-	            ticksToFeet(10*left.getSensorVelocity()), ticksToFeet(left.getSensorPosition()),
-	            ticksToFeet(10*right.getSensorVelocity()), ticksToFeet(right.getSensorPosition())));
+		// Log the speed and turn inputs, as well as the speed and position of each side.
+		// For the speed we need to convert from ticks to feet and from per 100ms to per seconds.
+		// For position we need to convert from ticks to feet.
+		TELEMETRY.info(String.format("%f,%f,%f,%f,%f,%f",
+				speed, turn,
+				ticksToFeet(10*left.getSensorVelocity()), ticksToFeet(left.getSensorPosition()),
+				ticksToFeet(10*right.getSensorVelocity()), ticksToFeet(right.getSensorPosition())));
 	}
 
 	public ControlMode getControlMode() {
@@ -188,29 +203,38 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 	public boolean isStopped() {
 		return left.isStopped() && right.isStopped();
 	}
-	
+
 	/**
 	 * Used for tuning PIDs only, does not use carrot drive or left right balancing 
 	 */
 	public void tuneForward(double distanceInFeet, int pidSlot) {
 		tuneMove(distanceInFeet, distanceInFeet, pidSlot);
 	}
-	
+
 	/**
 	 * Used for tuning PIDs only, does not use carrot drive or left right balancing 
 	 */
 	public void tuneTurn(double rotationInDegrees, int pidSlot) {
-		double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
-		tuneMove(turnDistanceInFeet, -turnDistanceInFeet, pidSlot);
+		if (RobotMap.HAS_GYRO) {
+			gyroPIDController.setSetpoint(rotationInDegrees);
+		} else {
+			double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
+			tuneMove(turnDistanceInFeet, -turnDistanceInFeet, pidSlot);
+		}
 	}
-	
+	public void turnTune() {
+		if (RobotMap.HAS_GYRO) {
+			
+		}
+	}
+
 	/**
 	 * Used for tuning PIDs only, does not use carrot drive or left right balancing 
 	 */
 	public void tuneMove(double leftDistance, double rightDistance, int pidSlot) {
+		LOGGER.info("Target: L: {} R: {} Current L: {} R: {}", leftDistance, rightDistance, getLeftDistance(), getRightDistance());
 		left.setPIDSlot(pidSlot);
 		right.setPIDSlot(pidSlot);
-		LOGGER.info("Target: L: {} R: {} Current L: {} R: {}", leftDistance, rightDistance, getLeftDistance(), getRightDistance());
 		left.set(ControlMode.Position, feetToTicks(leftDistance));
 		// The right motor is reversed
 		right.set(ControlMode.Position, -feetToTicks(rightDistance));
@@ -222,23 +246,26 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 		right.setPIDSlot(RobotMap.PID_SLOT_DRIVE);
 		moveFeet(distanceInFeet, distanceInFeet);
 	}
-	
+
 	/**
 	 * 
 	 * @param rotationInDegrees
 	 *            enter positive degrees for left turn and enter negative degrees
 	 *            for right turn
 	 */
-	
-	public void rotateByAngle(double rotationInDegrees) {
-		left.setPIDSlot(RobotMap.PID_SLOT_TURN);
-		right.setPIDSlot(RobotMap.PID_SLOT_TURN);
 
+	public void rotateByAngle(double rotationInDegrees) {
 		LOGGER.trace("Automated move of {} degree turn.", rotationInDegrees);
-		
-		double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
-		moveFeet(turnDistanceInFeet, - turnDistanceInFeet);
-//		tuneMove(turnDistanceInFeet, - turnDistanceInFeet, RobotMap.PID_SLOT_TURN);
+
+		if (RobotMap.HAS_GYRO) {
+			gyroPIDController.setSetpoint(rotationInDegrees);
+		} else {
+			left.setPIDSlot(RobotMap.PID_SLOT_TURN);
+			right.setPIDSlot(RobotMap.PID_SLOT_TURN);
+
+			double turnDistanceInFeet = degreesToFeet(rotationInDegrees);
+			moveFeet(turnDistanceInFeet, - turnDistanceInFeet);
+		}
 	}
 
 	/**
@@ -258,7 +285,7 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 		double radius = RobotMap.WHEEL_BASE_WIDTH / 2;
 		double angleInRadians = Math.toRadians(degrees);
 		double distanceInFeet = radius * angleInRadians; // This is the distance we want to turn.
-		
+
 		return distanceInFeet;
 	}
 
@@ -282,7 +309,7 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 		double average = 0.5 * (Math.abs(currentRightPosition) + Math.abs(currentLeftPosition));
 
 		// Use the minimum to go either the max allowed distance or to the target
-		
+
 		double moveLeftDistance = leftSign * Math.min(Math.abs(targetLeftDistance), (carrotLength + average));
 		double moveRightDistance = rightSign * Math.min(Math.abs(targetRightDistance), (carrotLength + average));
 		LOGGER.trace("Distance in Feet - Right: {} Left: {}", df.format(moveRightDistance), df.format(moveLeftDistance));
@@ -294,10 +321,10 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 
 		// The right motor is reversed
 		left.set(ControlMode.Position, leftDistTicks);
-		
+
 		right.set(ControlMode.Position, -rightDistTicks);
 	}
-	
+
 	public double getLeftDistance() {
 		double leftLeadSensorPos = ticksToFeet(left.sensorPosition());
 		return leftLeadSensorPos;
@@ -333,11 +360,6 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 		LOGGER.trace("Ticks = {} feet = {}",ticks, feet);
 		return feet;
 	}
-	public void gyroTurn(double power) {
-		right.pidWrite(power);
-		left.pidWrite(-power);		
-	}
-	
 	/**
 	 * Sets the ramp time based on the elevator height in sensor ticks if driving straight or about to drive straight,
 	 * or sets the ramp time to the minimum if turning in place or stopped.
@@ -364,7 +386,8 @@ public class Drive extends DifferentialDrive implements AutoDrive, PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
-		right.pidWrite(output);
-		left.pidWrite(-output);
+		right.pidWrite(-output);
+		left.pidWrite(output);
 	}
+
 }

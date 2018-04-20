@@ -23,7 +23,9 @@ public class RobotMap {
 	public static int LEFT_LEAD_CHANNEL;
 	public static int LEFT_FOLLOWER_1_CHANNEL;
 	public static int LEFT_FOLLOWER_2_CHANNEL;
-
+	
+	public static boolean HAS_GYRO;
+	
 	public static int FORWARD_PANIC_ANGLE;
 	public static int BACKWARD_PANIC_ANGLE;
 
@@ -59,6 +61,11 @@ public class RobotMap {
 	public static double LEFT_DRIVE_PID_I;
 	public static double LEFT_DRIVE_PID_D;
 	public static double LEFT_DRIVE_PID_F;
+	
+	public static double GYRO_TURN_PID_P;
+	public static double GYRO_TURN_PID_I;
+	public static double GYRO_TURN_PID_D;
+	public static double GYRO_TURN_PID_F;
 
 	// Initialize robot map. 
 	public static void init(RobotID id) {
@@ -82,6 +89,8 @@ public class RobotMap {
 			HAS_CAMERA = false;
 			HAS_LEFT_RAMP = false;
 			HAS_RIGHT_RAMP = false;
+			
+			HAS_GYRO = true;
 
 			isDriveMotorInverted = new boolean[] { false, true, false, true };
 			break;
@@ -126,6 +135,13 @@ public class RobotMap {
 			RIGHT_TURN_PID_I = 0.0;
 			RIGHT_TURN_PID_D = 180.0;
 			RIGHT_TURN_PID_F = 0.0;
+			
+			//Gyro PIDs
+			GYRO_TURN_PID_P = 0;
+			GYRO_TURN_PID_I = 0;
+			GYRO_TURN_PID_D = 0;
+			GYRO_TURN_PID_F = 0;
+
 
 			useSimulator = false;
 			USE_FAKE_GAME_DATA = true;
@@ -137,6 +153,8 @@ public class RobotMap {
 			GRABBER_L_CHANNEL = 0;
 			GRABBER_R_CHANNEL = 1;
 			OPTICAL_CHANNEL = 5;
+			
+			HAS_GYRO = false;
 
 			// TODO Assign values to the game piece variables, and make more as appropriate
 			HAS_ELEVATOR = false;
@@ -221,6 +239,8 @@ public class RobotMap {
 			GRABBER_R_CHANNEL = 1;
 			OPTICAL_CHANNEL = 5;
 
+			HAS_GYRO = true;
+			
 			HAS_CAMERA = false;
 			
 			useSimulator = false;
@@ -248,7 +268,7 @@ public class RobotMap {
 
 	// Global robot constants
 	public static RobotID robotID;
-
+	
 	public static boolean[] isDriveMotorInverted;
 	public static boolean useSpeedControllers;
 	public static final int VELOCITY_PID_PROFILE = 0;
