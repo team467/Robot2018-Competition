@@ -1,11 +1,11 @@
 package org.usfirst.frc.team467.robot;
-
 import java.io.IOException;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.usfirst.frc.team467.robot.Autonomous.Action;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
@@ -16,6 +16,13 @@ import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
 
 public class Logging {
 	public static void init() {
+		
+//		String log4jConfigFile = "./log4j2.json";
+//		ConfigurationSource source = new ConfigurationSource();
+//		source.setLocation(./log4j.json);
+//		source.setFile();
+		
+		
 		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		final Configuration config = ctx.getConfiguration();
 		
@@ -25,10 +32,10 @@ public class Logging {
 		
 		// Enable extra logging for classes you want to debug
 
-//		config.addLogger(Action.class.getName(), new LoggerConfig(Action.class.getName(), Level.INFO, true));
+		config.addLogger(Action.class.getName(), new LoggerConfig(Action.class.getName(), Level.DEBUG, true));
 		config.addLogger(Drive.class.getName(), new LoggerConfig(Drive.class.getName(), Level.INFO, true));
-//		config.addLogger(ActionGroup.class.getName(), new LoggerConfig(ActionGroup.class.getName(), Level.WARN, true));
-//		config.addLogger(DriveSimulator.class.getName(), new LoggerConfig(DriveSimulator.class.getName(), Level.WARN, true));
+		config.addLogger(ActionGroup.class.getName(), new LoggerConfig(ActionGroup.class.getName(), Level.DEBUG, true));
+		config.addLogger(DriveSimulator.class.getName(), new LoggerConfig(DriveSimulator.class.getName(), Level.DEBUG, true));
 		config.addLogger(Elevator.class.getName(), new LoggerConfig(Elevator.class.getName(), Level.INFO, true));
 		config.addLogger(Grabber.class.getName(), new LoggerConfig(Grabber.class.getName(), Level.INFO, true));
 		config.addLogger(MatchConfiguration.class.getName(), new LoggerConfig(MatchConfiguration.class.getName(), Level.INFO, true));

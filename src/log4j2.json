@@ -1,0 +1,36 @@
+{ "configuration": {"name": "default",
+      "properties": {
+        "property": { "name": "filename",
+                      "value" : "./debug-$${sd:type}.log" }
+      },
+    "ThresholdFilter": { "level": "debug" },
+    "appenders": {
+      "Console": { "name": "STDOUT",
+        "PatternLayout": { "pattern": "%m%n" },
+        "ThresholdFilter": { "level": "debug" }
+      },
+      "Routing": { "name": "Routing",
+        "Routes": { "pattern": "$${sd:type}",
+          "Route": [
+            {
+              "RollingFile": {
+                "name": "Rolling-${sd:type}", "fileName": "${filename}",
+                "filePattern": "debug-${sd:type}.%i.log",
+                "PatternLayout": {"pattern": "%d %p %c{1.} [%t] %m%n"},
+                "SizeBasedTriggeringPolicy": { "size": "500 MB" }
+              }
+            },
+            { "AppenderRef": "STDOUT", "key": "Audit"}
+          ]
+        }
+      }
+    },
+    "loggers": {
+      "logger": { "name": "org.usfirst.frc.team467.robot.simulator.DriveSimulator", "level": "debug", "additivity": "false",
+                  "AppenderRef": { "ref": "Routing" }},
+      "logger": { "name": "org.usfirst.frc.team467.robot.Autonomous.ActionGroup", "level": "debug", "additivity": "false",
+                  "AppenderRef": { "ref": "Routing" }},
+      "root": { "level": "error", "AppenderRef": { "ref": "STDOUT" }}
+    }
+  }
+}
