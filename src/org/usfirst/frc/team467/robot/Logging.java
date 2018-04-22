@@ -1,4 +1,6 @@
 package org.usfirst.frc.team467.robot;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.apache.logging.log4j.Level;
@@ -6,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.usfirst.frc.team467.robot.Autonomous.Action;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
@@ -17,10 +20,18 @@ import org.usfirst.frc.team467.robot.simulator.draw.RobotShape;
 public class Logging {
 	public static void init() {
 		
-//		String log4jConfigFile = "./log4j2.json";
-//		ConfigurationSource source = new ConfigurationSource();
-//		source.setLocation(./log4j.json);
-//		source.setFile();
+		File logConfigFile = new File("./src/log4j2.xml"); 
+		if (logConfigFile.exists()) {
+			try {
+				ConfigurationSource source = new ConfigurationSource(new FileInputStream(logConfigFile));
+				Configurator.initialize(null, source);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			
+		}
 		
 		
 		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
