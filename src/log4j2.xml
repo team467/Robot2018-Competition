@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="all" strict="true">
   <Properties>
-    <Property name="filename">./debug.log</Property>
+    <Property name="filename">./debug.log</Property> <!--/media/sda1/-->
   </Properties>
   <Filter type="ThresholdFilter" level="trace"/>
  
