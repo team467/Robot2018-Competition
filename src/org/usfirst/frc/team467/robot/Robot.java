@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
 		elevator.move(driverstation.getElevatorSpeed());
 		drive.setRamp(elevator.getHeight());
 		
-		leds.act();
+		leds.lightsUp();
 		
 		if (driverstation.getFloorHeightButtonPressed()) {
 			LOGGER.info("Dropping to bottom height");
