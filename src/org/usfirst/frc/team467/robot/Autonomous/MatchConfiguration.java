@@ -46,7 +46,7 @@ public class MatchConfiguration {
 	private ActionGroup autonomous;
 
 	private String[] autoList = {"None", "Just_Go_Forward", "Left_Switch_Only", "Left_Basic", "Left_Advanced", "Left_Our_Side_Only",
-			"Center", "Center_Advanced" , "Right_Switch_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
+			"Center", "Center_Advanced", "Right_Switch_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
 
 	private MatchConfiguration() {
 		teamColor = TeamColor.UNKNOWN;
@@ -207,15 +207,16 @@ public class MatchConfiguration {
 			break;
 			
 		case "Center_Advanced":
+			LOGGER.info("Entering Center_Advanced");
 			if(isMySwitchToTheRight()) {
 				LOGGER.debug("The switch is to the right | CENTER");
-				autonomous = Actions.centerRightAdvanced();
+				autonomous = Actions.advancedCenterRightExchange();
 			} else {
 				LOGGER.debug("The Switch is to the left | CENTER");
-				autonomous = Actions.centerLeftAdvanced();
+				autonomous = Actions.advancedCenterLeftExchange();
 			}
 			break;
-				
+			
 		case "Left_Switch_Only":
 		case "Right_Switch_Only": 
 			if(isSwitchOnSameSide()) {

@@ -6,6 +6,7 @@ import org.usfirst.frc.team467.robot.Drive;
 import org.usfirst.frc.team467.robot.Elevator;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.Grabber;
+import org.usfirst.frc.team467.robot.GrabberSolenoid;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup.ConcurrentActions;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup.MultiCondition;
@@ -64,13 +65,31 @@ public class Actions {
 				new ActionGroup.RunOnce(() -> LOGGER.info(message)));
 	}
 
-	public static Action grabCube() {
+	public static ActionGroup grabCube() {
 		Grabber grabber = Grabber.getInstance();
-		return new Action(
-				"Grabbing cube",
-				new ActionGroup.Duration(1.0),
-				//new ActionGroup.RunOnce(
+		
+		ConcurrentActions closeGrabberAndGrab = new ConcurrentActions(
 				() -> grabber.grab());
+		
+		MultiCondition grabbing1secOrStopWhenHaveCube = new MultiCondition(
+				new ActionGroup.Duration(1.0),
+				() -> grabber.hasCube()
+				);
+		
+		//group.addAction(openGrabber());
+		ActionGroup group = new ActionGroup("grab cube with solenoid");
+		
+		group.addAction( new Action(
+				"Grabbing",
+				new ActionGroup.Duration(1.0),
+				() -> grabber.grab()));
+		
+		group.addAction(new Action(
+				"Closing grabber on cube",
+				grabbing1secOrStopWhenHaveCube,
+				closeGrabberAndGrab
+				));
+		return group;
 	}
 	
 	public static Action lockCube() {
@@ -81,11 +100,16 @@ public class Actions {
 				() -> grabber.startGrab());
 	}
 
-	public static ActionGroup grabAndMoveLinear(double distance) {
+	/*public static Action openGrabber() {
 		Grabber grabber = Grabber.getInstance();
 
 		drive.zero();
+		return new Action(
+				"Opening grabber",
+				new ActionGroup.RunOnce(() -> grabber.open);
+	}*/
 
+	public static ActionGroup grabAndMoveLinear(double distance) {
 		ActionGroup group = new ActionGroup("grab and move Linear");
 		group.addAction(zeroDistance());
 
@@ -95,9 +119,9 @@ public class Actions {
 				);
 		
 		ConcurrentActions concurrentaction = new ConcurrentActions(
-				() -> grabber.grab(),
+				() -> grabCube(),
 				() -> drive.moveLinearFeet(distance));
-
+		
 		group.addAction(new Action(
 				"Grabbing cube and driving forward",
 				multicondition,
@@ -317,7 +341,7 @@ public class Actions {
 		String actionGroupText = "Testing grab with a 2 foot move.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addAction(elevatorToFloor());
-		mode.addActions(grabAndMoveLinear(2));
+		mode.addActions(grabAndMoveLinear(2)); 
 		return mode;
 	}
 
@@ -329,6 +353,12 @@ public class Actions {
 		mode.addActions(start());
 		mode.addActions(arch(-52, 7));
 		mode.addActions(arch(40, 2));
+// old-
+//		mode.addActions(move(3.5)); 
+//		mode.addActions(turn(-90));
+//		mode.addActions(move(5.27));//5.77 
+//		mode.addActions(turn(90));
+//		mode.addActions(move(4.84));//4.34
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -373,6 +403,12 @@ public class Actions {
 		mode.addActions(turn(135));
 		mode.addActions(move(4.5));
 		mode.addActions(move(4.34)); 
+// old-
+//		mode.addActions(move(3.5));
+//		mode.addActions(turn(90));
+//		mode.addActions(move(4.27));
+//		mode.addActions(turn(-90));
+//		mode.addActions(move(4.84));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -384,6 +420,10 @@ public class Actions {
 		mode.addActions(start());
 		mode.addActions(move(11.2));
 		mode.addActions(arc(78, 1.5)); // 32, 8.4
+// old-
+//		mode.addActions(move(11.83));
+//		mode.addActions(turn(-90));
+//		mode.addActions(move(2.0)); 
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -395,6 +435,8 @@ public class Actions {
 		mode.addActions(start());
 		mode.addActions(move(10));
 		mode.addActions(arc(18, 11.5));
+// old-
+//		mode.addActions(move(22.83));
 		mode.addAction(elevatorToHighScale());
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
@@ -408,7 +450,11 @@ public class Actions {
 		mode.addActions(move(15));
 		mode.addActions(arc(90, 3));
 		mode.addActions(move(12));
-		mode.addActions(arc(-110, 2.5));
+// old-
+//		mode.addActions(move(17.5));//17.64
+//		mode.addActions(turn(-90));
+//		mode.addActions(move(17.4));//17.4
+//		mode.addActions(turn(100));
 		mode.addAction(elevatorToHighScale());
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
@@ -428,17 +474,31 @@ public class Actions {
 		mode.addActions(turn(-140));
 		mode.addActions(grabAndMoveLinear(4.0));
 		mode.addActions(grabAndMoveLinear(-0.5));
-		
-//		mode.addAction(elevatorToFloor());
-//		mode.addActions(turn(-145));
-//		mode.addActions(grabAndMoveLinear(5.0));
-//		mode.addActions(grabAndMoveLinear(-0.5));
-		
+			
 		// release cube into switch
 		mode.addAction(elevatorToSwitch());
 		mode.addActions(move(0.5));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
+// old-
+//		mode.addActions(move(-1.0)); 
+//		mode.addAction(elevatorToFloor());
+//		mode.addAction(zeroDistance());
+//		mode.addAction(wait(0.5));
+//		mode.addActions(turn(-68)); 
+//		mode.addActions(grabAndMoveLinear(9.3)); 
+//		
+//		// Move To Switch 
+//		mode.addActions(grabAndMoveLinear(-1.0));
+//		mode.addAction(elevatorToSwitch());
+//		mode.addActions(move(1.0));
+//		
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
+//		
+//		//Get read for teleop 
+//		mode.addActions(move(-1.0));
+//		mode.addAction(elevatorToFloor());
 		return mode;
 	}
 
@@ -460,6 +520,27 @@ public class Actions {
 		mode.addAction(elevatorToHighScale());
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
+// old-
+//		mode.addActions(turn(90));
+//		mode.addActions(move(6.31));
+//		mode.addActions(turn(-125));
+//		mode.addActions(grabAndMoveLinear(3.2));
+//		mode.addActions(grabAndMoveLinear(-3.2));
+//		
+//		//Go to far scale
+//		mode.addActions(turn(35));
+//		mode.addActions(move(18.0));
+//		
+//		//place cube in scale 
+//		mode.addActions(turn(100));
+//		mode.addAction(elevatorToHighScale());
+//		mode.addActions(move(3.4));
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
+//		
+//		//Get ready for teleop
+//		mode.addActions(move(-1.25));
+//		mode.addAction(elevatorToFloor());
 		return mode;
 	}
 
@@ -478,6 +559,26 @@ public class Actions {
 		mode.addAction(elevatorToHighScale());
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
+// old-
+//		//Go to pick up cube
+//		mode.addActions(move(-1.0)); 
+//		mode.addAction(elevatorToFloor());
+//		mode.addAction(zeroDistance());
+//		mode.addAction(wait(0.5));
+//		mode.addActions(turn(-60)); 
+//		mode.addActions(grabAndMoveLinear(9.3));
+//		
+//		//Return to Scale
+//		mode.addActions(grabAndMoveLinear(-9.3));	
+//		mode.addAction(elevatorToSwitch());
+//		mode.addActions(turn(60));
+//		mode.addActions(move(1.0));
+//		mode.addAction(releaseCube());
+//		mode.addAction(pauseGrabber());
+//		
+//		//Get ready for teleop 
+//		mode.addActions(move(-1.25));
+//		mode.addAction(elevatorToFloor());
 		return mode;
 	}
 
@@ -487,5 +588,42 @@ public class Actions {
 		mode.addActions(basicScaleOppositeSide());
 		return mode;
 	}
+	
+	public static ActionGroup advancedCenterRightExchange() {
+		String actionGroupText = "Start in center, put cube on right switch and second in exchange";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addActions(centerBasicSwitchRight());
+		
+		mode.addActions(move(-5.7));
+		mode.addAction(elevatorToFloor());
+		mode.addActions(turn(-45));
+		mode.addActions(grabAndMoveLinear(4.6));
+		mode.addActions(grabAndMoveLinear(-1.5));
+		mode.addActions(turn(-90));
+		mode.addActions(move(6.1));
+		mode.addActions(turn(-45));
+		mode.addActions(move(0.7));
+		mode.addAction(releaseCube());
+		mode.addAction(pauseGrabber());
+		
+		return mode;
+	}
 
+	public static ActionGroup advancedCenterLeftExchange() {
+		String actionGroupText = "Start in center, put cube on left switch and second in exchange";
+		ActionGroup mode = new ActionGroup(actionGroupText);
+		mode.addActions(centerBasicSwitchLeft());
+		
+		mode.addActions(move(-5.9));
+		mode.addAction(elevatorToFloor());
+		mode.addActions(turn(45));
+		mode.addActions(grabAndMoveLinear(4.8));
+		mode.addActions(grabAndMoveLinear(-1.6));
+		mode.addActions(turn(135));
+		mode.addActions(move(4.5));
+		mode.addAction(releaseCube());
+		mode.addAction(pauseGrabber());
+		
+		return mode;
+	}
 }

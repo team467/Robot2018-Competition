@@ -30,7 +30,7 @@ public class RobotMap {
 	public static int RIGHT_LEAD_CHANNEL;
 	public static int RIGHT_FOLLOWER_1_CHANNEL;
 	public static int RIGHT_FOLLOWER_2_CHANNEL;
-
+	
 	public static int ALLOWED_GRABBER_ERROR = 2; // in degrees
 
 	public static int AUTONOMOUS_DRIVE_TIMEOUT_MS;
@@ -80,14 +80,18 @@ public class RobotMap {
 			GRABBER_R_CHANNEL = 1;
 			OPTICAL_CHANNEL = 5;
 
+			HAS_CLIMBER = true;
+			CLIMB_MOTOR_CONTROLLER_LEADER = 1;
+
 			HAS_ELEVATOR = false;
-			ELEVATOR_MOTOR_CHANNEL = 1;
+			//ELEVATOR_MOTOR_CHANNEL = 1;
 			HAS_CAMERA = false;
 			HAS_LEFT_RAMP = false;
 			HAS_RIGHT_RAMP = false;
 			
 			ROBOT_WIDTH = 28.0;
 
+			
 			isDriveMotorInverted = new boolean[] { false, true, false, true };
 			break;
 		case Competition_1:
@@ -109,16 +113,21 @@ public class RobotMap {
 			RIGHT_FOLLOWER_1_CHANNEL = 5;
 			RIGHT_FOLLOWER_2_CHANNEL = 6;
 			RIGHT_DRIVE_SENSOR_IS_INVERTED = true;
+			
+			RIGHT_GRABBER_SOLENOID_EXISTS = true;
+			LEFT_GRABBER_SOLENOID_EXISTS = false;
+			
+			CLIMB_MOTOR_CONTROLLER_LEADER = 8;
 
 			//Linear PIDS
-			LEFT_DRIVE_PID_P = 0.875;
+			LEFT_DRIVE_PID_P = 2.025;
 			LEFT_DRIVE_PID_I = 0.0;
-			LEFT_DRIVE_PID_D = 180.0;
+			LEFT_DRIVE_PID_D = 400.0;
 			LEFT_DRIVE_PID_F = 0.0;
 
-			RIGHT_DRIVE_PID_P = 0.875;
+			RIGHT_DRIVE_PID_P = 2.025;
 			RIGHT_DRIVE_PID_I = 0.0;
-			RIGHT_DRIVE_PID_D = 200.0;
+			RIGHT_DRIVE_PID_D = 512.0;
 			RIGHT_DRIVE_PID_F = 0.0;
 
 			// Turn PIDs
@@ -132,9 +141,14 @@ public class RobotMap {
 			RIGHT_TURN_PID_D = 180.0;
 			RIGHT_TURN_PID_F = 0.0;
 
+			HAS_CLIMBER = false;
+			CLIMB_MOTOR_CONTROLLER_LEADER = 8;
+			CLIMB_MOTOR_CONTROLLER_FOLLOWER1 = 9;
+
 			useSimulator = false;
 			USE_FAKE_GAME_DATA = true;
-			
+
+
 			HAS_GRABBER = true;
 			GRABBER_INVERT = false;
 			HAS_CAMERA = false;
@@ -146,17 +160,19 @@ public class RobotMap {
 			// TODO Assign values to the game piece variables, and make more as appropriate
 			HAS_ELEVATOR = false;
 			ELEVATOR_MOTOR_CHANNEL = 7;
-			ELEVATOR_BOTTOM_TICKS = 839;
-			ELEVATOR_FLOOR_HEIGHT = 822;
-			ELEVATOR_SWITCH_HEIGHT = 711;
-			ELEVATOR_LOW_SCALE_HEIGHT = 543;
-			ELEVATOR_TOP_TICKS = 443;
 
-			HAS_LEFT_RAMP = true;
+			ELEVATOR_BOTTOM_TICKS = 881;
+			ELEVATOR_TOP_TICKS = 557;
+
+			ELEVATOR_FLOOR = 0.042;
+			ELEVATOR_SWITCH = 0.315;
+			ELEVATOR_LOW_SCALE = 0.729;
+
+			HAS_LEFT_RAMP = false;
 			RAMP_LEFT_FORWARD_CHANNEL = 1;
 			RAMP_LEFT_REVERSE_CHANNEL = 4;
 
-			HAS_RIGHT_RAMP = true;
+			HAS_RIGHT_RAMP = false;
 			RAMP_RIGHT_FORWARD_CHANNEL = 2;
 			RAMP_RIGHT_REVERSE_CHANNEL = 5;
 
@@ -171,11 +187,13 @@ public class RobotMap {
 
 			AUTONOMOUS_TURN_TIMEOUT_MS = 1000;
 
+			CLIMBER_RAMP_TIME = 30;
+
 			break;
 		case Competition_2:
 			HAS_WHEELS = true;
 			DRIVEMOTOR_NUM = 4;
-			WHEEL_CIRCUMFERENCE = 18.86; //19.74;
+			WHEEL_CIRCUMFERENCE = 18.00; //19.74;
 			WHEEL_ENCODER_CODES_PER_REVOLUTION = 1024;
 			useSpeedControllers = true;
 
@@ -191,38 +209,49 @@ public class RobotMap {
 			RIGHT_FOLLOWER_1_CHANNEL = 5;
 			RIGHT_FOLLOWER_2_CHANNEL = 6;
 			RIGHT_DRIVE_SENSOR_IS_INVERTED = true;
+			
+			HAS_CLIMBER = false;
+			CLIMB_MOTOR_CONTROLLER_LEADER = 8;
+			CLIMB_MOTOR_CONTROLLER_FOLLOWER1 = 9;
+			
+			RIGHT_GRABBER_SOLENOID_EXISTS = true;
+			LEFT_GRABBER_SOLENOID_EXISTS = true;
 
 			// Linear PIDS
-			LEFT_DRIVE_PID_P = 0.70;
+			LEFT_DRIVE_PID_P = 1.0;
 			LEFT_DRIVE_PID_I = 0.0;
-			LEFT_DRIVE_PID_D = 650.0;
+			LEFT_DRIVE_PID_D = 450.0;
 			LEFT_DRIVE_PID_F = 0.0;
 
-			RIGHT_DRIVE_PID_P = 0.52;
-			RIGHT_DRIVE_PID_I = 0;
-			RIGHT_DRIVE_PID_D = 340.0;
+			RIGHT_DRIVE_PID_P = 1.0;
+			RIGHT_DRIVE_PID_I = 0.0;
+			RIGHT_DRIVE_PID_D = 450.0;
 			RIGHT_DRIVE_PID_F = 0.0;
 
 			// Turn PIDs
-			LEFT_TURN_PID_P = 1.0; //0.80;
+			LEFT_TURN_PID_P = 1.0;
 			LEFT_TURN_PID_I = 0.0;
-			LEFT_TURN_PID_D = 480.0;
+			LEFT_TURN_PID_D = 450.0;
 			LEFT_TURN_PID_F = 0.0;
 
-			RIGHT_TURN_PID_P = 1.0; //0.62;
+			RIGHT_TURN_PID_P = 1.0;
 			RIGHT_TURN_PID_I = 0.0;
-			RIGHT_TURN_PID_D = 480.0;
+			RIGHT_TURN_PID_D = 450.0;
 			RIGHT_TURN_PID_F = 0.0;
+
+			HAS_CLIMBER = true;
+			CLIMB_MOTOR_CONTROLLER_LEADER = 8;
+			CLIMB_MOTOR_CONTROLLER_FOLLOWER1 = 9; //figure out what motor controller this is
 
 			HAS_ELEVATOR = true;
 			ELEVATOR_MOTOR_CHANNEL = 7;
 
-			// TODO Replace with empirical measured values
-			ELEVATOR_BOTTOM_TICKS = 785;
-			ELEVATOR_FLOOR_HEIGHT = 768;
-			ELEVATOR_SWITCH_HEIGHT = 657;
-			ELEVATOR_LOW_SCALE_HEIGHT = 489;
-			ELEVATOR_TOP_TICKS = 358;
+			ELEVATOR_BOTTOM_TICKS = 630;
+			ELEVATOR_TOP_TICKS = 195;
+
+			ELEVATOR_FLOOR = 0.040;
+			ELEVATOR_SWITCH = 0.300;
+			ELEVATOR_LOW_SCALE = 0.693;
 
 			HAS_GRABBER = true;
 			GRABBER_INVERT = true;
@@ -231,15 +260,15 @@ public class RobotMap {
 			OPTICAL_CHANNEL = 5;
 
 			HAS_CAMERA = false;
-			
+
 			useSimulator = false;
 			USE_FAKE_GAME_DATA = false;
 
-			HAS_LEFT_RAMP = true;
+			HAS_LEFT_RAMP = false;
 			RAMP_LEFT_FORWARD_CHANNEL = 1;
 			RAMP_LEFT_REVERSE_CHANNEL = 4;
 
-			HAS_RIGHT_RAMP = true;
+			HAS_RIGHT_RAMP = false;
 			RAMP_RIGHT_FORWARD_CHANNEL = 2;
 			RAMP_RIGHT_REVERSE_CHANNEL = 5;
 
@@ -252,7 +281,8 @@ public class RobotMap {
 			
 
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 200;
-			AUTONOMOUS_TURN_TIMEOUT_MS = 200;
+
+			AUTONOMOUS_TURN_TIMEOUT_MS = 300;
 
 			break;
 		}
@@ -268,7 +298,7 @@ public class RobotMap {
 	public static boolean useSpeedControllers;
 	public static final int VELOCITY_PID_PROFILE = 0;
 	public static final int POSITION_PID_PROFILE = 1;
-	
+
 	public static double ALLOWED_ERROR_INCHES = 0.5;
 	public static double POSITION_ALLOWED_ERROR;
 	public static int POSITION_ALLOWABLE_CLOSED_LOOP_ERROR;
@@ -282,15 +312,17 @@ public class RobotMap {
 
 	// TODO These values need to be tested on the robot and possibly adjusted.
 	public static final double NORMAL_TURN_MAX_SPEED = 1.0;
-	public static final double SLOW_TURN_MAX_SPEED = 0.6;
+
+	public static final double SLOW_TURN_MAX_SPEED = 0.8;
+
 	public static final double MAX_CARROT_LENGTH = 4.0;
 
 	public static boolean useSimulator = false;
 	public static boolean USE_FAKE_GAME_DATA = false;
-
 	public static final double MIN_DRIVE_SPEED = 0.1;
+	public static final double CLIMB_MIN_DRIVE_SPEED = 0.3;
 
-//	How far the sensor speeds can be and still be considered turning in place, in sensor units per 100 ms
+	//	How far the sensor speeds can be and still be considered turning in place, in sensor units per 100 ms
 	public static final int TURN_IN_PLACE_DETECT_TOLERANCE = 150;
 
 	// Robot Dimensions
@@ -332,6 +364,12 @@ public class RobotMap {
 	public static int ELEVATOR_TICKS_PER_TURN = 20; // TODO: SET
 	public static int MAX_ELEVATOR_RPM = 20; // TODO: SET
 
+	public static boolean HAS_CLIMBER;
+	public static int CLIMB_MOTOR_CONTROLLER_LEADER;
+	public static int CLIMB_MOTOR_CONTROLLER_FOLLOWER1;
+	public static int CLIMBER_RAMP_TIME;
+	public static double CLIMBER_SPEED = 0.5;
+
 	public static boolean HAS_ELEVATOR;
 	public static int ELEVATOR_MOTOR_CHANNEL;
 	public static double MIN_LIFT_SPEED = 0.1;
@@ -339,13 +377,13 @@ public class RobotMap {
 	public static final double ELEVATOR_ERROR_TOLERANCE_INCHES = 1.0;
 
 	public static int ELEVATOR_BOTTOM_TICKS;
-	public static int ELEVATOR_FLOOR_HEIGHT;
-	public static int ELEVATOR_SWITCH_HEIGHT;
-	public static int ELEVATOR_LOW_SCALE_HEIGHT;
 	public static int ELEVATOR_TOP_TICKS;
 
-	// Ticks per inch is based on empirical measurements on the robot. Approximately 4.740...
-	public static final double ELEVATOR_TICKS_PER_INCH = (ELEVATOR_BOTTOM_TICKS - ELEVATOR_TOP_TICKS) / ELEVATOR_HEIGHT_RANGE_INCHES;
+	public static double ELEVATOR_BOTTOM = 0.0;
+	public static double ELEVATOR_FLOOR;
+	public static double ELEVATOR_SWITCH;
+	public static double ELEVATOR_LOW_SCALE;
+	public static double ELEVATOR_TOP = 1.0;
 
 	public static boolean HAS_GRABBER;
 	public static double MAX_GRAB_SPEED = 1.0;
@@ -368,4 +406,12 @@ public class RobotMap {
 
 	public static int RAMP_RELEASE_FORWARD_CHANNEL;
 	public static int RAMP_RELEASE_REVERSE_CHANNEL;
+	
+	public static boolean RIGHT_GRABBER_SOLENOID_EXISTS;
+	public static boolean LEFT_GRABBER_SOLENOID_EXISTS;
+	public static int RIGHT_GRABBER_FORWARD_CHANNEL = 1; //redo
+	public static int RIGHT_GRABBER_REVERSE_CHANNEL = 0;
+	public static int LEFT_GRABBER_FORWARD_CHANNEL = 2;
+	public static int LEFT_GRABBER_REVERSE_CHANNEL = 3;
+	
 }

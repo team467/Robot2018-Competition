@@ -102,8 +102,6 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		double kFLeft = Double.parseDouble(SmartDashboard.getString("DB/String 4", "1.1168")); // 0.0
 		double kFRight = Double.parseDouble(SmartDashboard.getString("DB/String 9", "1.2208")); // 0.0
 
-		carrotLength = Double.parseDouble(SmartDashboard.getString("DB/String 5", "2.5"));
-
 		left.setPIDF(pidSlot, kPLeft, kILeft, kDLeft, kFLeft);
 		right.setPIDF(pidSlot, kPRight, kIRight, kDRight, kFRight);
 	}
@@ -246,9 +244,8 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 	 * Convert angle in degrees to wheel distance in feet (arc length).
 	 */
 	public static double degreesToFeet(double degrees) {
-		
-		double turnConstant = 15.8;
-		
+		double turnConstant = 12.0;
+
 		// Add a constant
 		if (degrees < 0) {
 			degrees -= turnConstant;
@@ -353,13 +350,12 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 			ramp = RobotMap.ELEVATOR_LOW_DRIVE_RAMP_TIME;
 		}
 
-		// JHP HACK We can't accurately measure elevator height.
 		ramp = 0.0;
 		left.setOpenLoopRamp(ramp);
 		right.setOpenLoopRamp(ramp);
 		LOGGER.trace("Ramp time: {}", ramp);
 	}
-	
+
 	double outerArc = 0;
 	double innerArc = 0;
 	
@@ -443,5 +439,14 @@ public class Drive extends DifferentialDrive implements AutoDrive {
 		else {
 			rotateByAngle(rotation);
 		}
+		}
+	public void setClimberSpeed(double speed) {
+		left.set(speed);
+		right.set(speed);
+//		if (Math.abs(DriverStation467.getInstance().getClimberSpeed()) >= RobotMap.CLIMB_MIN_DRIVE_SPEED) {
+//			
+//		} else {
+//			return;
+//		}
 	}
 }
