@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="all" strict="true">
   <Properties>
-    <Property name="filename">./debug.log</Property> <!--/media/sda1/-->
+    <Property name="filename">/media/sda1/testConfiguration.log</Property> <!--/media/sda1/-->
   </Properties>
   <Filter type="ThresholdFilter" level="trace"/>
  
@@ -30,14 +30,30 @@
   </Appenders>
  
   <Loggers>
-    <Logger name="org.usfirst.frc.team467.robot.simulator.DriveSimulator" level="warn" additivity="false">
+    <Logger name="org.usfirst.frc.team467.robot.simulator.DriveSimulator" level="all" additivity="false">
       <AppenderRef ref="File"/>
     </Logger>
     
-    <Logger name="org.usfirst.frc.team467.robot.Autonomous.ActionGroup" level="warn" additivity="false">
+    <Logger name="org.usfirst.frc.team467.robot.Autonomous.ActionGroup" level="all" additivity="false">
       <AppenderRef ref="File"/>
     </Logger>
- 
+    
+    <Logger name="org.usfirst.frc.team467.robot.Drive" level="all" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    
+    <Logger name="org.usfirst.frc.team467.robot.Robot" level="all" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    
+    <Logger name="org.usfirst.frc.team467.robot.Elevator" level="all" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    
+    <Logger name="org.usfirst.frc.team467.robot.DriverStation467" level="all" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    
     <Root level="trace">
       <AppenderRef ref="List"/>
     </Root>

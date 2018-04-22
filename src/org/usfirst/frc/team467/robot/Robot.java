@@ -154,6 +154,13 @@ public class Robot extends TimedRobot {
 		grabber.grab(driverstation.getGrabThrottle());
 		elevator.move(driverstation.getElevatorSpeed());
 		drive.setRamp(elevator.getHeight());
+		
+		LOGGER.info("THE XML CONFIGURATION WORKED");
+		LOGGER.info("THE XML CONFIGURATION WORKED");
+		LOGGER.info("THE XML CONFIGURATION WORKED");
+		LOGGER.info("THE XML CONFIGURATION WORKED");
+		LOGGER.info("THE XML CONFIGURATION WORKED");
+		LOGGER.info("THE XML CONFIGURATION WORKED");
 
 		if (driverstation.getFloorHeightButtonPressed()) {
 			LOGGER.info("Dropping to bottom height");
