@@ -30,11 +30,11 @@
   </Appenders>
  
   <Loggers>
-    <Logger name="org.usfirst.frc.team467.robot.simulator.DriveSimulator" level="all" additivity="false">
+    <Logger name="org.usfirst.frc.team467.robot.simulator.DriveSimulator" level="warn" additivity="false">
       <AppenderRef ref="File"/>
     </Logger>
     
-    <Logger name="org.usfirst.frc.team467.robot.Autonomous.ActionGroup" level="all" additivity="false">
+    <Logger name="org.usfirst.frc.team467.robot.Autonomous.ActionGroup" level="warn" additivity="false">
       <AppenderRef ref="File"/>
     </Logger>
  
