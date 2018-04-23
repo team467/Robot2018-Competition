@@ -29,7 +29,7 @@ public class Grabber {
 	private Piston right_P;
 	private boolean hadCube = false;
 	private boolean hasCube = false;
-	private OpticalSensor os;
+	//private OpticalSensor os;
 	private GrabberSolenoid rightGrab;
 	private GrabberSolenoid leftGrab;
 
@@ -41,13 +41,13 @@ public class Grabber {
 			left.setInverted(RobotMap.GRABBER_INVERT);
 			right = new Spark(RobotMap.GRABBER_R_CHANNEL);
 			right.setInverted(RobotMap.GRABBER_INVERT);
-			os = OpticalSensor.getInstance();
+			//os = OpticalSensor.getInstance();
 			leftGrab = GrabberSolenoid.getLeftInstance();
 			rightGrab = GrabberSolenoid.getRightInstance();
 		} else {
 			left = new NullSpeedController();
 			right = new NullSpeedController();
-			os = OpticalSensor.getInstance();
+			//os = OpticalSensor.getInstance();
 		}
 
 	}
@@ -210,7 +210,7 @@ public class Grabber {
 	}
 
 	public boolean hasCube() {
-		return (!RobotMap.useSimulator && RobotMap.HAS_GRABBER && os.detectedTarget());
+		return (!RobotMap.useSimulator && RobotMap.HAS_GRABBER); // && os.detectedTarget());
 	}
 
 	public void reset() {
