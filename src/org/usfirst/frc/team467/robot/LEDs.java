@@ -42,7 +42,7 @@ public class LEDs {
 		LOGGER.debug("LIGHTS UP");
 	}
 	
-	public void lightsOut() {
+	private void lightsOut() {
 		rightRelay.set(Relay.Value.kOff);
 		leftRelay.set(Relay.Value.kOff);
 		LOGGER.debug("LIGHTS OUT");
@@ -64,13 +64,22 @@ public class LEDs {
 		}
 	}
 	
-	public void act() {
+	public void blinkWhenHasCube() {
 		hasCube = os.detectedTarget();
 		if (hasCube == false) {
 			lightsUp();
 		}
 		else if(hasCube) {
 			blink();
+		}
+	}
+	
+	public void lightUpWhenHasCube(){
+		hasCube = os.detectedTarget();
+		if(hasCube) {
+			lightsUp();
+		}else {
+			lightsOut();
 		}
 	}
 }
