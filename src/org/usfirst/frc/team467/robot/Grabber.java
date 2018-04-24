@@ -45,6 +45,8 @@ public class Grabber {
 		} else {
 			left = new NullSpeedController();
 			right = new NullSpeedController();
+			leftGrab = new NullSolenoid(null, 0, 0, false);
+			rightGrab = new NullSolenoid(null, 0, 0, false);
 			os = OpticalSensor.getInstance();
 		}
 
