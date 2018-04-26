@@ -37,8 +37,12 @@ public class Robot extends TimedRobot {
 	private Gyrometer gyro;
 	private Elevator elevator;
 	private Grabber grabber;
+
 	//private Ramps ramps;
 	private Climber climber;
+
+	private LEDs leds;
+
 
 	private NetworkTableInstance table;
 	private NetworkTable dashboard;
@@ -68,6 +72,7 @@ public class Robot extends TimedRobot {
 
 		elevator = Elevator.getInstance();
 		grabber = Grabber.getInstance();
+		leds = LEDs.getInstance();
 		matchConfig = MatchConfiguration.getInstance();
 		climber = Climber.getInstance();
 		
@@ -152,9 +157,9 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		LOGGER.debug("Match time {}", DriverStation.getInstance().getMatchTime());
 		driverstation.readInputs();
-
 		grabber.grab(driverstation.getGrabThrottle());
 		elevator.move(driverstation.getElevatorSpeed());
+
 
 		//grabber open and close
 		if(driverstation.getGrabberOpen()) {
@@ -164,6 +169,10 @@ public class Robot extends TimedRobot {
 			LOGGER.info("Grabber Close");
 			grabber.close();
 		}
+
+		//TODO check this
+		leds.lightUpWhenHasCube();
+		
 
 		if (driverstation.getFloorHeightButtonPressed()) {
 			LOGGER.info("Dropping to bottom height");

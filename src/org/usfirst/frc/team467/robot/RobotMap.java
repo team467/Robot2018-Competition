@@ -398,11 +398,16 @@ public class RobotMap {
 	public static int RAMP_RELEASE_FORWARD_CHANNEL;
 	public static int RAMP_RELEASE_REVERSE_CHANNEL;
 	
+
 	public static boolean RIGHT_GRABBER_SOLENOID_EXISTS;
 	public static boolean LEFT_GRABBER_SOLENOID_EXISTS;
 	public static int RIGHT_GRABBER_FORWARD_CHANNEL = 2; //redo
 	public static int RIGHT_GRABBER_REVERSE_CHANNEL = 5;
 	public static int LEFT_GRABBER_FORWARD_CHANNEL = 1;
 	public static int LEFT_GRABBER_REVERSE_CHANNEL = 4;
-	
+
+	public static boolean HAS_LEDS = true;
+	public static int LEFT_RELAY_CHANNEL = 0;
+	public static int RIGHT_RELAY_CHANNEL = 1;
+
 }

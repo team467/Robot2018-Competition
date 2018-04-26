@@ -3,6 +3,8 @@ package org.usfirst.frc.team467.robot;
 import org.usfirst.frc.team467.robot.XBoxJoystick467.Button;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 public class DriverStation467 {
 
 	private XBoxJoystick467 driverJoy;
@@ -188,5 +190,24 @@ public class DriverStation467 {
 	public void driverSetRightRumble(double value) {
 		driverJoy.rightRumble(value);
 	}
-
+	
+	//testing with the controller with LEDs.
+	
+//	public boolean navigatorLEDsBlink(LEDs leds) {
+//		if(getNavJoystick().pressed(Button.a)) {
+//			leds.blink();
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
+//	
+//	public boolean navigatorLEDsAct(LEDs leds) {
+//		if(getNavJoystick().pressed(Button.b)) {
+//			leds.act();
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
 }
