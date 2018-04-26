@@ -200,7 +200,7 @@ public class RobotMap {
 			RIGHT_FOLLOWER_2_CHANNEL = 6;
 			RIGHT_DRIVE_SENSOR_IS_INVERTED = true;
 			
-			HAS_CLIMBER = false;
+			HAS_CLIMBER = true;
 			CLIMB_MOTOR_CONTROLLER_LEADER = 11;
 			CLIMB_MOTOR_CONTROLLER_FOLLOWER1 = 12;
 			CLIMBER_RAMP_TIME = 0.5;
@@ -219,15 +219,27 @@ public class RobotMap {
 			RIGHT_DRIVE_PID_D = 450.0;
 			RIGHT_DRIVE_PID_F = 0.0;
 
+//			// Turn PIDs
+//			LEFT_TURN_PID_P = 1.0;
+//			LEFT_TURN_PID_I = 0.0;
+//			LEFT_TURN_PID_D = 450.0;
+//			LEFT_TURN_PID_F = 0.0;
+//
+//			RIGHT_TURN_PID_P = 1.0;
+//			RIGHT_TURN_PID_I = 0.0;
+//			RIGHT_TURN_PID_D = 450.0;
+//			RIGHT_TURN_PID_F = 0.0;
+			
+
 			// Turn PIDs
 			LEFT_TURN_PID_P = 1.0;
 			LEFT_TURN_PID_I = 0.0;
-			LEFT_TURN_PID_D = 450.0;
+			LEFT_TURN_PID_D = 500.0;
 			LEFT_TURN_PID_F = 0.0;
 
 			RIGHT_TURN_PID_P = 1.0;
 			RIGHT_TURN_PID_I = 0.0;
-			RIGHT_TURN_PID_D = 450.0;
+			RIGHT_TURN_PID_D = 500.0;
 			RIGHT_TURN_PID_F = 0.0;
 
 			HAS_ELEVATOR = true;
@@ -388,9 +400,9 @@ public class RobotMap {
 	
 	public static boolean RIGHT_GRABBER_SOLENOID_EXISTS;
 	public static boolean LEFT_GRABBER_SOLENOID_EXISTS;
-	public static int RIGHT_GRABBER_FORWARD_CHANNEL = 1; //redo
-	public static int RIGHT_GRABBER_REVERSE_CHANNEL = 0;
-	public static int LEFT_GRABBER_FORWARD_CHANNEL = 2;
-	public static int LEFT_GRABBER_REVERSE_CHANNEL = 3;
+	public static int RIGHT_GRABBER_FORWARD_CHANNEL = 2; //redo
+	public static int RIGHT_GRABBER_REVERSE_CHANNEL = 5;
+	public static int LEFT_GRABBER_FORWARD_CHANNEL = 1;
+	public static int LEFT_GRABBER_REVERSE_CHANNEL = 4;
 	
 }
