@@ -324,7 +324,7 @@ public class Actions {
 		mode.addActions(move(22.83));
 		mode.addAction(elevatorToHighScale());
 		mode.addActions(move(2.0));
-		mode.addActions(turn(-95));
+		mode.addActions(turn(-105));
 		mode.addActions(move(0.375));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
