@@ -276,7 +276,11 @@ public class RobotMap {
 
 			AUTONOMOUS_DRIVE_TIMEOUT_MS = 200;
 			AUTONOMOUS_TURN_TIMEOUT_MS = 300;
-
+			
+			HAS_LEDS = true;
+			LEFT_RELAY_CHANNEL = 0;
+			RIGHT_RELAY_CHANNEL = 1;
+			
 			break;
 		}
 		//These calculations can be made after the robot-specific constants are set. 
@@ -406,8 +410,8 @@ public class RobotMap {
 	public static int LEFT_GRABBER_FORWARD_CHANNEL = 1;
 	public static int LEFT_GRABBER_REVERSE_CHANNEL = 4;
 
-	public static boolean HAS_LEDS = true;
-	public static int LEFT_RELAY_CHANNEL = 0;
-	public static int RIGHT_RELAY_CHANNEL = 1;
+	public static boolean HAS_LEDS;
+	public static int LEFT_RELAY_CHANNEL;
+	public static int RIGHT_RELAY_CHANNEL;
 
 }
