@@ -270,7 +270,6 @@ public class Actions {
 	public static ActionGroup testGrab() {
 		String actionGroupText = "Testing grab with a 2 foot move.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-		//mode.addAction(elevatorToFloor());
 		mode.addActions(grabCube()); 
 		return mode;
 	}
@@ -283,9 +282,9 @@ public class Actions {
 		mode.addActions(start());
 		mode.addActions(move(3.5)); 
 		mode.addActions(turn(-90));
-		mode.addActions(move(5.27));//5.77 
+		mode.addActions(move(5.27));
 		mode.addActions(turn(90));
-		mode.addActions(move(4.84));//4.34
+		mode.addActions(move(4.84));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -309,9 +308,9 @@ public class Actions {
 		String actionGroupText = "Put cube on our side switch.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(move(11.83));
+		mode.addActions(move(12.33)); //11.83
 		mode.addActions(turn(-90));
-		mode.addActions(move(2.0)); 
+		mode.addActions(move(1.479)); //2.0
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
 		return mode;
@@ -321,10 +320,9 @@ public class Actions {
 		String actionGroupText = "Put cube on our side scale";
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
-		mode.addActions(move(22.83));
+		mode.addActions(move(25.33)); //22.83
 		mode.addAction(elevatorToHighScale());
-		mode.addActions(move(2.0));
-		mode.addActions(turn(-95));
+		mode.addActions(turn(-90));
 		mode.addActions(move(0.375));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
@@ -354,15 +352,15 @@ public class Actions {
 		mode.addActions(basicScaleOurSide());
 
 		// pick up cube
-		mode.addActions(move(-1.0)); 
+		mode.addActions(move(-1.0));
 		mode.addAction(elevatorToFloor());
-		mode.addAction(zeroDistance()); //Wait doesn't zero
-		mode.addAction(wait(0.5));
-		mode.addActions(turn(-68)); 
-		mode.addActions(grabAndMoveLinear(9.3)); 
+		mode.addActions(turn(-60)); //-68
+		mode.addActions(move(8.8)); //9.3- grabandmovelinear
+		mode.addActions(turn(-30)); //added
 		
 		// Move To Switch 
-		mode.addActions(grabAndMoveLinear(-1.0));
+		mode.addActions(grabAndMoveLinear(0.7)); //added
+		mode.addActions(grabAndMoveLinear(-0.7));
 		mode.addAction(elevatorToSwitch());
 		mode.addActions(move(1.0));
 		
@@ -386,13 +384,15 @@ public class Actions {
 		mode.addAction(elevatorToFloor());
 		mode.addActions(turn(90));
 		mode.addActions(move(6.31));
-		mode.addActions(turn(-125));
-		mode.addActions(grabAndMoveLinear(3.2));
-		mode.addActions(grabAndMoveLinear(-3.2));
+		mode.addActions(turn(-90)); // -125
+		mode.addActions(move(4.25)); // 3.5
+		mode.addActions(turn(-90));
+		mode.addActions(grabAndMoveLinear(2.0));
+		mode.addActions(grabAndMoveLinear(-2.0));
+		mode.addActions(turn(90));
 		
 		//Go to far scale
-		mode.addActions(turn(35));
-		mode.addActions(move(18.0));
+		mode.addActions(move(14.0));
 		
 		//place cube in scale 
 		mode.addActions(turn(100));
@@ -412,25 +412,21 @@ public class Actions {
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(basicScaleOurSide());
 
-		//Go to pick up cube
-		mode.addActions(move(-1.0)); 
+		mode.addActions(move(-1.0));
 		mode.addAction(elevatorToFloor());
-		mode.addAction(zeroDistance()); //Wait doesn't zero
-		mode.addAction(wait(0.5));
-		mode.addActions(turn(-60)); 
-		mode.addActions(grabAndMoveLinear(9.3));
-		
-		//Return to Scale
-		mode.addActions(grabAndMoveLinear(-9.3));	
-		mode.addAction(elevatorToSwitch());
+		mode.addActions(turn(-60));
+		mode.addActions(move(8.8));
+		mode.addActions(turn(-30));
+
+		mode.addActions(grabAndMoveLinear(0.7));
+		mode.addActions(grabAndMoveLinear(-0.7));
+		mode.addActions(turn(30));
+		mode.addActions(move(-8.8));
 		mode.addActions(turn(60));
 		mode.addActions(move(1.0));
+		mode.addAction(elevatorToHighScale());
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
-		
-		//Get ready for teleop 
-		mode.addActions(move(-1.25));
-		mode.addAction(elevatorToFloor());
 		return mode;
 	}
 
