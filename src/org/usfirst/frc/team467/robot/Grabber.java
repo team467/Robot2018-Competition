@@ -43,6 +43,8 @@ public class Grabber {
 			leftGrab = GrabberSolenoid.getLeftInstance();
 			rightGrab = GrabberSolenoid.getRightInstance();
 		} else {
+			leftGrab = new GrabberSolenoid("left Grabber", RobotMap.LEFT_GRABBER_FORWARD_CHANNEL, RobotMap.LEFT_GRABBER_REVERSE_CHANNEL, false);
+			rightGrab = new GrabberSolenoid("right Grabber", RobotMap.RIGHT_GRABBER_FORWARD_CHANNEL, RobotMap.RIGHT_GRABBER_REVERSE_CHANNEL, false);
 			left = new NullSpeedController();
 			right = new NullSpeedController();
 			os = OpticalSensor.getInstance();
