@@ -45,8 +45,8 @@ public class MatchConfiguration {
 
 	private ActionGroup autonomous;
 
-	private String[] autoList = {"None", "Just_Go_Forward", "Left_Switch_Only", "Left_Basic", "Left_Advanced", "Left_Our_Side_Only",
-			"Center", "Center_Advanced", "Right_Switch_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
+	private String[] autoList = {"None", "Just_Go_Forward", "Left_Switch_Only", "Left_Scale_Only", "Left_Basic", "Left_Advanced", "Left_Our_Side_Only",
+			"Center", "Center_Advanced", "Right_Switch_Only", "Right_Scale_Only", "Right_Basic", "Right_Advanced", "Right_Our_Side_Only"};
 
 	private MatchConfiguration() {
 		teamColor = TeamColor.UNKNOWN;
@@ -228,6 +228,15 @@ public class MatchConfiguration {
 			} else {
 				LOGGER.debug("Switch and scale on opposite side, just going forward");
 				autonomous = Actions.crossAutoLine();
+			}
+			break;
+		
+		case "Left_Scale_Only":
+		case "Right_Scale_Only":
+			if(isScaleOnSameSide()) {
+				autonomous = Actions.basicScaleOurSide();
+			} else {
+				autonomous = Actions.basicScaleOppositeSide();
 			}
 			break;
 
