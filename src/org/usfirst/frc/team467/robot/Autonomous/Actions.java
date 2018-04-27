@@ -336,7 +336,7 @@ public class Actions {
 		ActionGroup mode = new ActionGroup(actionGroupText);
 		mode.addActions(start());
 		mode.addActions(move(17.5));//17.64
-		mode.addActions(turn(-90));
+		mode.addActions(turn(-83));
 		mode.addActions(move(17.4));//17.4
 		mode.addActions(turn(100));
 		mode.addAction(elevatorToHighScale());
