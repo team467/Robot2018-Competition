@@ -9,8 +9,8 @@ public class LEDs {
 	private static final Logger LOGGER = LogManager.getLogger(LEDs.class);
 	
 	boolean hasCube;
-	double lightsOnTime = 75.0;
-	double lightsOutTime = 75.0; 
+	double lightsOnTime = 25.0;
+	double lightsOutTime = 25.0; 
 	private Relay rightRelay;
 	private Relay leftRelay;
 	OpticalSensor os;
@@ -36,6 +36,11 @@ public class LEDs {
 
 	}
 	
+	public void resetTime() {
+		lightsOnTime = 75.0;
+		lightsOutTime = 75.0; 
+	}
+	
 	public void lightsUp() {
 		rightRelay.set(Relay.Value.kForward);
 		leftRelay.set(Relay.Value.kForward);
@@ -51,8 +56,7 @@ public class LEDs {
 	public void blink() {
 		LOGGER.debug("BLINKING");
 		if(lightsOnTime == 0 && lightsOutTime == 0) {
-			lightsOnTime = 75.0;
-			lightsOutTime = 75.0;
+			resetTime();
 		}
 		if (lightsOnTime > 0) {
 			lightsUp();
