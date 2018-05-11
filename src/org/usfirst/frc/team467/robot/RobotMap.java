@@ -359,7 +359,7 @@ public class RobotMap {
 	public static int CLIMB_MOTOR_CONTROLLER_LEADER;
 	public static int CLIMB_MOTOR_CONTROLLER_FOLLOWER1;
 	public static double CLIMBER_RAMP_TIME;
-	public static double CLIMBER_SPEED = 0.6;
+	public static double CLIMBER_SPEED = 0.8;
 
 	public static boolean HAS_ELEVATOR;
 	public static int ELEVATOR_MOTOR_CHANNEL;
