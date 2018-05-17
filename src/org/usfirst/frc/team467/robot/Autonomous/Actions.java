@@ -6,6 +6,7 @@ import org.usfirst.frc.team467.robot.Drive;
 import org.usfirst.frc.team467.robot.Elevator;
 import org.usfirst.frc.team467.robot.Elevator.Stops;
 import org.usfirst.frc.team467.robot.Grabber;
+import org.usfirst.frc.team467.robot.GrabberSolenoid;
 import org.usfirst.frc.team467.robot.RobotMap;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup.ConcurrentActions;
 import org.usfirst.frc.team467.robot.Autonomous.ActionGroup.MultiCondition;
@@ -64,13 +65,38 @@ public class Actions {
 				new ActionGroup.RunOnce(() -> LOGGER.info(message)));
 	}
 
-	public static Action grabCube() {
+	public static ActionGroup grabCube() {
 		Grabber grabber = Grabber.getInstance();
-		return new Action(
-				"Grabbing cube",
-				new ActionGroup.Duration(1.0),
-				//new ActionGroup.RunOnce(
-				() -> grabber.grab());
+		
+		ConcurrentActions closeGrabberAndGrab = new ConcurrentActions(
+				() -> grabber.close(),
+				() -> grabber.grab()
+				);
+		
+		MultiCondition grabbing1secOrStopWhenHaveCube = new MultiCondition(
+				new ActionGroup.Duration(1.0)
+				);
+		
+		//group.addAction(openGrabber());
+		ActionGroup group = new ActionGroup("grab cube with solenoid");
+		
+		group.addAction( new Action(
+				"Grabbing",
+				new ActionGroup.Duration(2.0),
+				() -> grabber.grabAndOpen()));
+		
+		group.addAction(new Action(
+				"Closing grabber on cube",
+				grabbing1secOrStopWhenHaveCube,
+				closeGrabberAndGrab
+				));
+		
+		group.addAction(new Action(
+				"Stoping Wheels",
+			new ActionGroup.Duration(1.0),
+			() -> grabber.pause()
+			));
+		return group;
 	}
 	
 	public static Action lockCube() {
@@ -81,8 +107,14 @@ public class Actions {
 				() -> grabber.startGrab());
 	}
 
+//	public static Action openGrabber() {
+//		Grabber grabber = Grabber.getInstance();
+//		return new Action(
+//				"Opening grabber",
+//				new ActionGroup.RunOnce(() -> grabber.open);
+//	}
+
 	public static ActionGroup grabAndMoveLinear(double distance) {
-		Grabber grabber = Grabber.getInstance();
 		ActionGroup group = new ActionGroup("grab and move Linear");
 		group.addAction(zeroDistance());
 		MultiCondition multicondition = new MultiCondition(
@@ -91,9 +123,9 @@ public class Actions {
 				);
 		
 		ConcurrentActions concurrentaction = new ConcurrentActions(
-				() -> grabber.grab(RobotMap.MAX_GRAB_SPEED),
+				() -> grabCube(),
 				() -> drive.moveLinearFeet(distance));
-
+		
 		group.addAction(new Action(
 				"Grabbing cube and driving forward",
 				multicondition,
@@ -238,8 +270,8 @@ public class Actions {
 	public static ActionGroup testGrab() {
 		String actionGroupText = "Testing grab with a 2 foot move.";
 		ActionGroup mode = new ActionGroup(actionGroupText);
-		mode.addAction(elevatorToFloor());
-		mode.addActions(grabAndMoveLinear(2));
+		//mode.addAction(elevatorToFloor());
+		mode.addActions(grabCube()); 
 		return mode;
 	}
 
@@ -292,7 +324,7 @@ public class Actions {
 		mode.addActions(move(22.83));
 		mode.addAction(elevatorToHighScale());
 		mode.addActions(move(2.0));
-		mode.addActions(turn(-95));
+		mode.addActions(turn(-105));
 		mode.addActions(move(0.375));
 		mode.addAction(releaseCube());
 		mode.addAction(pauseGrabber());
@@ -327,10 +359,10 @@ public class Actions {
 		mode.addAction(zeroDistance()); //Wait doesn't zero
 		mode.addAction(wait(0.5));
 		mode.addActions(turn(-68)); 
-		mode.addActions(grabAndMoveLinear(9.3));
+		mode.addActions(grabAndMoveLinear(9.3)); 
 		
 		// Move To Switch 
-		mode.addActions(grabAndMoveLinear(-1.0));	
+		mode.addActions(grabAndMoveLinear(-1.0));
 		mode.addAction(elevatorToSwitch());
 		mode.addActions(move(1.0));
 		
@@ -389,7 +421,7 @@ public class Actions {
 		mode.addActions(grabAndMoveLinear(9.3));
 		
 		//Return to Scale
-		mode.addActions(grabAndMoveLinear(-9.3));		
+		mode.addActions(grabAndMoveLinear(-9.3));	
 		mode.addAction(elevatorToSwitch());
 		mode.addActions(turn(60));
 		mode.addActions(move(1.0));
