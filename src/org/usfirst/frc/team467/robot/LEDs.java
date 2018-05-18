@@ -43,12 +43,7 @@ public class LEDs {
 		lightsOutTime = 75.0; 
 	}
 	
-	public void reset() {
-		lightsOnTime = 20.0;
-		lightsOutTime = 20.0;
-	}
-	
-	public void reset(double onTime, double offTime) {
+	public void resetTime(double onTime, double offTime) {
 		lightsOnTime = onTime;
 		lightsOutTime = offTime;
 	}
@@ -65,7 +60,7 @@ public class LEDs {
 		LOGGER.debug("LIGHTS OUT");
 	}
 	
-	/*public void blink() {
+	public void blink() {
 		LOGGER.debug("BLINKING");
 		if(lightsOnTime == 0 && lightsOutTime == 0) {
 			resetTime();
@@ -77,38 +72,38 @@ public class LEDs {
 		else if (lightsOutTime > 0){
 			lightsOut();
 			lightsOutTime -= 1;
-		}s
-	}*/
-	
-	public void blink(double onTime, double offTime) {
-		if(lightsOnTime == 0 || lightsOutTime == 0) {
-			on = !on;
-			reset(onTime, offTime);
-		}
-		if(on) {
-			lightsUp();
-			lightsOnTime--;
-		}
-		else {
-			lightsOut();
-			lightsOutTime--;
 		}
 	}
 	
-	public void blink() {
-		if(lightsOnTime == 0 && lightsOutTime == 0) {
-			on = !on;
-			reset();
-		}
-		if(on) {
-			lightsUp();
-			lightsOnTime--;
-		}
-		else {
-			lightsOut();
-			lightsOutTime--;
-		}
-	}
+//	public void blink(double onTime, double offTime) {
+//		if(lightsOnTime == 0 && lightsOutTime == 0) {
+//			on = !on;
+//			resetTime(onTime, offTime);
+//		}
+//		if(on) {
+//			lightsUp();
+//			lightsOnTime--;
+//		}
+//		else {
+//			lightsOut();
+//			lightsOutTime--;
+//		}
+//	}
+	
+//	public void blink() {
+//		if(lightsOnTime == 0 && lightsOutTime == 0) {
+//			on = !on;
+//			resetTime();
+//		}
+//		if(on) {
+//			lightsUp();
+//			lightsOnTime--;
+//		}
+//		else {
+//			lightsOut();
+//			lightsOutTime--;
+//		}
+//	}
 	
 	public void blinkWhenHasCube() {
 		hasCube = os.detectedTarget();
@@ -124,8 +119,13 @@ public class LEDs {
 		hasCube = os.detectedTarget();
 		if(hasCube) {
 			lightsUp();
-		}else {
+		}else{
 			lightsOut();
 		}
+	}
+	
+	private double time_calculator(double seconds) {
+		double time = seconds * 1000 / 20;
+		return time;
 	}
 }

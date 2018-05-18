@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 		//table.deleteAllEntries();
 
 		// Initialize RobotMap
-		RobotMap.init(RobotID.Board);
+		RobotMap.init(RobotID.Competition_2);
 
 		// Make robot objects
 		driverstation = DriverStation467.getInstance();
@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
 		elevator.move(driverstation.getElevatorSpeed());
 		drive.setRamp(elevator.getHeight());
 		
-		leds.blink(20.0, 20.0);
+		leds.blink();
 		
 		if (driverstation.getFloorHeightButtonPressed()) {
 			LOGGER.info("Dropping to bottom height");
