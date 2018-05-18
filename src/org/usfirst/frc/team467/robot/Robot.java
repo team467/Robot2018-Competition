@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
 		elevator.move(driverstation.getElevatorSpeed());
 		drive.setRamp(elevator.getHeight());
 		
-		//leds.blink(20.0, 20.0);
+		leds.blink(20.0, 20.0);
 
 
 
@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
 		}
 
 		//TODO check this
-		leds.lightUpWhenHasCube();
+		//leds.blink(20.0, 20.0);
 		
 
 		if (driverstation.getFloorHeightButtonPressed()) {

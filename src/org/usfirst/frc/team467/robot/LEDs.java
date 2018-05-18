@@ -65,7 +65,7 @@ public class LEDs {
 		LOGGER.debug("LIGHTS OUT");
 	}
 	
-	/*public void blink() {
+	/*public void blink2() {
 		LOGGER.debug("BLINKING");
 		if(lightsOnTime == 0 && lightsOutTime == 0) {
 			resetTime();
@@ -77,7 +77,7 @@ public class LEDs {
 		else if (lightsOutTime > 0){
 			lightsOut();
 			lightsOutTime -= 1;
-		}s
+		}
 	}*/
 	
 	public void blink(double onTime, double offTime) {
